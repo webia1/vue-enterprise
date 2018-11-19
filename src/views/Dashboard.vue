@@ -41,7 +41,13 @@
     </v-navigation-drawer>
     <v-toolbar height="48" color="red" dark app fixed clipped-left scroll-off-screen>
       <v-toolbar-side-icon @click.native="drawer = !drawer" />
-      <v-toolbar-title class="white--text">Dashboard</v-toolbar-title>
+      <v-btn icon href="/">
+        <v-icon>home</v-icon>
+      </v-btn>
+      <v-toolbar-items>
+        <v-btn href="/dashboard/overview" flat>Overview</v-btn>
+
+      </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>search</v-icon>
@@ -57,8 +63,8 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container fluid>
-        <router-view />
+      <v-container>
+        <router-view></router-view>
       </v-container>
     </v-content>
   </div>
