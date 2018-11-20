@@ -10,11 +10,13 @@
           Bei folgenden Versicherungen bitten wir dich
           weitere Informationen zu ergänzen:
         </p>
-        <v-btn
-          to="/"
-        >
-          Hausratversicherung
-        </v-btn>
+        <p>
+          <v-btn
+            to="/"
+          >
+            Hausratversicherung
+          </v-btn>
+        </p>
         <p>
           Für die angefragten Änderungen benötigen wir circa
           <strong>zusätzliche 5 Minuten</strong> deiner Zeit.
@@ -23,13 +25,13 @@
         </p>
         <div>
           <v-btn dark color="green">Jetzt ergänzen</v-btn>
-          <v-btn dark color="blue">Später</v-btn>
+          <v-btn dark color="blue" to="/data">Später</v-btn>
         </div>
       </template>
       <v-btn
         dark
         color="red"
-        to="/"
+        to="/data"
         v-else
       >
         Weiter
@@ -39,10 +41,10 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
 
   @Component({})
   export default class DataSuccess extends Vue {
-    @Prop() private addressChanged: boolean;
+    @Prop() private addressChanged?: boolean;
   }
 </script>

@@ -41,12 +41,11 @@
     </v-navigation-drawer>
     <v-toolbar height="48" color="red" dark app fixed clipped-left scroll-off-screen>
       <v-toolbar-side-icon @click.native="drawer = !drawer" />
-      <v-btn icon href="/">
+      <v-btn icon to="/">
         <v-icon>home</v-icon>
       </v-btn>
       <v-toolbar-items>
-        <v-btn href="/dashboard/overview" flat>Overview</v-btn>
-
+        <v-btn to="/dashboard/overview" flat>Overview</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-btn icon>
@@ -86,9 +85,16 @@ export default class Dashboard extends Vue {
 </script>
 
 <style lang="stylus">
+  body {
+    font-size 1.2rem;
+  }
+
+  h1, h2 {
+    color red;
+  }
+
   h1 {
-    margin: 40px 0;
-    color: red;
+    margin 40px 0;
   }
 </style>
 

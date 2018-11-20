@@ -37,6 +37,9 @@ export default new Router({
           path: '/data/edit',
           name: 'data-edit',
           component: DataEdit,
+          props: (route) => ({
+            area: route.query.area,
+          }),
         },
         {
           path: '/data/success',

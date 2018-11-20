@@ -1,34 +1,29 @@
 <template>
   <v-layout>
-    <v-flex>
+    <v-flex @keyup.enter="identify()">
       <h1>Bitte identifiziere dich</h1>
       <p>
         Der Schutz deiner Daten steht bei uns an erster Stelle.
         Bitte identifiziere dich, damit wir dich für dein Anliegen
         umgehend unterstützen können.
       </p>
-      <div>
-        <v-text-field
-          label="Email"
-          v-model="email"
-        />
-      </div>
-      <div>
-        <v-text-field
-          label="Telefonnummer"
-          v-model="phoneNumber"
-        />
-      </div>
-      <div class="control">
-        <v-btn
-          :dark="!disabled"
-          :disabled="disabled"
-          color="red"
-          @click="identify()"
-        >
-          JETZT ANMELDEN
-        </v-btn>
-      </div>
+      <v-text-field
+        label="Email"
+        v-model="email"
+      />
+      <p>oder</p>
+      <v-text-field
+        label="Telefonnummer"
+        v-model="phoneNumber"
+      />
+      <v-btn
+        :dark="!disabled"
+        :disabled="disabled"
+        color="red"
+        @click="identify()"
+      >
+        JETZT ANMELDEN
+      </v-btn>
     </v-flex>
   </v-layout>
 </template>
@@ -36,7 +31,6 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
 
-  // TODO: should components which use $router or router-link be "views"
   @Component({})
   export default class Identify extends Vue {
     private email: string = '';
@@ -57,7 +51,7 @@
     }
 
     private identify() {
-      this.$router.push('/data/edit');
+      this.$router.push('/data');
     }
   }
 </script>

@@ -40,7 +40,7 @@
           color="red"
           to="/identify"
         >
-          Ergo in meiner Nähe
+          Filialen in meiner Nähe
         </v-btn>
       </div>
     </v-flex>
@@ -50,7 +50,7 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
 
-  @Component
+  @Component({})
   export default class Overview extends Vue {
     @Prop()
     private msg!: string;

@@ -1,13 +1,7 @@
 <template>
   <v-layout>
-    <v-flex>
+    <v-flex @keyup.enter="submit()">
       <h1>Deine Daten</h1>
-      <p>
-        Das sind deine Stammdaten bei ERGO.
-        Für mögliche Änderungen kannst du einfach die
-        betreffenden Felder durch anklicken anpassen oder
-        unsere Komfort-Funktionen nutzen.
-      </p>
       <v-text-field
         v-for="field in fieldNames"
         :label="fieldLabels[field]"
@@ -16,20 +10,23 @@
       <v-btn
         :dark="hasChanges"
         :disabled="!hasChanges"
-        :to="submitTarget"
         color="red"
+        @click="submit()"
       >
         Submit
       </v-btn>
+      <p>{{ addressChanged }}</p>
     </v-flex>
   </v-layout>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
 
   @Component({})
   export default class DataEdit extends Vue {
+    @Prop() private area!: string;
+
     private fieldLabels: { [key: string]: string } = {
       firstName: 'Vorname',
       lastName: 'Nachname',
@@ -39,21 +36,23 @@
       email: 'E-Mail',
     };
 
-    private origins: { [key: string]: string } = {
-      firstName: 'Nina',
-      lastName: 'Traumkundin',
-      address: 'Wunderschönallee 13',
-      location: '40477 Düsseldorf',
-      phoneNumber: '+49 151 98765432',
-      email: 'ninatraumkundin@mymail.de',
-    };
-
     private fields: { [key: string]: string } = {};
 
     private created() {
       this.fields = {
-        ...this.origins,
+        ...this.$store.state.userData[this.area],
       };
+    }
+
+    private get addressChanged() {
+      return String(
+        (this.areaToUse.address !== this.fields.address)
+        || (this.areaToUse.location !== this.fields.location),
+      );
+    }
+
+    private get areaToUse() {
+      return this.$store.state.userData[this.area];
     }
 
     private get fieldNames(): string[] {
@@ -61,19 +60,22 @@
     }
 
     private get hasChanges() {
-      return this.fieldNames.some(field => this.origins[field] !== this.fields[field]);
+      return this.fieldNames.some(field => this.areaToUse[field] !== this.fields[field]);
     }
 
     private get submitTarget() {
       return {
         path: '/data/success',
         query: {
-          addressChanged: String(
-            (this.origins.address !== this.fields.address)
-            || (this.origins.location !== this.fields.location),
-          ),
+          addressChanged: this.addressChanged,
         },
       };
+    }
+
+    private submit() {
+      this.$router.push(this.submitTarget);
+      const mutation = this.area === 'contact' ? 'setContactData' : 'setBankData';
+      this.$store.commit(`userData/${mutation}`, this.fields);
     }
   }
 </script>
