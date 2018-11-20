@@ -84,3 +84,11 @@ export default class Dashboard extends Vue {
   ];
 }
 </script>
+
+<style lang="stylus">
+  h1 {
+    margin: 40px 0;
+    color: red;
+  }
+</style>
+
