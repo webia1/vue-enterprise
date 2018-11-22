@@ -40,14 +40,20 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar height="48" color="red" dark app fixed clipped-left scroll-off-screen>
-      <v-toolbar-side-icon @click.native="drawer = !drawer" />
+      <v-toolbar-side-icon @click.native="drawer = !drawer"/>
       <v-btn icon to="/">
         <v-icon>home</v-icon>
       </v-btn>
       <v-toolbar-items>
         <v-btn to="/dashboard/overview" flat>Overview</v-btn>
       </v-toolbar-items>
+      <v-toolbar-items v-if="$store.state.userData.initialized">
+        <v-btn to="/data" flat>Meine Daten</v-btn>
+      </v-toolbar-items>
       <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn to="/showcase" flat>Showcase</v-btn>
+      </v-toolbar-items>
       <v-btn icon>
         <v-icon>search</v-icon>
       </v-btn>
@@ -62,7 +68,7 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container>
+      <v-container grid-list-md>
         <router-view></router-view>
       </v-container>
     </v-content>
@@ -70,18 +76,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { mainMenu } from '@/globals/data/menus/mainMenu.ts';
+  import { Component, Vue } from 'vue-property-decorator';
 
-@Component
-export default class Dashboard extends Vue {
-  public drawer: boolean = false;
-  public sideBoardItems = [
-    { icon: 'settings', text: 'Einstellungen' },
-    { icon: 'help', text: 'Hilfe' },
-    { icon: 'keyboard', text: 'Keyboard shortcuts' },
-  ];
-}
+  @Component
+  export default class Dashboard extends Vue {
+    public drawer: boolean = false;
+    public sideBoardItems = [
+      { icon: 'settings', text: 'Einstellungen' },
+      { icon: 'help', text: 'Hilfe' },
+      { icon: 'keyboard', text: 'Keyboard shortcuts' },
+    ];
+  }
 </script>
 
 <style lang="stylus">

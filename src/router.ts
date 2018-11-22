@@ -6,8 +6,20 @@ import Identify from '@/components/Identify.vue';
 import DataEdit from '@/components/DataEdit.vue';
 import DataSuccess from '@/components/DataSuccess.vue';
 import DataView from '@/components/DataView.vue';
+import VuetifyExamples from '@/VuetifyExamples.vue';
+
+import store from '@/store';
 
 Vue.use(Router);
+
+const IdentifyGuard = (to: any, from: any, next: any) => {
+  // TODO: fix error
+  // @ts-ignore
+  if (!store.state.userData.initialized) {
+    next('/identify');
+  }
+  next();
+};
 
 export default new Router({
   mode: 'history',
@@ -32,11 +44,13 @@ export default new Router({
           path: '/data',
           name: 'data-view',
           component: DataView,
+          beforeEnter: IdentifyGuard,
         },
         {
           path: '/data/edit',
           name: 'data-edit',
           component: DataEdit,
+          beforeEnter: IdentifyGuard,
           props: (route) => ({
             area: route.query.area,
           }),
@@ -45,9 +59,14 @@ export default new Router({
           path: '/data/success',
           name: 'data-success',
           component: DataSuccess,
+          beforeEnter: IdentifyGuard,
           props: (route) => ({
             addressChanged: route.query.addressChanged === 'true',
           }),
+        },
+        {
+          path: '/showcase',
+          component: VuetifyExamples,
         },
       ],
     },

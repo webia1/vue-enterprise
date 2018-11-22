@@ -8,13 +8,52 @@
         umgehend unterstützen können.
       </p>
       <v-text-field
-        label="Email"
-        v-model="email"
+        box
+        label="Vorname"
+        v-model="firstName"
       />
-      <p>oder</p>
       <v-text-field
-        label="Telefonnummer"
-        v-model="phoneNumber"
+        box
+        label="Nachname"
+        v-model="lastName"
+      />
+      <div
+        v-if="withContractNumber"
+        class="mode-changer"
+      >
+          <v-text-field
+            box
+            label="Vertragsnummer"
+            v-model="contractNumber"
+          />
+          <p class="mode-changer__content">
+            <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
+          </p>
+      </div>
+      <div
+        v-if="!withContractNumber"
+        class="mode-changer"
+      >
+        <v-text-field
+          box
+          label="Straße / Hausnummer"
+          v-model="address"
+        />
+        <v-text-field
+          box
+          label="PLZ / Ort"
+          v-model="location"
+        />
+        <p class="mode-changer__content">
+          <a @click="changeMode()">Eingabe der Vertragsnummer</a>
+        </p>
+      </div>
+      <v-text-field
+        box
+        label="Geburtstag"
+        mask="##.##.####"
+        hint="dd.mm.yyyy"
+        v-model="birthday"
       />
       <v-btn
         :dark="!disabled"
@@ -33,25 +72,57 @@
 
   @Component({})
   export default class Identify extends Vue {
-    private email: string = '';
-    private phoneNumber: string = '';
-    private errors = {
-      email: false,
-      phoneNumber: false,
-    };
+    private firstName: string = '';
+    private lastName: string = '';
+    private birthday: string = '';
+    private contractNumber: string = '';
+    private withContractNumber = true;
+    private address: string = '';
+    private location: string = '';
 
     private get disabled() {
-      if (
-        (this.email && !this.phoneNumber)
-        || (!this.email && this.phoneNumber)
-      ) {
-        return false;
-      }
-      return true;
+      return !(
+        this.firstName
+        && this.lastName
+        && this.birthday
+        && (
+          (
+            this.contractNumber
+            && this.withContractNumber
+          )
+          || (
+            !this.withContractNumber
+            && this.address
+            && this.location
+          )
+        )
+      );
+    }
+
+    private changeMode() {
+      this.withContractNumber = !this.withContractNumber;
+      this.contractNumber = '';
+      this.address = '';
+      this.location = '';
     }
 
     private identify() {
-      this.$router.push('/data');
+      if (!this.disabled) {
+        this.$router.push('/data');
+      }
     }
   }
 </script>
+
+<style scoped lang="stylus">
+  .mode-changer {
+    position relative;
+    padding-bottom: 15px;
+
+    &__content {
+      position absolute;
+      right 0;
+      bottom: 0;
+    }
+  }
+</style>

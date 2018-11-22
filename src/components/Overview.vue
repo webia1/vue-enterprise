@@ -11,7 +11,7 @@
         <v-btn
           dark
           color="red"
-          to="/identify"
+          to="/data"
         >
           Meine Versicherungen
         </v-btn>
@@ -20,7 +20,7 @@
         <v-btn
           dark
           color="red"
-          to="/identify"
+          to="/data"
         >
           Meine Daten
         </v-btn>
@@ -29,7 +29,7 @@
         <v-btn
           dark
           color="red"
-          to="/identify"
+          to="/data"
         >
           Mein Fall
         </v-btn>
@@ -38,7 +38,7 @@
         <v-btn
           dark
           color="red"
-          to="/identify"
+          to="/data"
         >
           Filialen in meiner Nähe
         </v-btn>
