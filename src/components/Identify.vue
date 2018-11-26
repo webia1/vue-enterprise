@@ -17,18 +17,26 @@
         label="Nachname"
         v-model="lastName"
       />
+      <v-text-field
+        box
+        return-masked-value
+        label="Geburtstag"
+        mask="##.##.####"
+        hint="dd.mm.yyyy"
+        v-model="birthday"
+      />
       <div
         v-if="withContractNumber"
         class="mode-changer"
       >
-          <v-text-field
-            box
-            label="Vertragsnummer"
-            v-model="contractNumber"
-          />
-          <p class="mode-changer__content">
-            <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
-          </p>
+        <v-text-field
+          box
+          label="Vertragsnummer"
+          v-model="contractNumber"
+        />
+        <p class="mode-changer__content">
+          <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
+        </p>
       </div>
       <div
         v-if="!withContractNumber"
@@ -48,13 +56,6 @@
           <a @click="changeMode()">Eingabe der Vertragsnummer</a>
         </p>
       </div>
-      <v-text-field
-        box
-        label="Geburtstag"
-        mask="##.##.####"
-        hint="dd.mm.yyyy"
-        v-model="birthday"
-      />
       <v-btn
         :dark="!disabled"
         :disabled="disabled"
@@ -69,6 +70,9 @@
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
+  import validate from 'validate.js';
+  import moment from 'moment';
+
 
   @Component({})
   export default class Identify extends Vue {
@@ -81,22 +85,75 @@
     private location: string = '';
 
     private get disabled() {
-      return !(
-        this.firstName
-        && this.lastName
-        && this.birthday
-        && (
-          (
-            this.contractNumber
-            && this.withContractNumber
-          )
-          || (
-            !this.withContractNumber
-            && this.address
-            && this.location
-          )
-        )
-      );
+      if (!this.withContractNumber) {
+        return Boolean(validate({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          birthday: this.birthday,
+          address: this.address,
+          location: this.location,
+        }, {
+          firstName: {
+            presence: {
+              allowEmpty: false,
+            },
+          },
+          lastName: {
+            presence: {
+              allowEmpty: false,
+            },
+          },
+          birthday: {
+            birthday: true,
+          },
+          address: {
+            presence: {
+              allowEmpty: false,
+            },
+          },
+          location: {
+            presence: {
+              allowEmpty: false,
+            },
+          },
+        }, {
+          format: 'flat',
+        }));
+      }
+      return Boolean(validate({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        birthday: this.birthday,
+        contractNumber: this.contractNumber,
+      }, {
+        firstName: {
+          presence: {
+            allowEmpty: false,
+          },
+        },
+        lastName: {
+          presence: {
+            allowEmpty: false,
+          },
+        },
+        birthday: {
+          birthday: true,
+          length: {
+            is: 10,
+          },
+          // date: {
+          //   earliest: moment().subtract(150, 'years'),
+          //   latest: moment().subtract(18, 'years'),
+          // }
+        },
+        contractNumber: {
+          presence: {
+            allowEmpty: false,
+          },
+        },
+      }, {
+        format: 'flat',
+      }));
     }
 
     private changeMode() {
