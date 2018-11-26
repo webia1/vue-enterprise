@@ -59,7 +59,7 @@
       <v-btn
         :dark="!disabled"
         :disabled="disabled"
-        color="red"
+        color="primary"
         @click="identify()"
       >
         JETZT ANMELDEN

@@ -16,7 +16,7 @@
       <v-btn
         :dark="hasChanges"
         :disabled="!hasChanges"
-        color="red"
+        color="primary"
         @click="submit()"
       >
         Submit

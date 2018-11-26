@@ -30,7 +30,7 @@
       </template>
       <v-btn
         dark
-        color="red"
+        color="primary"
         to="/data"
         v-else
       >
