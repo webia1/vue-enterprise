@@ -47,6 +47,10 @@ export default new Router({
           beforeEnter: IdentifyGuard,
         },
         {
+          path: '/skip',
+          component: DataView,
+        },
+        {
           path: '/data/edit',
           name: 'data-edit',
           component: DataEdit,
