@@ -12,6 +12,7 @@
       <v-text-field
         box
         label="Vorname *"
+        ref="firstNameField"
         :rules="[isValid('firstName')]"
         :success="!errors.firstName"
         v-model="firstName"
@@ -33,21 +34,25 @@
         :success="!errors.birthday"
         v-model="birthday"
       />
-      <div
-        v-if="withContractNumber"
-        class="mode-changer"
-      >
-        <v-text-field
-          box
-          label="Vertragsnummer *"
-          :rules="[isValid('contractNumber')]"
-          :success="!errors.contractNumber"
-          v-model="contractNumber"
-        />
-        <p class="mode-changer__content">
-          <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
+      <template v-if="withContractNumber">
+        <div
+          class="mode-changer"
+        >
+          <v-text-field
+            box
+            label="Vertragsnummer *"
+            :rules="[isValid('contractNumber')]"
+            :success="!errors.contractNumber"
+            v-model="contractNumber"
+          />
+          <p class="mode-changer__content">
+            <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
+          </p>
+        </div>
+        <p>
+          Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
         </p>
-      </div>
+      </template>
       <div
         v-if="!withContractNumber"
         class="mode-changer"
@@ -70,6 +75,16 @@
           <a @click="changeMode()">Eingabe der Vertragsnummer</a>
         </p>
       </div>
+      <v-checkbox
+        :error="errors.termsAccepted"
+        :prepend-icon="errors.termsAccepted ? 'arrow_forward' : null"
+        @change="termsCheck()"
+        v-model="termsAccepted"
+      >
+        <div slot="label">
+          Ich stimme den <a href="javascript:void(0)">Nutzungsbestimmungen</a> und <a href="javascript:void(0)">Datenschutzhinweisen</a> zu.
+        </div>
+      </v-checkbox>
       <v-btn
         block
         :dark="formIsValid"
@@ -99,6 +114,7 @@
     private withContractNumber = true;
     private address: string = '';
     private location: string = '';
+    private termsAccepted = false;
     private errors = {};
 
     private get formIsValid() {
@@ -160,6 +176,7 @@
       this.contractNumber = '';
       this.address = '';
       this.location = '';
+      this.termsAccepted = false;
     }
 
     private isValid(fieldName: string) {
@@ -173,12 +190,19 @@
     }
 
     private register() {
-      if (this.formIsValid) {
+      this.termsCheck();
+      // @ts-ignore
+      if (this.formIsValid && !this.errors.termsAccepted) {
         if (!this.$store.state.userData.initialized) {
           this.$store.dispatch('userData/initializeUserData', userData);
         }
         this.$router.push({ name: 'overview' });
       }
+    }
+
+    private termsCheck() {
+      Vue.set(this.errors, 'termsAccepted', this.termsAccepted !== true);
+      return this.termsAccepted === true;
     }
   }
 </script>
