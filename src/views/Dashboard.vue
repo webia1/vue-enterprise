@@ -39,7 +39,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar height="48" color="red" dark app fixed clipped-left scroll-off-screen>
+    <v-toolbar height="48" color="primary" dark app fixed clipped-left scroll-off-screen>
       <v-toolbar-side-icon @click.native="drawer = !drawer"/>
       <v-btn icon to="/">
         <v-icon>home</v-icon>
@@ -95,7 +95,7 @@
   }
 
   h1, h2 {
-    color red;
+    color #000;
   }
 
   h1 {
