@@ -5,6 +5,7 @@ import Overview from '@/components/Overview.vue';
 import Identify from '@/components/Identify.vue';
 import DataEdit from '@/components/DataEdit.vue';
 import DataSuccess from '@/components/DataSuccess.vue';
+import Login from '@/components/Login.vue';
 import DataView from '@/components/DataView.vue';
 import VuetifyExamples from '@/VuetifyExamples.vue';
 
@@ -16,7 +17,7 @@ const IdentifyGuard = (to: any, from: any, next: any) => {
   // TODO: fix error
   // @ts-ignore
   if (!store.state.userData.initialized) {
-    next('/identify');
+    next('/');
   }
   next();
 };
@@ -30,6 +31,10 @@ export default new Router({
       name: 'dashboard',
       component: Dashboard,
       children: [
+        {
+          path: '',
+          component: Login,
+        },
         {
           path: 'dashboard/overview',
           name: 'overview',
