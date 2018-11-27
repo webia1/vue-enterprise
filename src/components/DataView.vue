@@ -34,7 +34,6 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import ObjectListing, { MaskFunction } from '@/components/ObjectListing.vue';
-  import userData from './userData';
 
   @Component({
     components: {
@@ -46,11 +45,5 @@
       iban: (value) => `${'*'.repeat(value.length - 4)}${value.substr(-4)}`,
       bic: (value) => `${value.substr(0, 4)}${'*'.repeat(value.length - 4)}`,
     };
-
-    private created() {
-      if (!this.$store.state.userData.initialized) {
-        this.$store.dispatch('userData/initializeUserData', userData);
-      }
-    }
   }
 </script>
