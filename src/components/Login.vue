@@ -1,6 +1,6 @@
 <template>
   <v-layout wrap>
-    <v-flex>
+    <v-flex @keyup.enter="login()">
       <h1>Bitte melde dich an</h1>
       <p>
         Der Schutz deiner Daten steht bei uns an erster Stelle. Bitte melde dich

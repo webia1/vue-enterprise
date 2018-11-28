@@ -1,7 +1,7 @@
 import '@babel/polyfill';
 import Vue from 'vue';
-import './plugins/vuetify';
-import './plugins/validation';
+import '@/plugins/vuetify';
+import '@/plugins/validation';
 import App from './App.vue';
 import router from './router';
 import store from '@/store/index';

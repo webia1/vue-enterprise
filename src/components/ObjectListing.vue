@@ -1,12 +1,12 @@
 <template>
   <v-layout wrap>
     <template v-for="[key, value] in dataItems">
-      <v-flex xs4>
+      <v-flex xs4 :key="`${key}_key`">
         <v-label>
           {{ key }}
         </v-label>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs8 :key="`${key}_value`">
         {{ value }}
       </v-flex>
     </template>
@@ -23,7 +23,7 @@
     @Prop() private data!: { [key: string]: any };
     @Prop() private masks?: any;
 
-    get dataItems() {
+    private get dataItems() {
       return Object.keys(this.data).map(key => {
         if (this.masks[key]) {
           const masked = this.masks[key](this.data[key]);

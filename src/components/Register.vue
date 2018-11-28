@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex>
+    <v-flex @keyup.enter="register()">
       <h1>
         Bitte registriere dich
       </h1>
@@ -12,7 +12,6 @@
       <v-text-field
         box
         label="Vorname *"
-        ref="firstNameField"
         :rules="[isValid('firstName')]"
         :success="!errors.firstName"
         v-model="firstName"

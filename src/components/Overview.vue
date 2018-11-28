@@ -9,6 +9,7 @@
       </div>
       <div>
         <v-btn
+          block
           dark
           color="primary"
         >
@@ -17,6 +18,7 @@
       </div>
       <div>
         <v-btn
+          block
           dark
           color="primary"
           to="/data"
@@ -26,6 +28,7 @@
       </div>
       <div>
         <v-btn
+          block
           dark
           color="primary"
         >
@@ -34,6 +37,7 @@
       </div>
       <div>
         <v-btn
+          block
           dark
           color="primary"
         >

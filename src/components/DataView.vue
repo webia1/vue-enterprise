@@ -15,8 +15,55 @@
         <v-flex xs4>
           <router-link :to="{ name: 'data-edit', query: { area: 'contact' } }">Bearbeiten</router-link>
         </v-flex>
+        <v-flex xs4>
+          <v-label>
+            Vorname
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.firstName }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            Nachname
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.lastName }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            Straße
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.address }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            PLZ / Ort
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.zip }} {{ userData.contact.location }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            Telefon
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.phoneNumber }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            E-Mail
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.contact.email }}
+        </v-flex>
       </v-layout>
-      <ObjectListing :data="$store.state.userData.contact" :masks="valueMasks"/>
       <p></p>
       <v-layout wrap>
         <v-flex xs8>
@@ -25,25 +72,39 @@
         <v-flex xs4>
           <router-link :to="{ name: 'data-edit', query: { area: 'bank' } }">Bearbeiten</router-link>
         </v-flex>
+        <v-flex xs4>
+          <v-label>
+            IBAN
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.bank.iban | ibanMask }}
+        </v-flex>
+        <v-flex xs4>
+          <v-label>
+            BIC
+          </v-label>
+        </v-flex>
+        <v-flex xs8>
+          {{ userData.bank.bic | bicMask }}
+        </v-flex>
       </v-layout>
-      <ObjectListing :data="$store.state.userData.bank" :masks="valueMasks"/>
     </v-flex>
   </v-layout>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
-  import ObjectListing, { MaskFunction } from '@/components/ObjectListing.vue';
 
   @Component({
-    components: {
-      ObjectListing,
-    },
+    filters: {
+      ibanMask: (value: string) => `${'*'.repeat(value.length - 4)}${value.substr(-4)}`,
+      bicMask: (value: string) => `${value.substr(0, 4)}${'*'.repeat(value.length - 4)}`,
+    }
   })
   export default class DataView extends Vue {
-    private valueMasks: { [key: string]: MaskFunction } = {
-      iban: (value) => `${'*'.repeat(value.length - 4)}${value.substr(-4)}`,
-      bic: (value) => `${value.substr(0, 4)}${'*'.repeat(value.length - 4)}`,
-    };
+    private get userData() {
+      return this.$store.state.userData;
+    }
   }
 </script>
