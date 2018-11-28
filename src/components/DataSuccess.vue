@@ -12,6 +12,7 @@
         </p>
         <p>
           <v-btn
+            large
             to="/"
           >
             Hausratversicherung
@@ -24,12 +25,13 @@
           lieber zu einem späteren Zeitpunkt anpassen?
         </p>
         <div>
-          <v-btn dark color="green">Jetzt ergänzen</v-btn>
-          <v-btn dark color="blue" to="/data">Später</v-btn>
+          <v-btn dark large color="green">Jetzt ergänzen</v-btn>
+          <v-btn dark large color="blue" to="/data">Später</v-btn>
         </div>
       </template>
       <v-btn
         dark
+        large
         color="primary"
         to="/data"
         v-else

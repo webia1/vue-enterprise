@@ -85,6 +85,7 @@
         />
       </template>
       <v-btn
+        large
         :dark="formIsValid"
         :disabled="!formIsValid"
         color="primary"

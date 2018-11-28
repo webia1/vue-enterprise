@@ -11,6 +11,7 @@
         <v-btn
           block
           dark
+          large
           color="primary"
         >
           Meine Versicherungen
@@ -20,6 +21,7 @@
         <v-btn
           block
           dark
+          large
           color="primary"
           to="/data"
         >
@@ -30,6 +32,7 @@
         <v-btn
           block
           dark
+          large
           color="primary"
         >
           Mein Fall
@@ -39,6 +42,7 @@
         <v-btn
           block
           dark
+          large
           color="primary"
         >
           Filialen in meiner Nähe

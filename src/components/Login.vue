@@ -22,6 +22,7 @@
       />
       <v-btn
         block
+        large
         color="primary"
         :disabled="!formIsValid"
         @click="login();"
