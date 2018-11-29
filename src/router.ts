@@ -2,9 +2,10 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Dashboard from '@/views/Dashboard.vue';
 import Overview from '@/components/Overview.vue';
-import Identify from '@/components/Identify.vue';
+import Register from '@/components/Register.vue';
 import DataEdit from '@/components/DataEdit.vue';
 import DataSuccess from '@/components/DataSuccess.vue';
+import Login from '@/components/Login.vue';
 import DataView from '@/components/DataView.vue';
 import VuetifyExamples from '@/VuetifyExamples.vue';
 
@@ -16,9 +17,9 @@ const IdentifyGuard = (to: any, from: any, next: any) => {
   // TODO: fix error
   // @ts-ignore
   if (!store.state.userData.initialized) {
-    next('/identify');
+    return next('/login');
   }
-  next();
+  return next();
 };
 
 export default new Router({
@@ -31,27 +32,32 @@ export default new Router({
       component: Dashboard,
       children: [
         {
+          path: 'login',
+          component: Login,
+        },
+        {
           path: 'dashboard/overview',
           name: 'overview',
           component: Overview,
+          beforeEnter: IdentifyGuard,
         },
         {
-          path: '/identify',
-          name: 'identify',
-          component: Identify,
+          path: 'register',
+          name: 'register',
+          component: Register,
         },
         {
-          path: '/data',
+          path: 'data',
           name: 'data-view',
           component: DataView,
           beforeEnter: IdentifyGuard,
         },
         {
-          path: '/skip',
+          path: 'skip',
           component: DataView,
         },
         {
-          path: '/data/edit',
+          path: 'data/edit',
           name: 'data-edit',
           component: DataEdit,
           beforeEnter: IdentifyGuard,
@@ -60,7 +66,7 @@ export default new Router({
           }),
         },
         {
-          path: '/data/success',
+          path: 'data/success',
           name: 'data-success',
           component: DataSuccess,
           beforeEnter: IdentifyGuard,
@@ -69,7 +75,7 @@ export default new Router({
           }),
         },
         {
-          path: '/showcase',
+          path: 'showcase',
           component: VuetifyExamples,
         },
       ],

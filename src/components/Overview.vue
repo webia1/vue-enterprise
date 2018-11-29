@@ -9,16 +9,19 @@
       </div>
       <div>
         <v-btn
+          block
           dark
+          large
           color="primary"
-          to="/data"
         >
           Meine Versicherungen
         </v-btn>
       </div>
       <div>
         <v-btn
+          block
           dark
+          large
           color="primary"
           to="/data"
         >
@@ -27,18 +30,20 @@
       </div>
       <div>
         <v-btn
+          block
           dark
+          large
           color="primary"
-          to="/data"
         >
           Mein Fall
         </v-btn>
       </div>
       <div>
         <v-btn
+          block
           dark
+          large
           color="primary"
-          to="/data"
         >
           Filialen in meiner Nähe
         </v-btn>

@@ -90,16 +90,8 @@
 </script>
 
 <style lang="stylus">
-  body {
-    font-size 1.2rem;
-  }
 
-  h1, h2 {
-    color #000;
-  }
+  @import "../styles/main.styl";
 
-  h1 {
-    margin 40px 0;
-  }
 </style>
 
