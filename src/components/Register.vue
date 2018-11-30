@@ -136,7 +136,7 @@
           birthday: true,
         },
         contractNumber: {
-          ...this.validationConstraints.withContractNumber
+          ...this.validationConstraints.withContractNumber,
         },
         address: {
           ...this.validationConstraints.withoutContractNumber,

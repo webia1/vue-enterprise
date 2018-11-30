@@ -73,7 +73,7 @@ export default class Login extends Vue {
         },
       },
     });
-    this.errors = errors || {}
+    this.errors = errors || {};
     return !errors;
   }
 

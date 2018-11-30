@@ -100,7 +100,7 @@
     filters: {
       ibanMask: (value: string) => `${'*'.repeat(value.length - 4)}${value.substr(-4)}`,
       bicMask: (value: string) => `${value.substr(0, 4)}${'*'.repeat(value.length - 4)}`,
-    }
+    },
   })
   export default class DataView extends Vue {
     private get userData() {
