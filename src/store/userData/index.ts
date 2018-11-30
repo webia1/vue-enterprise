@@ -5,13 +5,13 @@ export default {
   state,
   namespaced: true,
   mutations: {
-    setContactData(ctx: any, data: any) {
+    setPersonalData(ctx: any, data: any) {
       // Vue.set(ctx, 'contact', {
       //   ...ctx.contact,
       //   ...data,
       // });
-      ctx.contact = {
-        ...ctx.contact,
+      ctx.personal = {
+        ...ctx.personal,
         ...data,
       };
     },
@@ -32,7 +32,7 @@ export default {
   },
   actions: {
     initializeUserData(ctx: any, userData: any) {
-      ctx.commit('setContactData', userData.contact);
+      ctx.commit('setPersonalData', userData.personal);
       ctx.commit('setBankData', userData.bank);
       ctx.commit('initialized');
     },

@@ -2,11 +2,12 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Dashboard from '@/views/Dashboard.vue';
 import Overview from '@/components/Overview.vue';
-import Register from '@/components/Register.vue';
+import DataView from '@/components/DataView.vue';
 import DataEdit from '@/components/DataEdit.vue';
+import PersonalDataEdit from '@/components/data-edit/PersonalDataEdit.vue';
 import DataSuccess from '@/components/DataSuccess.vue';
 import Login from '@/components/Login.vue';
-import DataView from '@/components/DataView.vue';
+import Register from '@/components/Register.vue';
 import VuetifyExamples from '@/VuetifyExamples.vue';
 
 import store from '@/store';
@@ -74,6 +75,11 @@ export default new Router({
           props: route => ({
             area: route.query.area,
           }),
+        },
+        {
+          path: 'data/personal/edit',
+          component: PersonalDataEdit,
+          beforeEnter: IdentifyGuard('/login'),
         },
         {
           path: 'data/success',

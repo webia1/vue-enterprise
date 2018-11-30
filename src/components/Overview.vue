@@ -13,6 +13,15 @@
           dark
           large
           color="primary"
+          to="data/personal/edit"
+        >
+          Kundendaten ändern
+        </v-btn>
+        <v-btn
+          block
+          disabled
+          large
+          color="primary"
         >
           Meine Versicherungen
         </v-btn>
@@ -31,7 +40,7 @@
       <div>
         <v-btn
           block
-          dark
+          disabled
           large
           color="primary"
         >
@@ -41,7 +50,7 @@
       <div>
         <v-btn
           block
-          dark
+          disabled
           large
           color="primary"
         >

@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex @keyup.enter="submit()">
       <h1>Deine Daten</h1>
-      <template v-if="area === 'contact'">
+      <template v-if="area === 'personal'">
         <v-text-field
           box
           :append-icon="iconState('firstName')"
@@ -142,7 +142,7 @@ export default class DataEdit extends Vue {
 
   private get formIsValid() {
     let errors;
-    if (this.area === 'contact') {
+    if (this.area === 'personal') {
       errors = validate({
         firstName: this.fields.firstName,
         lastName: this.fields.lastName,
@@ -238,7 +238,7 @@ export default class DataEdit extends Vue {
 
   private submit() {
     this.$router.push(this.submitTarget);
-    const mutation = this.area === 'contact' ? 'setContactData' : 'setBankData';
+    const mutation = this.area === 'personal' ? 'setPersonalData' : 'setBankData';
     this.$store.commit(`userData/${mutation}`, this.fields);
   }
 }
