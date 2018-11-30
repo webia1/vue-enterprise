@@ -45,7 +45,7 @@
         <v-icon>home</v-icon>
       </v-btn>
       <v-toolbar-items>
-        <v-btn to="/dashboard/overview" flat>Overview</v-btn>
+        <v-btn :to="{ name: 'overview' }" flat>Overview</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="$store.state.userData.initialized">
         <v-btn to="/data" flat>Meine Daten</v-btn>

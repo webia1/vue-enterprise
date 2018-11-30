@@ -42,13 +42,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import validate from 'validate.js';
 
 import userData from './userData';
 
 @Component({})
 export default class Login extends Vue {
+  @Prop() private successRedirect!: string|object;
   // private formIsValid = false;
   private username = '';
   private password = '';
@@ -92,7 +93,7 @@ export default class Login extends Vue {
       if (!this.$store.state.userData.initialized) {
         this.$store.dispatch('userData/initializeUserData', userData);
       }
-      this.$router.push({ name: 'overview' });
+      this.$router.push(this.successRedirect);
     }
   }
 }
