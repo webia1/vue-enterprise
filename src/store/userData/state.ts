@@ -1,5 +1,5 @@
 export default {
-  contact: {},
+  personal: {},
   bank: {},
   initialized: false,
 };

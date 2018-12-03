@@ -36,5 +36,8 @@ export default {
       ctx.commit('setBankData', userData.bank);
       ctx.commit('initialized');
     },
+    updateUser(ctx: any, data: any) {
+      ctx.commit('setPersonalData', data);
+    },
   },
 };

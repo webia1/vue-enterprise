@@ -1,5 +1,5 @@
 <template>
-  <v-layout wrap>
+  <v-layout wrap @keyup.enter="submit()">
     <v-flex xs12>
       <h1>Persönliche Daten</h1>
       <h2>Ihre Daten</h2>
@@ -7,14 +7,16 @@
     </v-flex>
     <v-flex xs12 md6>
       <v-text-field
-        box
+        outline
+        readonly
         label="Vorname"
         v-model="fields.firstName"
       />
     </v-flex>
     <v-flex xs12 md6>
       <v-text-field
-        box
+        outline
+        readonly
         label="Nachname"
         v-model="fields.lastName"
       />
@@ -22,81 +24,123 @@
     <v-flex xs12>
       <v-text-field
         box
+        clearable
+        :append-icon="iconState('address')"
         label="Straße / HNr."
+        :rules="[isValid('address')]"
+        :success="!errors.address"
         v-model="fields.address"
       />
     </v-flex>
     <v-flex xs12 md4>
       <v-text-field
         box
+        clearable
+        :append-icon="iconState('zip')"
         label="PLZ"
+        :rules="[isValid('zip')]"
+        :success="!errors.zip"
         v-model="fields.zip"
       />
     </v-flex>
     <v-flex xs12 md8>
       <v-text-field
         box
+        clearable
+        :append-icon="iconState('location')"
         label="Ort"
+        :rules="[isValid('location')]"
+        :success="!errors.location"
         v-model="fields.location"
       />
     </v-flex>
-      <v-flex v-for="(item, i) in fields.communications" :key="`${i}`" xs12>
-        <v-text-field
-          box
-          :label="getLabelForCommunication(item)"
-          v-model="item.value"
-        >
-          <template slot="prepend">
-            <v-menu>
-              <v-tooltip bottom slot="activator">
-                <v-icon large slot="activator">{{ icons.communications.channel[item.channel] }}</v-icon>
-                {{ labels.communications.channel[item.channel] }}
-              </v-tooltip>
-              <v-list>
-                <v-list-tile
-                  v-for="(icon, channel) in icons.communications.channel"
-                  :key="channel"
-                  @click="changeCommunication(item, 'channel', channel)"
-                >
-                  <v-list-tile-avatar>
-                    <v-icon>{{ icon }}</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-title>
-                    {{ labels.communications.channel[channel] }}
-                  </v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-            <v-menu v-if="item.channel !== 'fax'">
-              <v-tooltip bottom slot="activator">
-                <v-icon large slot="activator">{{ icons.communications.publicness[item.publicness] }}</v-icon>
-                {{ labels.communications.publicness[item.publicness] }}
-              </v-tooltip>
-              <v-list>
-                <v-list-tile
-                  v-for="(icon, publicness) in icons.communications.publicness"
-                  :key="publicness"
-                  @click="changeCommunication(item, 'publicness', publicness)"
-                >
-                  <v-list-tile-avatar>
-                    <v-icon>{{ icon }}</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-title>
-                    {{ labels.communications.publicness[publicness] }}
-                  </v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-menu>
-          </template>
-          <template slot="append-outer">
-            <v-icon large>add_circle</v-icon>
-          </template>
-        </v-text-field>
-      </v-flex>
+    <v-flex
+      v-if="fields.communications.length === 0"
+      xs12
+    >
+      <v-btn
+        outline
+        color="primary"
+        @click="addCommunicationItem()"
+      >
+        Add Communication
+      </v-btn>
+    </v-flex>
+    <v-flex
+      v-for="(item, i) in fields.communications"
+      :key="`${i}`"
+      xs12
+    >
+      <v-text-field
+        box
+        clearable
+        :append-icon="errors[`communication_${i}`] ? icons.ui.error : null"
+        :label="getLabelForCommunication(item)"
+        :rules="[isValid(`communication_${i}`)]"
+        :success="!errors[`communication_${i}`]"
+        v-model="item.value"
+      >
+        <template slot="prepend">
+          <v-menu>
+            <v-icon large slot="activator">{{ icons.communications.channel[item.channel] }}</v-icon>
+            <v-list>
+              <v-list-tile
+                v-for="(icon, channel) in icons.communications.channel"
+                :key="channel"
+                @click="changeCommunication(item, 'channel', channel)"
+              >
+                <v-list-tile-avatar>
+                  <v-icon>{{ icon }}</v-icon>
+                </v-list-tile-avatar>
+                <v-list-tile-title>
+                  {{ labels.communications.channel[channel] }}
+                </v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+          <v-menu v-if="item.channel !== 'fax'">
+            <v-icon large slot="activator">{{ icons.communications.publicness[item.publicness] }}</v-icon>
+            <v-list>
+              <v-list-tile
+                v-for="(icon, publicness) in icons.communications.publicness"
+                :key="publicness"
+                @click="changeCommunication(item, 'publicness', publicness)"
+              >
+                <v-list-tile-avatar>
+                  <v-icon>{{ icon }}</v-icon>
+                </v-list-tile-avatar>
+                <v-list-tile-title>
+                  {{ labels.communications.publicness[publicness] }}
+                </v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        </template>
+        <template slot="append">
+          <v-icon
+            large
+            @click="removeCommunicationItem(i)"
+          >
+            delete_forever
+          </v-icon>
+        </template>
+        <template slot="append-outer">
+          <v-icon
+            v-if="i === fields.communications.length - 1"
+            large
+            @click="addCommunicationItem()"
+          >
+            add_circle
+          </v-icon>
+        </template>
+      </v-text-field>
+    </v-flex>
     <v-btn
       block
+      color="primary"
       :dark="formIsValid"
       :disabled="!formIsValid"
+      @click="submit()"
     >
       Speichern
     </v-btn>
@@ -105,6 +149,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import validate from 'validate.js';
 
 interface CommunicationItem {
   [key: string]: any;
@@ -116,13 +161,14 @@ interface CommunicationItem {
 @Component({})
 export default class PersonalDataEdit extends Vue {
   private fields: { [key: string]: any } = {};
+  private errors = {};
 
   private validationRules = {
     mail: {
       email: true,
     },
     phone: {
-      format: /^[+0-9]{3,6}\/?\d*/,
+      format: /^\+?(\d|\s){3,6}\/?(\d|\s)+/,
     },
     name: {
       presence: { allowEmpty: false },
@@ -131,6 +177,7 @@ export default class PersonalDataEdit extends Vue {
       },
     },
     address: {
+      presence: { allowEmpty: false },
       format: /\w+.*\d+.*/,
     },
     zip: {
@@ -155,8 +202,12 @@ export default class PersonalDataEdit extends Vue {
       },
       publicness: {
         business: 'business',
-        private: 'person',
+        private: 'account_circle',
       },
+    },
+    ui: {
+      success: 'thumb_up',
+      error: 'thumb_down',
     },
   };
 
@@ -176,11 +227,51 @@ export default class PersonalDataEdit extends Vue {
   };
 
   private get communicationItems() {
-    return this.fields.communications.filter((item: any) => item.value);
+    return this.fields.communications
+      .map((item: any, index) => ({
+        item,
+        index,
+      }))
+      .filter(({ item }: { item: { value: any } }) => item.value)
+      .reduce((carry: any, { item, index }: { item: CommunicationItem, index: number }) => {
+        carry.items = [...carry.items, item];
+        carry.values[`communication_${index}`] = item.value;
+        carry.validationRules[`communication_${index}`] = {
+          ...(item.channel === 'email' ? this.validationRules.mail : this.validationRules.phone),
+        };
+
+        return carry;
+      }, {
+        items: [],
+        values: {},
+        validationRules: {},
+      });
   }
 
   private get formIsValid() {
-    return false;
+    const errors = validate({
+      ...this.fields,
+      ...this.communicationItems.values,
+    }, {
+      firstName: {
+        ...this.validationRules.name,
+      },
+      lastName: {
+        ...this.validationRules.name,
+      },
+      address: {
+        ...this.validationRules.address,
+      },
+      zip: {
+        ...this.validationRules.zip,
+      },
+      location: {
+        ...this.validationRules.location,
+      },
+      ...this.communicationItems.validationRules,
+    });
+    this.errors = errors || {};
+    return !errors;
   }
 
   private changeCommunication(item: CommunicationItem, type: 'channel'|'publicness', value: any) {
@@ -188,19 +279,61 @@ export default class PersonalDataEdit extends Vue {
       const oldChannel = item.channel;
       if (value === 'fax') {
         item.publicness = '';
-      } else if(oldChannel === 'fax') {
+      } else if (oldChannel === 'fax') {
         item.publicness = 'private';
       }
     }
     item[type] = value;
   }
 
+  private addCommunicationItem() {
+    this.fields.communications.push({
+      channel: 'phone',
+      publicness: 'private',
+      value: '',
+    });
+  }
+
+  private removeCommunicationItem(index: number) {
+    this.fields.communications.splice(index, 1);
+  }
+
   private getLabelForCommunication(item: CommunicationItem) {
-    // @ts-ignore
     const channelLabel = this.labels.communications.channel[item.channel];
-    // @ts-ignore
     const publicnessLabel = item.channel !== 'fax' ? `(${this.labels.communications.publicness[item.publicness]})` : '';
     return `${channelLabel} ${publicnessLabel}`;
+  }
+
+  private hasChanges(fieldName: string) {
+    return this.fields[fieldName] !== this.$store.state.userData.personal[fieldName];
+  }
+
+  private iconState(fieldName: string) {
+    if (this.hasChanges(fieldName)) {
+      // @ts-ignore
+      const hasErrors = this.errors[fieldName];
+      return hasErrors ? this.icons.ui.error : this.icons.ui.success;
+    }
+    return null;
+  }
+
+  private isValid(fieldName: string) {
+    return () => {
+      if (this.errors) {
+        // @ts-ignore
+        return this.errors[fieldName] ? this.errors[fieldName][0] : true;
+      }
+      return true;
+    };
+  }
+
+  private submit() {
+    if (this.formIsValid) {
+      this.$store.dispatch('userData/updateUser', {
+        ...this.fields,
+        communications: [... this.communicationItems.items],
+      });
+    }
   }
 
   private created() {
@@ -208,8 +341,7 @@ export default class PersonalDataEdit extends Vue {
       ...this.$store.state.userData.personal,
       communications: this.$store.state.userData.personal.communications
         .map(({ channel, publicness, value }: CommunicationItem) =>
-          ({ channel, publicness, value })
-        ),
+          ({ channel, publicness, value })),
     };
   }
 }
