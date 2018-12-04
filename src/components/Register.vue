@@ -48,7 +48,7 @@
             <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
           </p>
         </div>
-        <p>
+        <p class="info-box">
           Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
         </p>
       </template>
@@ -86,6 +86,7 @@
       </v-checkbox>
       <v-btn
         block
+        large
         :dark="formIsValid"
         :disabled="!formIsValid"
         color="primary"

@@ -8,12 +8,18 @@
         betreffenden Felder durch anklicken anpassen oder
         unsere Komfort-Funktionen nutzen.
       </p>
+      <br /><br />
+      <hr />
       <v-layout wrap>
         <v-flex xs8>
           <h2>Kontaktdaten</h2>
         </v-flex>
-        <v-flex xs4>
-          <router-link :to="{ name: 'data-edit', query: { area: 'contact' } }">Bearbeiten</router-link>
+        <v-flex xs4 text-lg-right>
+          <router-link :to="{ name: 'data-edit', query: { area: 'contact' } }">
+            <v-btn fab color="secondary">
+              <v-icon dark>edit</v-icon>
+            </v-btn>
+          </router-link>
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -64,13 +70,18 @@
           {{ userData.contact.email }}
         </v-flex>
       </v-layout>
-      <p></p>
+      <br /><br />
+      <hr />
       <v-layout wrap>
         <v-flex xs8>
           <h2>Bankdaten</h2>
         </v-flex>
-        <v-flex xs4>
-          <router-link :to="{ name: 'data-edit', query: { area: 'bank' } }">Bearbeiten</router-link>
+        <v-flex xs4 text-lg-right>
+          <router-link :to="{ name: 'data-edit', query: { area: 'bank' } }">
+            <v-btn fab color="secondary">
+              <v-icon dark>edit</v-icon>
+            </v-btn>
+          </router-link>
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -82,7 +93,7 @@
         </v-flex>
         <v-flex xs4>
           <v-label>
-            BIC
+            BIC/SWIFT
           </v-label>
         </v-flex>
         <v-flex xs8>

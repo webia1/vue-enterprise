@@ -1,11 +1,155 @@
-body {
-  font-size 1.2rem;
+
+
+
+@font-face {
+    font-family: FS Me;
+    font-weight: 500;
+    src: url(/fonts/FSMeWeb-Regular.woff) format("woff");
 }
 
-h1, h2 {
-  color #000;
+// @font-face {
+//     font-family: FS Me;
+//     font-weight: 300;
+//     src: url(/fonts/FSMeWeb-Light.woff) format("woff")
+// }
+
+// @font-face {
+//     font-family: FS Me;
+//     font-weight: 300;
+//     font-style: italic;
+//     src: url(/fonts/FSMeWeb-LightItalic.woff) format("woff")
+// }
+
+// @font-face {
+//     font-family: FS Me;
+//     font-weight: 500;
+//     font-style: italic;
+//     src: url(/fonts/FSMeWeb-Italic.woff) format("woff")
+// }
+
+@font-face {
+    font-family: FS Me;
+    font-weight: 700;
+    src: url(/fonts/FSMeWeb-Bold.woff) format("woff");
+}
+
+@font-face {
+    font-family: FS Me;
+    font-weight: 700;
+    font-style: italic;
+    src: url(/fonts/FSMeWeb-BoldItalic.woff) format("woff");
+}
+
+@font-face {
+    font-family: "Fedra Serif";
+    font-weight: 400;
+    src: url(/fonts/Fedra_Serif_Medium.ttf);
+}
+
+@font-face {
+    font-family: "Fedra Serif";
+    font-weight: 500;
+    src: url(/fonts/Fedra_Serif_Bold.ttf);
+}
+
+
+
+:root {
+  --sans-serif-font: "FS Me", "Arial", "Helvetica", sans-serif;
+  --serif-font: "Fedra Serif", "Georgia", "Times New Roman", sans-serif;
+  --base-font-size: 18px;
+}
+
+
+
+body {
+  font-size 18px;
+  font-weight: 500;
+  font-family: "FS Me", "Helvetica Neue", Arial, sans-serif;
+}
+
+p {
+  margin: 1em 0;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #6a625a;
+  font-weight: 400;
 }
 
 h1 {
-  margin 40px 0;
+  margin: 0.67em 0;
+  font-family: "Fedra Serif", "Georgia", "Times New Roman", sans-serif;
+  font-size: 2.66667em;
+  font-weight: 500;
+  line-height: 1.2em;
 }
+
+h2 {
+  margin: 0 0 0.83em 0;
+  font-size: 2.33333em;
+  font-weight: 400;
+  line-height: 1.2em;
+}
+
+
+
+.layout a {
+  color: #892723;
+}
+
+.layout a:hover {
+  color: #ba172d;
+}
+
+
+
+router-link .v-btn {
+  text-decoration: none !important;
+}
+
+.v-btn--large {
+  height: 50px;
+  margin-bottom: 10px;
+  margin-left: 0 !important;
+  margin-right: 20px;
+  padding: 0 15px 0 15px;
+  font-size: 1.22222em;
+  box-shadow: 0 0 12px rgba(0, 0, 0, .5);
+}
+
+.v-btn:not(.v-btn--icon):not(.v-btn--flat):hover {
+  background-color: #892723 !important;
+  border-color: #892723 !important;
+}
+
+
+
+.info-box {
+  padding: 30px;
+  background-color: #e1e0de;
+}
+
+
+
+.theme--light.application {
+  background-color: rgb(240, 239, 238);
+  color: #6a625a;
+  font-family: "FS Me", "Helvetica Neue", Arial, sans-serif;
+}
+
+
+.theme--light.v-text-field--box .v-input__slot {
+  background-color: #FFF;
+  border: 1px solid #CCC;
+}
+
+.theme--light.v-text-field--box:not(.v-input--is-focused) .v-input__slot:hover {
+  background-color: #FAFAFA;
+}
+
+
+
+
