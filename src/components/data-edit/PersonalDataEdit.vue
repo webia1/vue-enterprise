@@ -372,9 +372,5 @@ export default class PersonalDataEdit extends Vue {
           ({ channel, publicness, value })),
     };
   }
-
-  private log(...args) {
-    console.log.apply(null, args);
-  }
 }
 </script>
