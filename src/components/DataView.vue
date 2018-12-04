@@ -15,11 +15,9 @@
           <h2>Kontaktdaten</h2>
         </v-flex>
         <v-flex xs4 text-lg-right>
-          <router-link :to="{ name: 'data-edit', query: { area: 'personal' } }">
-            <v-btn fab color="secondary">
-              <v-icon dark>edit</v-icon>
-            </v-btn>
-          </router-link>
+          <v-btn icon color="secondary" :to="{ name: 'data-edit', query: { area: 'personal' } }">
+            <v-icon dark>edit</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -77,11 +75,9 @@
           <h2>Bankdaten</h2>
         </v-flex>
         <v-flex xs4 text-lg-right>
-          <router-link :to="{ name: 'data-edit', query: { area: 'bank' } }">
-            <v-btn fab color="secondary">
-              <v-icon dark>edit</v-icon>
-            </v-btn>
-          </router-link>
+          <v-btn icon color="secondary" :to="{ name: 'data-edit', query: { area: 'bank' } }">
+            <v-icon dark>edit</v-icon>
+          </v-btn>
         </v-flex>
         <v-flex xs4>
           <v-label>
