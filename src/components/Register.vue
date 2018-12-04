@@ -51,6 +51,11 @@
         <p class="info-box">
           Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
         </p>
+        <v-card infoBox>
+          <v-card-text>
+            Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
+          </v-card-text>
+        </v-card>
       </template>
       <div
         v-if="!withContractNumber"
