@@ -45,7 +45,7 @@
         <v-icon>lock</v-icon>
       </v-btn>
       <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn to="/dashboard/overview" flat>Dashboard</v-btn>
+        <v-btn :to="{ name: 'overview' }" flat>Dashboard</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="$store.state.userData.initialized">
         <v-btn to="/data" flat>Meine Daten</v-btn>

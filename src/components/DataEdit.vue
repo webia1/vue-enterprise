@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex @keyup.enter="submit()">
       <h1>Deine Daten</h1>
-      <template v-if="area === 'contact'">
+      <template v-if="area === 'personal'">
         <v-text-field
           box
           :append-icon="iconState('firstName')"
@@ -98,8 +98,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import validate from "validate.js";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import validate from 'validate.js';
 
 @Component({})
 export default class DataEdit extends Vue {
@@ -124,7 +124,7 @@ export default class DataEdit extends Vue {
 
   private created() {
     this.fields = {
-      ...this.$store.state.userData[this.area]
+      ...this.$store.state.userData[this.area],
     };
   }
 
@@ -142,7 +142,7 @@ export default class DataEdit extends Vue {
 
   private get formIsValid() {
     let errors;
-    if (this.area === "contact") {
+    if (this.area === 'personal') {
       errors = validate({
         firstName: this.fields.firstName,
         lastName: this.fields.lastName,
@@ -169,7 +169,7 @@ export default class DataEdit extends Vue {
           length: {
             minimum: 4,
             maximum: 5,
-          }
+          },
         },
         location: {
           ...this.validationConstraints.presence(),
@@ -180,13 +180,13 @@ export default class DataEdit extends Vue {
         email: {
           ...this.validationConstraints.presence(),
           email: true,
-        }
-      })
+        },
+      });
     } else {
       errors = validate(
         {
           iban: this.fields.iban,
-          bic: this.fields.bic
+          bic: this.fields.bic,
         },
         {
           iban: {
@@ -206,7 +206,7 @@ export default class DataEdit extends Vue {
 
   private get submitTarget() {
     return {
-      path: "/data/success",
+      path: '/data/success',
       // query: {
       //   addressChanged: this.addressChanged
       // }
@@ -238,7 +238,7 @@ export default class DataEdit extends Vue {
 
   private submit() {
     this.$router.push(this.submitTarget);
-    const mutation = this.area === "contact" ? "setContactData" : "setBankData";
+    const mutation = this.area === 'personal' ? 'setPersonalData' : 'setBankData';
     this.$store.commit(`userData/${mutation}`, this.fields);
   }
 }

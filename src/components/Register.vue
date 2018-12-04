@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
   import validate from 'validate.js';
   import moment from 'moment';
 
@@ -107,6 +107,7 @@
 
   @Component({})
   export default class Identify extends Vue {
+    @Prop () private successRedirect!: string|object;
     private firstName: string = '';
     private lastName: string = '';
     private birthday: string = '';
@@ -137,7 +138,7 @@
           birthday: true,
         },
         contractNumber: {
-          ...this.validationConstraints.withContractNumber
+          ...this.validationConstraints.withContractNumber,
         },
         address: {
           ...this.validationConstraints.withoutContractNumber,
@@ -196,7 +197,7 @@
         if (!this.$store.state.userData.initialized) {
           this.$store.dispatch('userData/initializeUserData', userData);
         }
-        this.$router.push({ name: 'overview' });
+        this.$router.push(this.successRedirect);
       }
     }
 

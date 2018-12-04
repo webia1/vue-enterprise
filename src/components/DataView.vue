@@ -15,7 +15,7 @@
           <h2>Kontaktdaten</h2>
         </v-flex>
         <v-flex xs4 text-lg-right>
-          <router-link :to="{ name: 'data-edit', query: { area: 'contact' } }">
+          <router-link :to="{ name: 'data-edit', query: { area: 'personal' } }">
             <v-btn fab color="secondary">
               <v-icon dark>edit</v-icon>
             </v-btn>
@@ -27,7 +27,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.firstName }}
+          {{ userData.personal.firstName }}
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -35,7 +35,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.lastName }}
+          {{ userData.personal.lastName }}
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -43,7 +43,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.address }}
+          {{ userData.personal.address }}
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -51,7 +51,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.zip }} {{ userData.contact.location }}
+          {{ userData.personal.zip }} {{ userData.personal.location }}
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -59,7 +59,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.phoneNumber }}
+          {{ userData.personal.phoneNumber }}
         </v-flex>
         <v-flex xs4>
           <v-label>
@@ -67,7 +67,7 @@
           </v-label>
         </v-flex>
         <v-flex xs8>
-          {{ userData.contact.email }}
+          {{ userData.personal.email }}
         </v-flex>
       </v-layout>
       <br /><br />
@@ -111,7 +111,7 @@
     filters: {
       ibanMask: (value: string) => `${'*'.repeat(value.length - 4)}${value.substr(-4)}`,
       bicMask: (value: string) => `${value.substr(0, 4)}${'*'.repeat(value.length - 4)}`,
-    }
+    },
   })
   export default class DataView extends Vue {
     private get userData() {

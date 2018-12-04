@@ -59,7 +59,11 @@
     private phoneNumberPrefix: string = '';
 
     private get initialCountryCode() {
-      // return this.getMatchResult(this.countryCodes, code => code.replace('+', '\\+'), this.value) || '';
+      // return this.getMatchResult(
+      //   this.countryCodes,
+      //   code => code.replace('+', '\\+'),
+      //   this.value
+      // ) || '';
       return '';
     }
 
@@ -71,7 +75,11 @@
     }
 
     private get initialPhoneNumberPrefix() {
-      // return this.getMatchResult(this.phoneNumberPrefixes, code => code, this.value.replace(this.initialCountryCode, '')) || '';
+      // return this.getMatchResult(
+      //   this.phoneNumberPrefixes,
+      //   code => code,
+      //   this.value.replace(this.initialCountryCode, '')
+      // ) || '';
       return '';
     }
 
