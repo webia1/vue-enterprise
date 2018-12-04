@@ -78,7 +78,7 @@
         <v-text-field
           box
           :append-icon="iconState('bic')"
-          label="BIC"
+          label="BIC/SWIFT"
           :rules="[isValid('bic')]"
           :success="!errors.bic"
           v-model="fields.bic"

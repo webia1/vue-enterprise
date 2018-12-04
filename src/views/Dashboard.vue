@@ -5,10 +5,10 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/women/86.jpg">
+              <img src="https://randomuser.me/api/portraits/women/23.jpg">
             </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title>Maxima Musterfrau</v-list-tile-title>
+              <v-list-tile-title>Nina Traumkundin</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -39,13 +39,13 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar height="48" color="primary" dark app fixed clipped-left scroll-off-screen>
+    <v-toolbar height="72" color="dashcol" light app fixed clipped-left scroll-off-screen>
       <v-toolbar-side-icon @click.native="drawer = !drawer"/>
-      <v-btn icon to="/">
-        <v-icon>home</v-icon>
+      <v-btn icon to="/login">
+        <v-icon>lock</v-icon>
       </v-btn>
-      <v-toolbar-items>
-        <v-btn :to="{ name: 'overview' }" flat>Overview</v-btn>
+      <v-toolbar-items v-if="$store.state.userData.initialized">
+        <v-btn :to="{ name: 'overview' }" flat>Dashboard</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="$store.state.userData.initialized">
         <v-btn to="/data" flat>Meine Daten</v-btn>
@@ -54,7 +54,7 @@
       <v-toolbar-items>
         <v-btn to="/showcase" flat>Showcase</v-btn>
       </v-toolbar-items>
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>search</v-icon>
       </v-btn>
       <v-btn icon>
@@ -65,7 +65,7 @@
       </v-btn>
       <v-btn icon>
         <v-icon>more_vert</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-toolbar>
     <v-content>
       <v-container grid-list-md>

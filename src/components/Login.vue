@@ -3,8 +3,7 @@
     <v-flex @keyup.enter="login()">
       <h1>Bitte melde dich an</h1>
       <p>
-        Der Schutz deiner Daten steht bei uns an erster Stelle. Bitte melde dich
-        an, damit wir dich für dein Anliegen umgehend unterstützen können.
+        Der Schutz deiner Daten steht bei uns an erster Stelle. Bitte melde dich an, damit wir dich für dein Anliegen umgehend unterstützen können.
       </p>
       <v-text-field
         box
@@ -31,7 +30,7 @@
       </v-btn>
     </v-flex>
     <v-flex>
-      <p>
+      <p><br />
         <router-link to="/register"
           >Keine Zugangsdaten zur Hand? Kein Problem! Einfach hier klicken um
           die alternative Anmeldung auszuführen.</router-link
