@@ -71,69 +71,97 @@
       :key="`${i}`"
       xs12
     >
-      <v-text-field
-        box
-        clearable
-        :append-icon="errors[`communication_${i}`] ? icons.ui.error : null"
-        :label="getLabelForCommunication(item)"
-        :rules="[isValid(`communication_${i}`)]"
-        :success="!errors[`communication_${i}`]"
-        v-model="item.value"
-      >
-        <template slot="prepend">
-          <v-menu>
-            <v-icon large slot="activator">{{ icons.communications.channel[item.channel] }}</v-icon>
-            <v-list>
-              <v-list-tile
-                v-for="(icon, channel) in icons.communications.channel"
-                :key="channel"
-                @click="changeCommunication(item, 'channel', channel)"
-              >
-                <v-list-tile-avatar>
-                  <v-icon>{{ icon }}</v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-title>
-                  {{ labels.communications.channel[channel] }}
-                </v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-          <v-menu v-if="item.channel !== 'fax'">
-            <v-icon large slot="activator">{{ icons.communications.publicness[item.publicness] }}</v-icon>
-            <v-list>
-              <v-list-tile
-                v-for="(icon, publicness) in icons.communications.publicness"
-                :key="publicness"
-                @click="changeCommunication(item, 'publicness', publicness)"
-              >
-                <v-list-tile-avatar>
-                  <v-icon>{{ icon }}</v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-title>
-                  {{ labels.communications.publicness[publicness] }}
-                </v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-        </template>
-        <template slot="append">
-          <v-icon
-            large
-            @click="removeCommunicationItem(i)"
+      <v-layout>
+        <v-flex xs2>
+          <v-dialog>
+            <v-btn large slot="activator">
+              <v-icon large>{{ icons.communications.channel[item.channel] }}</v-icon>
+              <v-icon large>{{ icons.communications.publicness[item.publicness] }}</v-icon>
+            </v-btn>
+            <v-card>
+              <v-card-title>
+                Kommunikationseinstellungen
+              </v-card-title>
+              <v-card-text>
+                <v-layout wrap>
+                  <v-flex xs12 md6>
+                    <v-radio-group
+                      v-model="item.channel"
+                      label="Kommunikationskanal"
+                      @change="changeCommunication(item, 'channel', $event)"
+                    >
+                      <v-radio
+                        v-for="(icon, key) in icons.communications.channel"
+                        :key="`channel_${key}`"
+                        :value="key"
+                      >
+                        <template slot="label">
+                          <v-icon>
+                            {{ icon }}
+                          </v-icon>
+                          {{ labels.communications.channel[key] }}
+                        </template>
+                      </v-radio>
+                    </v-radio-group>
+                  </v-flex>
+                  <v-flex xs12 md6>
+                    <v-radio-group
+                      v-model="item.publicness"
+                      label="Öffentlichkeit"
+                      @change="changeCommunication(item, 'publicness', $event)"
+                    >
+                      <v-radio
+                        v-for="(icon, key) in icons.communications.publicness"
+                        :key="`publicness_${key}`"
+                        :value="key"
+                      >
+                        <template slot="label">
+                          <v-icon>
+                            {{ icon }}
+                          </v-icon>
+                          {{ labels.communications.publicness[key] }}
+                        </template>
+                      </v-radio>
+                    </v-radio-group>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="primary">
+                  Speichern
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-flex>
+        <v-flex xs10>
+          <v-text-field
+            box
+            clearable
+            :append-icon="errors[`communication_${i}`] ? icons.ui.error : null"
+            :label="getLabelForCommunication(item)"
+            :rules="[isValid(`communication_${i}`)]"
+            :success="!errors[`communication_${i}`]"
+            v-model="item.value"
           >
-            delete_forever
-          </v-icon>
-        </template>
-        <template slot="append-outer">
-          <v-icon
-            v-if="i === fields.communications.length - 1"
-            large
-            @click="addCommunicationItem()"
-          >
-            add_circle
-          </v-icon>
-        </template>
-      </v-text-field>
+            <template slot="append">
+              <v-icon
+                @click="removeCommunicationItem(i)"
+              >
+                delete_forever
+              </v-icon>
+            </template>
+            <template slot="append-outer">
+              <v-icon
+                v-if="i === fields.communications.length - 1"
+                @click="addCommunicationItem()"
+              >
+                add_circle
+              </v-icon>
+            </template>
+          </v-text-field>
+        </v-flex>
+      </v-layout>
     </v-flex>
     <v-btn
       block
@@ -344,6 +372,9 @@ export default class PersonalDataEdit extends Vue {
           ({ channel, publicness, value })),
     };
   }
+
+  private log(...args) {
+    console.log.apply(null, args);
+  }
 }
 </script>
-
