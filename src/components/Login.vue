@@ -80,7 +80,6 @@ export default class Login extends Vue {
   private isValid(fieldName: string) {
     return () => {
       if (this.errors) {
-        // @ts-ignore
         return this.errors[fieldName] ? this.errors[fieldName][0] : true;
       }
       return true;

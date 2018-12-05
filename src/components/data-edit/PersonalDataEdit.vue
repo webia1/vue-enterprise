@@ -73,66 +73,10 @@
     >
       <v-layout>
         <v-flex xs2>
-          <v-dialog>
-            <v-btn large slot="activator">
+          <v-btn large @click="communicationSettingDialog = item">
               <v-icon large>{{ icons.communications.channel[item.channel] }}</v-icon>
               <v-icon large>{{ icons.communications.publicness[item.publicness] }}</v-icon>
             </v-btn>
-            <v-card>
-              <v-card-title>
-                Kommunikationseinstellungen
-              </v-card-title>
-              <v-card-text>
-                <v-layout wrap>
-                  <v-flex xs12 md6>
-                    <v-radio-group
-                      v-model="item.channel"
-                      label="Kommunikationskanal"
-                      @change="changeCommunication(item, 'channel', $event)"
-                    >
-                      <v-radio
-                        v-for="(icon, key) in icons.communications.channel"
-                        :key="`channel_${key}`"
-                        :value="key"
-                      >
-                        <template slot="label">
-                          <v-icon>
-                            {{ icon }}
-                          </v-icon>
-                          {{ labels.communications.channel[key] }}
-                        </template>
-                      </v-radio>
-                    </v-radio-group>
-                  </v-flex>
-                  <v-flex xs12 md6>
-                    <v-radio-group
-                      v-model="item.publicness"
-                      label="Öffentlichkeit"
-                      @change="changeCommunication(item, 'publicness', $event)"
-                    >
-                      <v-radio
-                        v-for="(icon, key) in icons.communications.publicness"
-                        :key="`publicness_${key}`"
-                        :value="key"
-                      >
-                        <template slot="label">
-                          <v-icon>
-                            {{ icon }}
-                          </v-icon>
-                          {{ labels.communications.publicness[key] }}
-                        </template>
-                      </v-radio>
-                    </v-radio-group>
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn color="primary">
-                  Speichern
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-flex>
         <v-flex xs10>
           <v-text-field
@@ -163,6 +107,66 @@
         </v-flex>
       </v-layout>
     </v-flex>
+    <v-dialog
+      v-if="communicationSettingDialog"
+      persistent
+      v-model="communicationSettingDialog"
+    >
+      <v-card>
+        <v-card-title>
+          Kommunikationseinstellungen
+        </v-card-title>
+        <v-card-text>
+          <v-layout wrap>
+            <v-flex xs12 md6>
+              <v-radio-group
+                label="Kommunikationskanal"
+                :value="communicationSettingDialog.channel"
+                @change="changeCommunication(communicationSettingDialog, 'channel', $event)"
+              >
+                <v-radio
+                  v-for="(icon, key) in icons.communications.channel"
+                  :key="`channel_${key}`"
+                  :value="key"
+                >
+                  <template slot="label">
+                    <v-icon>
+                      {{ icon }}
+                    </v-icon>
+                    {{ labels.communications.channel[key] }}
+                  </template>
+                </v-radio>
+              </v-radio-group>
+            </v-flex>
+            <v-flex xs12 md6 v-if="communicationSettingDialog.channel !== 'fax'">
+              <v-radio-group
+                label="Öffentlichkeit"
+                :value="communicationSettingDialog.publicness"
+                @change="changeCommunication(communicationSettingDialog, 'publicness', $event)"
+              >
+                <v-radio
+                  v-for="(icon, key) in icons.communications.publicness"
+                  :key="`publicness_${key}`"
+                  :value="key"
+                >
+                  <template slot="label">
+                    <v-icon>
+                      {{ icon }}
+                    </v-icon>
+                    {{ labels.communications.publicness[key] }}
+                  </template>
+                </v-radio>
+              </v-radio-group>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="secondary" @click="communicationSettingDialog = null">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-btn
       block
       color="primary"
@@ -189,6 +193,7 @@ interface CommunicationItem {
 @Component({})
 export default class PersonalDataEdit extends Vue {
   private fields: { [key: string]: any } = {};
+  private communicationSettingDialog = null;
   private errors = {};
 
   private validationRules = {
@@ -338,7 +343,6 @@ export default class PersonalDataEdit extends Vue {
 
   private iconState(fieldName: string) {
     if (this.hasChanges(fieldName)) {
-      // @ts-ignore
       const hasErrors = this.errors[fieldName];
       return hasErrors ? this.icons.ui.error : this.icons.ui.success;
     }
@@ -348,7 +352,6 @@ export default class PersonalDataEdit extends Vue {
   private isValid(fieldName: string) {
     return () => {
       if (this.errors) {
-        // @ts-ignore
         return this.errors[fieldName] ? this.errors[fieldName][0] : true;
       }
       return true;
