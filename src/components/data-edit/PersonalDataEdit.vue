@@ -72,13 +72,17 @@
       xs12
     >
       <v-layout>
-        <v-flex xs2>
-          <v-btn large @click="communicationSettingDialog = item">
-              <v-icon large>{{ icons.communications.channel[item.channel] }}</v-icon>
-              <v-icon large>{{ icons.communications.publicness[item.publicness] }}</v-icon>
-            </v-btn>
+        <v-flex>
+          <v-btn
+            block
+            large
+            @click="communicationSettingDialog = item"
+          >
+            <v-icon large>{{ icons.communications.channel[item.channel] }}</v-icon>
+            <v-icon large>{{ icons.communications.publicness[item.publicness] }}</v-icon>
+          </v-btn>
         </v-flex>
-        <v-flex xs10>
+        <v-flex xs11>
           <v-text-field
             box
             clearable

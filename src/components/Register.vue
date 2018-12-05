@@ -196,7 +196,7 @@
 
     private register() {
       this.termsCheck();
-      if (this.formIsValid && !this.errors.termsAccepted) {
+      if (this.formIsValid && !(this.errors as any).termsAccepted) {
         if (!this.$store.state.userData.initialized) {
           this.$store.dispatch('userData/initializeUserData', userData);
         }

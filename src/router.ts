@@ -16,7 +16,7 @@ Vue.use(Router);
 
 const IdentifyGuard = (redirect: string | object) =>
   (to: any, from: any, next: any) => {
-    if (!store.state.userData.initialized) {
+    if (!(store.state as any).userData.initialized) {
       return next(redirect);
     }
     return next();
