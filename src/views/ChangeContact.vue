@@ -143,7 +143,7 @@
             :disabled="!formIsValid"
             @click="submit()"
           >
-            <v-icon>{{ icons.cta }}</v-icon>
+            <v-icon large>{{ icons.cta }}</v-icon>
             Speichern
           </v-btn>
         </v-card-actions>

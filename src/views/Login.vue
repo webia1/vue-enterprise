@@ -37,7 +37,7 @@
             :disabled="!formIsValid"
             @click="login();"
           >
-            <v-icon>{{ icons.cta }}</v-icon>Login
+            <v-icon large>{{ icons.cta }}</v-icon>Login
           </v-btn>
         </v-card-text>
       </v-card>

@@ -119,7 +119,7 @@
             :disabled="!formIsValid"
             @click="identify()"
           >
-            <v-icon>{{ icons.cta }}</v-icon>Jetzt identifizieren
+            <v-icon large>{{ icons.cta }}</v-icon>Jetzt identifizieren
           </v-btn>
         </v-card-actions>
       </v-card>

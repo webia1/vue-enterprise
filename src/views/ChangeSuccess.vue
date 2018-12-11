@@ -25,7 +25,7 @@
             color="primary"
             to="/services"
           >
-            <v-icon>{{ icons.cta }}</v-icon>
+            <v-icon large>{{ icons.cta }}</v-icon>
             Zurück zur Service Auswahl
           </v-btn>
         </v-card-actions>
