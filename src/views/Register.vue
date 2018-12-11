@@ -81,7 +81,7 @@
       </div>
       <v-checkbox
         :error="errors.termsAccepted"
-        :prepend-icon="errors.termsAccepted ? 'arrow_forward' : null"
+        :prepend-icon="errors.termsAccepted ? 'chevron_right' : null"
         @change="termsCheck()"
         v-model="termsAccepted"
       >
@@ -106,9 +106,8 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator';
   import validate from 'validate.js';
-  import moment from 'moment';
 
-  import userData from './userData';
+  import userData from '@/globals/userData';
 
   @Component({})
   export default class Identify extends Vue {

@@ -39,16 +39,16 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar height="72" color="dashcol" light app fixed clipped-left scroll-off-screen>
+    <v-toolbar height="48" color="dashcol" light app fixed clipped-left scroll-off-screen>
       <v-toolbar-side-icon @click.native="drawer = !drawer"/>
       <v-btn icon to="/login">
         <v-icon>lock</v-icon>
       </v-btn>
-      <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn :to="{ name: 'overview' }" flat>Dashboard</v-btn>
+      <v-toolbar-items>
+        <v-btn to="/" flat>Dashboard</v-btn>
       </v-toolbar-items>
       <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn to="/data" flat>Meine Daten</v-btn>
+        <v-btn to="/services" flat>Meine Services</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -68,7 +68,7 @@
       </v-btn> -->
     </v-toolbar>
     <v-content>
-      <v-container grid-list-md>
+      <v-container grid-list-lg>
         <router-view></router-view>
       </v-container>
     </v-content>

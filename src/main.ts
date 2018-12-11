@@ -8,6 +8,10 @@ import store from '@/store/index';
 
 Vue.config.productionTip = false;
 
+// import userData from '@/globals/userData';
+
+// store.dispatch('userData/initializeUserData', userData);
+
 new Vue({
   router,
   store,

@@ -1,26 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import ChangeContact from '@/views/ChangeContact.vue';
 import Dashboard from '@/views/Dashboard.vue';
-import Overview from '@/components/Overview.vue';
-import DataView from '@/components/DataView.vue';
-import DataEdit from '@/components/DataEdit.vue';
-import PersonalDataEdit from '@/components/data-edit/PersonalDataEdit.vue';
-import DataSuccess from '@/components/DataSuccess.vue';
-import Login from '@/components/Login.vue';
-import Register from '@/components/Register.vue';
+import Overview from '@/views/Overview.vue';
+import Login from '@/views/Login.vue';
+import Services from '@/views/Services.vue';
+import ChangeSuccess from '@/views/ChangeSuccess.vue';
 import VuetifyExamples from '@/VuetifyExamples.vue';
 
 import store from '@/store';
 
 Vue.use(Router);
-
-const IdentifyGuard = (redirect: string | object) =>
-  (to: any, from: any, next: any) => {
-    if (!(store.state as any).userData.initialized) {
-      return next(redirect);
-    }
-    return next();
-  };
 
 export default new Router({
   mode: 'history',
@@ -35,58 +25,34 @@ export default new Router({
       component: Dashboard,
       children: [
         {
-          path: 'overview',
-          name: 'overview',
+          path: '',
           component: Overview,
-          beforeEnter: IdentifyGuard('/login'),
+          props: () => ({
+            successRedirect: 'services',
+          }),
         },
         {
           path: 'login',
           component: Login,
-          props: {
-            successRedirect: 'overview',
-          },
-        },
-        {
-          path: 'register',
-          name: 'register',
-          component: Register,
-          props: {
-            successRedirect: 'overview',
-          },
-        },
-        {
-          path: 'data',
-          name: 'data-view',
-          component: DataView,
-          beforeEnter: IdentifyGuard('/login'),
-        },
-        {
-          path: 'skip',
-          component: DataView,
-        },
-        {
-          path: 'data/edit',
-          name: 'data-edit',
-          component: DataEdit,
-          beforeEnter: IdentifyGuard('/login'),
-          props: route => ({
-            area: route.query.area,
+          props: () => ({
+            successRedirect: 'services',
           }),
         },
         {
-          path: 'data/personal/edit',
-          component: PersonalDataEdit,
-          beforeEnter: IdentifyGuard('/login'),
+          path: 'services',
+          component: Services,
         },
         {
-          path: 'data/success',
-          name: 'data-success',
-          component: DataSuccess,
-          beforeEnter: IdentifyGuard('/login'),
-          props: route => ({
-            addressChanged: route.query.addressChanged === 'true',
-          }),
+          path: 'change/contact',
+          component: ChangeContact,
+        },
+        {
+          path: 'change/bank',
+          redirect: '/',
+        },
+        {
+          path: 'change/success',
+          component: ChangeSuccess,
         },
       ],
     },
