@@ -12,6 +12,14 @@ import store from '@/store';
 
 Vue.use(Router);
 
+const IdentifyGuard = (redirect: string | object) =>
+  (to: any, from: any, next: any) => {
+    if (!(store.state as any).userData.initialized) {
+      return next(redirect);
+    }
+    return next();
+  };
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -41,18 +49,22 @@ export default new Router({
         {
           path: 'services',
           component: Services,
+          beforeEnter: IdentifyGuard('/'),
         },
         {
           path: 'change/contact',
           component: ChangeContact,
+          beforeEnter: IdentifyGuard('/'),
         },
         {
           path: 'change/bank',
-          redirect: '/',
+          redirect: '/services',
+          beforeEnter: IdentifyGuard('/'),
         },
         {
           path: 'change/success',
           component: ChangeSuccess,
+          beforeEnter: IdentifyGuard('/'),
         },
       ],
     },
