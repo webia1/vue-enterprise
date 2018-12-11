@@ -94,6 +94,8 @@
               box
               :append-icon="icons.search"
               label="PLZ eingeben"
+              v-model="partnerZip"
+              @keyup.enter="openPartnerSearch()"
             />
           </v-card-text>
         </v-card>
@@ -110,6 +112,11 @@
   @Component({})
   export default class QuickServices extends Vue {
     private icons = icons;
+    private partnerZip = '';
+
+    private openPartnerSearch() {
+      window.open(`https://www.ergo.de/de/ResourcesUsability/Vermittlersuche?input=${this.partnerZip}`);
+    }
   }
 </script>
 
