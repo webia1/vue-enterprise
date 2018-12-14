@@ -6,7 +6,7 @@ import Overview from '@/views/Overview.vue';
 import Login from '@/views/Login.vue';
 import Services from '@/views/Services.vue';
 import ChangeSuccess from '@/views/ChangeSuccess.vue';
-import VuetifyExamples from '@/VuetifyExamples.vue';
+import Showcase from '@/Showcase.vue';
 
 import store from '@/store';
 
@@ -26,7 +26,7 @@ export default new Router({
   routes: [
     {
       path: '/showcase',
-      component: VuetifyExamples,
+      component: Showcase,
     },
     {
       path: '/',

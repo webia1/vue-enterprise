@@ -63,6 +63,31 @@
           label="Label (error)"
         />
       </v-flex>
+      <v-flex xs12>
+        <h1>Phone Number Field</h1>
+      </v-flex>
+      <v-flex xs12>
+        <PhoneNumberField v-model="phoneNumber" />
+      </v-flex>
+      <v-flex xs12>
+        {{ phoneNumber }}
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
+
+<script lang="ts">
+  import { Component, Vue } from 'vue-property-decorator';
+
+  import PhoneNumberField from '@/components/forms/phone-number-field';
+
+  @Component({
+    components: {
+      PhoneNumberField,
+    },
+  })
+  export default class ShowCase extends Vue {
+    private phoneNumber = '';
+  }
+</script>
+
