@@ -241,7 +241,7 @@
         name: {
           presence: { allowEmpty: false },
           length: {
-            minimum: 5,
+            minimum: 3,
             maximum: 20,
           },
         },
