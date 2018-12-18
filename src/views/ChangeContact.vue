@@ -168,7 +168,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import validate from 'validate.js';
 
-import PhoneNumberField from '@/components/forms/phone-number-field';
+import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 import icons from '@/globals/icons';
 
 interface CommunicationItem {

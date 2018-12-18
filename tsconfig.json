@@ -5,6 +5,7 @@
     "strict": true,
     "jsx": "preserve",
     "noImplicitAny": false,
+    "resolveJsonModule": true,
     "importHelpers": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,

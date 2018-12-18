@@ -79,7 +79,7 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
 
-  import PhoneNumberField from '@/components/forms/phone-number-field';
+  import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 
   @Component({
     components: {
