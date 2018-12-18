@@ -18,4 +18,5 @@ export default {
     business: 'business',
     private: 'account_circle',
   },
+
 };

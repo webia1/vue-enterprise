@@ -15,7 +15,53 @@
           <h2 class="red--text text--darken-3">Vielen Dank Frau {{ $store.state.userData.personal.lastName }}</h2>
         </v-card-title>
         <v-card-text>
-          <h3>Ihre Änderungen wurden erfolgreich übermittelt.</h3>
+          <h3>Folgende Daten wurden zur Änderung zur übermittelt:</h3>
+          <v-list>
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-sub-title>Name</v-list-tile-sub-title>
+                <v-list-tile-title>{{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <!-- <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-sub-title>Vorname</v-list-tile-sub-title>
+                <v-list-tile-title>{{ $store.state.userData.personal.firstName }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-sub-title>Nachname</v-list-tile-sub-title>
+                <v-list-tile-title>{{ $store.state.userData.personal.lastName }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> -->
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-sub-title>Adresse</v-list-tile-sub-title>
+                <v-list-tile-title>
+                  {{ $store.state.userData.personal.address }},
+                  {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.location }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider />
+            <v-subheader>
+              Kontaktmöglichkeiten
+            </v-subheader>
+            <v-list-tile
+              v-for="(item, i) in $store.state.userData.personal.communications"
+              :key="i"
+            >
+              <v-list-tile-content>
+                <v-list-tile-sub-title>
+                  {{ item.channel }} ({{ item.publicness }})
+                </v-list-tile-sub-title>
+                <v-list-tile-title>
+                  {{ item.value }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
           <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et nihil dolorem est. Aut omnis excepturi id repellendus molestias saepe consequatur pariatur in corrupti cupiditate. Minima.</p>
         </v-card-text>
         <v-card-actions>

@@ -1,15 +1,7 @@
 <template>
   <v-layout>
-    <template v-if="mode === 'modern'">
-      <v-flex xs2>
-        <!-- <v-select
-          box
-          label="Landesvorwahl"
-          :items="countryCodes"
-          :rules="[isValid('countryCode')]"
-          v-model="countryCode"
-          @input="emitValue()"
-        /> -->
+    <template v-if="!modeChangeable || mode === 'modern'">
+      <v-flex v-bind="fieldGridSettings.countryCode">
         <v-menu
           full-width
           :open-on-click="false"
@@ -39,7 +31,7 @@
           </v-list>
         </v-menu>
       </v-flex>
-      <v-flex xs3>
+      <v-flex v-bind="fieldGridSettings.prefix">
         <v-text-field
           box
           label="Vorwahl"
@@ -49,7 +41,7 @@
           @input="emitValue()"
         />
       </v-flex>
-      <v-flex xs6>
+      <v-flex v-bind="fieldGridSettings.phoneNumber">
         <v-text-field
           box
           label="Rufnummer"
@@ -60,7 +52,7 @@
       </v-flex>
     </template>
     <template v-else-if="mode === 'classic'">
-      <v-flex xs11>
+      <v-flex v-bind="fieldGridSettings.fullValue">
         <v-text-field
           box
           label="Telefonnummer"
@@ -68,7 +60,7 @@
         />
       </v-flex>
     </template>
-    <v-flex xs1>
+    <v-flex xs1 v-if="modeChangeable">
       <v-tooltip
         bottom
       >
@@ -76,10 +68,9 @@
           icon
           large
           slot="activator"
+          @click="changeMode()"
         >
-          <v-icon
-            @click="changeMode()"
-          >
+          <v-icon>
             edit
           </v-icon>
         </v-btn>
@@ -90,9 +81,10 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
   import validate from 'validate.js';
 
+  import Formatter from './formatter';
   import countryCodes from './countryCodes.json';
 
   @Component({
@@ -101,6 +93,8 @@
     },
   })
   export default class PhoneNumberField extends Vue {
+    @Prop({ default: false, type: Boolean }) modeChangeable;
+
     private mode: 'modern' | 'classic' = 'modern';
     private countryCodes = countryCodes
     private countryCode = '';
@@ -109,6 +103,25 @@
     private fullValue = '';
     private errors = {};
     private showCountryCodeSelection = false;
+
+    private get fieldGridSettings() {
+      return {
+        countryCode: {
+          xs2: this.modeChangeable,
+          xs3: !this.modeChangeable,
+        },
+        prefix: {
+          xs3: true,
+        },
+        phoneNumber: {
+          xs6: true,
+        },
+        fullValue: {
+          xs11: this.modeChangeable,
+          xs12: !this.modeChangeable,
+        },
+      }
+    }
 
     private get countryCodeField() {
       if (!this.$refs.countryCodeField) return null;
@@ -131,7 +144,7 @@
       },
       phoneNumber: {
         format: {
-          pattern: /\d{4,}/,
+          pattern: /\d{3,}/,
           message: 'Rufnummer ist ungültig!',
         },
       },
@@ -160,7 +173,8 @@
       }, this.validationConstraints, { fullMessages: false });
       if (!errors) {
         this.errors = {};
-        this.$emit('input', `${this.countryCode}${this.prefix}${(this.countryCode || this.prefix) && this.phoneNumber ? '/': ''}${this.phoneNumber}`);
+        Formatter.getPartedValue(Formatter.getFullValue(this.countryCode, this.prefix, this.phoneNumber));
+        this.$emit('input', Formatter.getFullValue(this.countryCode, this.prefix, this.phoneNumber));
       } else {
         this.errors = errors;
         this.$emit('input', null);
@@ -173,6 +187,10 @@
 
     private openCountryCodeSelection() {
       this.showCountryCodeSelection = true;
+    }
+
+    private created() {
+      console.dir(this);
     }
   }
 </script>

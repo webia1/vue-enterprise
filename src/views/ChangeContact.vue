@@ -63,17 +63,9 @@
           </v-layout>
 
           <h3>Kontaktmöglichkeiten</h3>
-          <!-- <v-btn
-            v-if="fields.communications.length === 0"
-            outline
-            color="primary"
-            @click="addCommunicationItem()"
-          >
-            Add Communication
-          </v-btn> -->
           <v-flex v-for="(item, i) in fields.communications" :key="`${i}`" xs12>
             <v-layout>
-              <v-flex xs3>
+              <v-flex xs4>
                 <v-menu
                   full-width
                 >
@@ -94,46 +86,66 @@
                   </v-list>
                 </v-menu>
               </v-flex>
-              <v-flex xs6 offset-xs1>
-                <v-text-field
-                  box
-                  single-line
-                  :append-icon="errors[`communication_${i}`] ? icons.fieldStates.error : null"
-                  :rules="[isValid(`communication_${i}`)]"
-                  :success="!errors[`communication_${i}`]"
+              <v-flex xs7>
+                <v-layout v-if="item.channel === 'email'">
+                  <v-flex>
+                    <v-text-field
+                      box
+                      :append-icon="errors[`communication_${i}`] ? icons.fieldStates.error : null"
+                      label="E-Mail-Adresse"
+                      :rules="[isValid(`communication_${i}`)]"
+                      :success="!errors[`communication_${i}`]"
+                      v-model="item.value"
+                    />
+                  </v-flex>
+                </v-layout>
+                <PhoneNumberField
+                  v-else
                   v-model="item.value"
-                >
-                  <template slot="append-outer">
-                    <v-icon @click="removeCommunicationItem(i)">delete_forever</v-icon>
-                  </template>
-                </v-text-field>
+                />
+              </v-flex>
+              <v-flex xs1>
+                <v-icon class="my-3" color="secondary" @click="removeCommunicationItem(i)">remove_circle_outline</v-icon>
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-layout @click="addCommunicationItem()">
-            <v-flex xs3>
-              <v-overflow-btn
-                disabled
-                class="mt-0 pt-0"
-                label="Kontaktart"
-              >
-                Kontaktart
-              </v-overflow-btn>
-            </v-flex>
-            <v-flex xs6 offset-xs1>
-              <v-text-field
-                box
-                disabled
-                label="Telefonnummer / E-Mail"
-              >
-                <template slot="append-outer">
-                  <v-icon>
-                    add_circle
-                  </v-icon>
-                </template>
-              </v-text-field>
-            </v-flex>
-          </v-layout>
+          <v-flex>
+            <v-layout>
+              <v-flex xs4>
+                <v-menu
+                  full-width
+                >
+                  <v-overflow-btn
+                    readonly
+                    class="mt-0 pt-0"
+                    label="Kontaktart"
+                    slot="activator"
+                  />
+                  <v-list>
+                    <v-list-tile
+                      v-for="(option, i) in communicationOptions"
+                      :key="i"
+                      @click="addCommunicationItem(option.value)"
+                    >
+                      {{ option.text }}
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+              </v-flex>
+              <v-flex xs7>
+                <v-layout>
+                  <v-flex xs12>
+                    <v-text-field
+                      box
+                      disabled
+                      class="communication-placeholder"
+                      label="Telefonnummer / E-Mail"
+                    />
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </v-flex>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -156,6 +168,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import validate from 'validate.js';
 
+import PhoneNumberField from '@/components/forms/phone-number-field';
 import icons from '@/globals/icons';
 
 interface CommunicationItem {
@@ -166,12 +179,16 @@ interface CommunicationItem {
 }
 
 @Component({
+  components: {
+    PhoneNumberField,
+  },
   filters: {
     ellipsis: (text: string, limit: number) => limit ? `${text.substr(0, limit)}...` : text,
   },
 })
 export default class ChangeContact extends Vue {
   private fields: { [key: string]: any } = {};
+  private newChannel = null;
   private errors = {};
 
   private communicationOptions: any = [
@@ -242,18 +259,13 @@ export default class ChangeContact extends Vue {
       },
     },
     address: {
-      presence: { allowEmpty: false },
-      format: /\w+.*\d+.*/,
+      format: /([a-zäöü]+.*\d+.*)?/i,
     },
     zip: {
-      presence: { allowEmpty: false },
-      length: {
-        minimum: 4,
-        maximum: 5,
-      },
+      format: /(\d{4,5})?/,
     },
     location: {
-      presence: { allowEmpty: false },
+      format: /([a-zäöü]{3,})?/i,
     },
   };
 
@@ -341,10 +353,11 @@ export default class ChangeContact extends Vue {
     }
   }
 
-  private addCommunicationItem() {
+  private addCommunicationItem({ channel, publicness }) {
+    this.newChannel = null;
     this.fields.communications.push({
-      channel: 'mobile',
-      publicness: 'private',
+      channel: channel || 'mobile',
+      publicness: publicness || 'private',
       value: '',
     });
   }
@@ -421,3 +434,9 @@ export default class ChangeContact extends Vue {
   }
 }
 </script>
+
+<style lang="stylus" scoped>
+.v-text-field.v-text-field--box.communication-placeholder .v-input__slot {
+  background-color grey;
+}
+</style>
