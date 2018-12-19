@@ -39,21 +39,21 @@
         >
           <v-text-field
             box
-            label="Vertragsnummer *"
+            label="Versicherungsnummer *"
             :rules="[isValid('contractNumber')]"
             :success="!errors.contractNumber"
             v-model="contractNumber"
           />
           <p class="mode-changer__content">
-            <a @click="changeMode()">keine Vertragsnummer zur Hand?</a>
+            <a @click="changeMode()">keine Versicherungsnummer zur Hand?</a>
           </p>
         </div>
         <p class="info-box">
-          Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
+          Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
         </p>
         <v-card infoBox>
           <v-card-text>
-            Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
+            Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
           </v-card-text>
         </v-card>
       </template>
@@ -76,7 +76,7 @@
           v-model="location"
         />
         <p class="mode-changer__content">
-          <a @click="changeMode()">Eingabe der Vertragsnummer</a>
+          <a @click="changeMode()">Eingabe der Versicherungsnummer</a>
         </p>
       </div>
       <v-checkbox

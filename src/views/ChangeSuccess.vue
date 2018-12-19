@@ -12,7 +12,7 @@
       </v-card>
       <v-card class="pa-3">
         <v-card-title>
-          <h2 class="red--text text--darken-3">Vielen Dank Frau {{ $store.state.userData.personal.lastName }}</h2>
+          <h2 class="red--text text--darken-3">Vielen Dank {{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</h2>
         </v-card-title>
         <v-card-text>
           <h3>Folgende Daten wurden zur Änderung zur übermittelt:</h3>
@@ -23,24 +23,13 @@
                 <v-list-tile-title>{{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <!-- <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-sub-title>Vorname</v-list-tile-sub-title>
-                <v-list-tile-title>{{ $store.state.userData.personal.firstName }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-sub-title>Nachname</v-list-tile-sub-title>
-                <v-list-tile-title>{{ $store.state.userData.personal.lastName }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile> -->
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>Adresse</v-list-tile-sub-title>
                 <v-list-tile-title>
                   {{ $store.state.userData.personal.address }},
                   {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.location }}
+                  ({{ $store.state.userData.personal.country }})
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -123,5 +112,9 @@
         'background-color': `${this.$vuetify.theme.success} !important`,
       },
     };
+
+    private mounted() {
+      this.$store.dispatch('userData/contactChanged');
+    }
   }
 </script>

@@ -41,12 +41,12 @@
               <v-text-field
                 box
                 :append-icon="insuranceNumber !== '' ? (!errors.insuranceNumber ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                label="Vertragsnummer *"
+                label="Versicherungsnummer *"
                 :rules="[isValid('insuranceNumber')]"
                 :success="!errors.insuranceNumber"
                 v-model="insuranceNumber"
               />
-              <p>Die Versicherungsscheinnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.</p>
+              <p>Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.</p>
               <p>
                 <strong>Sie haben Ihre Versicherungsnummer nicht zur Hand?</strong>
                 <br>
@@ -87,6 +87,7 @@
                 />
               </v-flex>
             </v-layout>
+            <CountryField preset="Deutschland" v-model="country" />
             <p>
               <strong>Haben Sie Ihre Versicherungsnummer zur Hand?</strong>
               <br>
@@ -95,21 +96,25 @@
               </a>
             </p>
           </div>
-          <p>Bei der Verarbeitung von personenbezogenen Daten beachten wir die Vorschriften der EU-Datenschutz-Grundverordnung. Ausführliche Informationen finden Sie im
-            <strong>Datenschutzbereich unserer Website</strong>.
+          <p>
+            Bitte tragen Sie hier Ihre E-Mail-Adresse ein, damit wir Ihnen eine Eingangsbestätigung schicken können.<br>
+            Wenn wir von Ihnen bereits eine E-Mail-Adresse gespeichert haben,
+            werden wir zur Sicherheit Ihre Eingangsbestätigung auch an diese E-Mail-Adresse schicken.
           </p>
-          <v-checkbox
-            :error="errors.termsAccepted"
-            @change="termsCheck()"
-            v-model="termsAccepted"
+          <v-text-field
+            box
+            :append-icon="confirmationEmail !== '' ? (!errors.confirmationEmail ? icons.fieldStates.success : icons.fieldStates.error) : null"
+            hint="Bitte tragen Sie hier Ihre E-Mail-Adresse ein, damit wir Ihnen eine Eingangsbestätigung schicken können."
+            label="E-Mail zur Bestätigung *"
+            :rules="[isValid('confirmationEmail')]"
+            :success="!errors.confirmationEmail"
+            v-model="confirmationEmail"
           >
-            <div slot="label">
-              <v-icon v-if="errors.termsAccepted" color="error">{{ icons.cta }}</v-icon>
-              Ich stimme den
-              <a href="javascript:void(0)">Nutzungsbestimmungen</a> und
-              <a href="javascript:void(0)">Datenschutzhinweisen</a> zu.
-            </div>
-          </v-checkbox>
+          </v-text-field>
+          <p>
+            Bei der Verarbeitung von personenbezogenen Daten beachten wir die Vorschriften der EU-Datenschutz-Grundverordnung.
+            Ausführliche Informationen finden Sie im <a :href="dataSecurityLink">Datenschutzbereich unserer Website</a>.
+          </p>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -168,126 +173,138 @@
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue } from 'vue-property-decorator';
-  import validate from 'validate.js';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import validate from 'validate.js';
 
-  import icons from '@/globals/icons';
-  import userData from '@/globals/userData';
+import icons from '@/globals/icons';
+import userData from '@/globals/userData';
 
-  @Component({})
-  export default class Overview extends Vue {
-    @Prop () private successRedirect!: string|object;
-    private firstName: string = '';
-    private lastName: string = '';
-    private birthday: string = '';
-    private insuranceNumber: string = '';
-    private withInsuranceNumber = true;
-    private address: string = '';
-    private zip: string = '';
-    private location: string = '';
-    private termsAccepted = false;
-    private errors = {};
-    private icons = icons;
+import CountryField from '@/components/forms/country-field/CountryField.vue';
 
-    private get formIsValid() {
-      const errors = validate({
-        firstName: this.firstName,
-        lastName: this.lastName,
-        birthday: this.birthday,
-        insuranceNumber: this.insuranceNumber,
-        address: this.address,
-        zip: this.zip,
-        location: this.location,
-      }, {
-        firstName: {
-          ...this.validationConstraints.name,
-        },
-        lastName: {
-          ...this.validationConstraints.name,
-        },
-        birthday: {
-          presence: { allowEmpty: false },
-          birthday: true,
-        },
-        insuranceNumber: {
-          ...this.validationConstraints.withInsuranceNumber,
-        },
-        address: {
-          ...this.validationConstraints.withoutInsuranceNumber,
-          ...(!this.withInsuranceNumber ? {
-            format: /\w+.*\d+.*/,
-          } : {}),
-        },
-        zip: {
-          ...this.validationConstraints.withoutInsuranceNumber,
-          ...(!this.withInsuranceNumber ? {
-            format: /\d+/,
-            length: {
-              minimum: 4,
-              maximum: 5,
-            },
-          } : {}),
-        },
-        location: {
-          ...this.validationConstraints.withoutInsuranceNumber,
-        },
-      });
-      this.errors = errors || {};
-      return !errors;
-    }
+@Component({
+  components: {
+    CountryField,
+  },
+})
+export default class Overview extends Vue {
+  @Prop () private successRedirect!: string|object;
+  private icons = icons;
+  private dataSecurityLink = process.env.VUE_APP_DATA_SECURITY_LINK;
 
-    private get validationConstraints() {
-      return {
-        name: {
-          presence: { allowEmpty: false },
+  private firstName: string = '';
+  private lastName: string = '';
+  private birthday: string = '';
+  private insuranceNumber: string = '';
+  private withInsuranceNumber = true;
+  private address: string = '';
+  private zip: string = '';
+  private location: string = '';
+  private country: string = '';
+  private errors = {};
+
+  private confirmationEmail = '';
+
+  private get formIsValid() {
+    const errors = validate({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      birthday: this.birthday,
+      insuranceNumber: this.insuranceNumber,
+      address: this.address,
+      zip: this.zip,
+      location: this.location,
+      confirmationEmail: this.confirmationEmail,
+    }, {
+      firstName: {
+        ...this.validationConstraints.name,
+      },
+      lastName: {
+        ...this.validationConstraints.name,
+      },
+      birthday: {
+        presence: { allowEmpty: false },
+        birthday: true,
+      },
+      insuranceNumber: {
+        ...this.validationConstraints.withInsuranceNumber,
+      },
+      address: {
+        ...this.validationConstraints.withoutInsuranceNumber,
+        ...(!this.withInsuranceNumber ? {
+          format: /\w+.*\d+.*/,
+        } : {}),
+      },
+      zip: {
+        ...this.validationConstraints.withoutInsuranceNumber,
+        ...(!this.withInsuranceNumber ? {
+          format: /\d+/,
           length: {
-            minimum: 3,
-            maximum: 20,
+            minimum: 4,
+            maximum: 5,
           },
-        },
-        birthday: {
-          birthday: true,
-        },
-        withInsuranceNumber: {
-          presence: this.withInsuranceNumber ? { allowEmpty: false } : false,
-        },
-        withoutInsuranceNumber: {
-          presence: !this.withInsuranceNumber ? { allowEmpty: false } : false,
-        },
-      };
-    }
+        } : {}),
+      },
+      location: {
+        ...this.validationConstraints.withoutInsuranceNumber,
+      },
+      confirmationEmail: {
+        presence: { allowEmpty: false },
+        email: true,
+      },
+    });
+    this.errors = errors || {};
+    return !errors;
+  }
 
-    private changeMode() {
-      this.withInsuranceNumber = !this.withInsuranceNumber;
-      this.insuranceNumber = '';
-      this.address = '';
-      this.zip = '';
-      this.location = '';
-      this.termsAccepted = false;
-    }
+  private get validationConstraints() {
+    return {
+      name: {
+        presence: { allowEmpty: false },
+        length: {
+          minimum: 3,
+          maximum: 20,
+        },
+      },
+      birthday: {
+        birthday: true,
+      },
+      withInsuranceNumber: {
+        presence: this.withInsuranceNumber ? { allowEmpty: false } : false,
+      },
+      withoutInsuranceNumber: {
+        presence: !this.withInsuranceNumber ? { allowEmpty: false } : false,
+      },
+    };
+  }
 
-    private isValid(fieldName: string) {
-      return () => {
-        if (this.errors) {
-          return this.errors[fieldName] ? this.errors[fieldName][0] : true;
-        }
-        return true;
-      };
-    }
+  private changeMode() {
+    this.withInsuranceNumber = !this.withInsuranceNumber;
+    this.insuranceNumber = '';
+    this.address = '';
+    this.zip = '';
+    this.location = '';
+  }
 
-    private identify() {
-      this.termsCheck();
-      if (this.formIsValid && !(this.errors as any).termsAccepted) {
-        if (!this.$store.state.userData.initialized) {
-          this.$store.dispatch('userData/initializeUserData', userData);
-        }
-        this.$router.push(this.successRedirect);
+  private isValid(fieldName: string) {
+    return () => {
+      if (this.errors) {
+        return this.errors[fieldName] ? this.errors[fieldName][0] : true;
       }
-    }
+      return true;
+    };
+  }
 
-    private termsCheck() {
-      Vue.set(this.errors, 'termsAccepted', this.termsAccepted !== true);
-      return this.termsAccepted === true;
+  private identify() {
+    if (this.formIsValid && !(this.errors as any).termsAccepted) {
+      if (!this.$store.state.userData.initialized) {
+        this.$store.dispatch('userData/initializeUserData', {
+          ...userData,
+          confirmationEmail: this.confirmationEmail,
+        });
+        this.$store.commit('userData/setIdentity', { firstName: this.firstName, lastName: this.lastName });
+      }
+      this.$router.push(this.successRedirect);
     }
   }
+}
 </script>

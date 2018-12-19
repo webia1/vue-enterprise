@@ -5,6 +5,7 @@ export default {
     address: 'Wunderschönallee 13',
     zip: '40477',
     location: 'Düsseldorf',
+    country: 'Deutschland',
     phoneNumber: '+49 151 98765432',
     email: 'ninatraumkundin@mymail.de',
     communications: [

@@ -3,33 +3,31 @@
     <v-flex xs12>
       <v-card class="pa-3">
         <v-card-title>
-          <h2 class="red--text text--darken-3 mb-0">Kontaktdaten ändern</h2>
+          <h2 class="red--text text--darken-3 mb-0">Änderung Adresse und Kommunikationsdaten</h2>
         </v-card-title>
         <v-card-text>
-          <h3>Persönliche Angaben</h3>
-          <v-select
-            box
-            disabled
-            :items="['Dr.', 'Prof.', 'Prof. Dr.']"
-            label="Titel"
-          />
-          <v-text-field
-            box
-            label="Vorname"
-            v-model="fields.firstName"
-          />
-          <v-text-field
-            box
-            disabled
-            label="Adelsprädikat"
-          />
-          <v-text-field
-            box
-            label="Nachname"
-            v-model="fields.lastName"
-          />
+          <h3 class="red--text text--darken-3 mb-0">Persönliche Angaben</h3>
+          <v-layout wrap>
+            <v-flex>
+              <v-text-field
+                box
+                disabled
+                label="Vorname"
+                v-model="fields.firstName"
+              />
+            </v-flex>
+            <v-flex>
+              <v-text-field
+                box
+                disabled
+                label="Nachname"
+                v-model="fields.lastName"
+              />
+            </v-flex>
+          </v-layout>
 
-          <h3>Anschrift</h3>
+          <h3 class="red--text text--darken-3 mb-0">Anschrift</h3>
+          <p>Tragen Sie hier Ihre neue Anschrift ein</p>
           <v-text-field
             box
             :append-icon="iconState('address')"
@@ -60,9 +58,13 @@
                 v-model="fields.location"
               />
             </v-flex>
+            <v-flex xs12>
+              <CountryField :preset="fields.country" v-model="fields.country" />
+            </v-flex>
           </v-layout>
 
-          <h3>Kontaktmöglichkeiten</h3>
+          <h3 class="red--text text--darken-3 mb-0">Kontaktmöglichkeiten</h3>
+          <p>Tragen Sie hier Ihre neuen Kommunikationsdaten ein.</p>
           <v-flex v-for="(item, i) in fields.communications" :key="`${i}`" xs12>
             <v-layout>
               <v-flex xs4>
@@ -168,8 +170,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import validate from 'validate.js';
 
-import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 import icons from '@/globals/icons';
+
+import CountryField from '@/components/forms/country-field/CountryField.vue';
+import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 
 interface CommunicationItem {
   [key: string]: any;
@@ -180,6 +184,7 @@ interface CommunicationItem {
 
 @Component({
   components: {
+    CountryField,
     PhoneNumberField,
   },
   filters: {
@@ -429,7 +434,11 @@ export default class ChangeContact extends Vue {
       address: '',
       zip: '',
       location: '',
-      communications: [],
+      communications: !this.$store.state.userData.confirmationEmailUsed ? [{
+        channel: 'email',
+        publicness: 'private',
+        value: this.$store.state.userData.confirmationEmail,
+      }] : [],
     };
   }
 }
