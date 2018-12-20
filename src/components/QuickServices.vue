@@ -1,9 +1,9 @@
 <template>
   <div>
     <h3 class="my-2 font-weight-bold">Weitere Schnell-Services für Sie zur Auswahl</h3>
-    <v-layout wrap class="service-cards">
+    <v-layout wrap>
       <v-flex xs12 md4>
-        <v-card class="pa-3">
+        <v-card class="pa-3 fill-height">
           <v-card-title>
             <h3>Persönlicher Kontakt</h3>
           </v-card-title>
@@ -50,7 +50,7 @@
         </v-card>
       </v-flex>
       <v-flex xs12 md4>
-        <v-card class="pa-3">
+        <v-card class="pa-3 fill-height">
           <v-card-title>
             <h3>Schaden melden</h3>
           </v-card-title>
@@ -85,7 +85,7 @@
         </v-card>
       </v-flex>
       <v-flex xs12 md4>
-        <v-card class="pa-3">
+        <v-card class="pa-3 fill-height">
           <v-card-title>
             <h3>Vermittler vor Ort</h3>
           </v-card-title>
@@ -119,13 +119,3 @@
     }
   }
 </script>
-
-<style lang="stylus" scoped>
-.service-cards {
-  .v-card {
-    @media (min-width: 960px) {
-      height: 200px;
-    }
-  }
-}
-</style>
