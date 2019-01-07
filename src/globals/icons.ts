@@ -18,5 +18,10 @@ export default {
     business: 'business',
     private: 'account_circle',
   },
-
+  ui: {
+    forms: {
+      checkbox_blank: 'check_box_outline_blank',
+      checkbox_checked: 'check_box',
+    },
+  },
 };

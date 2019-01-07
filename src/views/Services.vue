@@ -6,7 +6,7 @@
           <h2 class="red--text text--darken-3 mb-0">Offener Kundenservice Bereich</h2>
         </v-card-title>
         <v-card-text>
-          <p>Teilen Sie und hier einfache Änderungswünsche zu Ihren Kunden- und Vertragsdaten mit. Wir bearbeiten diese schnell und unkompliziert.</p>
+          <p>Teilen Sie uns hier einfache Änderungswünsche zu Ihren Kunden- und Vertragsdaten mit. Wir bearbeiten diese schnell und unkompliziert.</p>
         </v-card-text>
       </v-card>
 

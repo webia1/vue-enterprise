@@ -33,10 +33,9 @@
             :append-icon="iconState('address')"
             label="Straße / HNr."
             :rules="[isValid('address')]"
-            :success="!errors.address"
+            :success="!!hasChanges('address') && !errors.address"
             v-model="fields.address"
           />
-
           <v-layout wrap>
             <v-flex xs12 md4>
               <v-text-field
@@ -44,7 +43,7 @@
                 :append-icon="iconState('zip')"
                 label="PLZ"
                 :rules="[isValid('zip')]"
-                :success="!errors.zip"
+                :success="!!hasChanges('zip') && !errors.zip"
                 v-model="fields.zip"
               />
             </v-flex>
@@ -54,7 +53,7 @@
                 :append-icon="iconState('location')"
                 label="Ort"
                 :rules="[isValid('location')]"
-                :success="!errors.location"
+                :success="!!hasChanges('location') && !errors.location"
                 v-model="fields.location"
               />
             </v-flex>
@@ -384,7 +383,8 @@ export default class ChangeContact extends Vue {
 
   private hasChanges(fieldName: string) {
     return (
-      this.fields[fieldName] !== this.$store.state.userData.personal[fieldName]
+      this.fields[fieldName] !== ''
+      && this.fields[fieldName] !== this.$store.state.userData.personal[fieldName]
     );
   }
 

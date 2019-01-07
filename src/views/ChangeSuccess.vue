@@ -15,14 +15,14 @@
           <h2 class="red--text text--darken-3">Vielen Dank {{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</h2>
         </v-card-title>
         <v-card-text>
-          <h3>Folgende Daten wurden zur Änderung zur übermittelt:</h3>
+          <h3>Folgende Daten haben wir geändert. Bitte beachten Sie, dass es etwas dauern kann, bis Ihr Änderungswunsch in allen unseren Systemen sichtbar ist.</h3>
           <v-list>
-            <v-list-tile>
+            <!-- <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>Name</v-list-tile-sub-title>
                 <v-list-tile-title>{{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>
+            </v-list-tile> -->
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-sub-title>Adresse</v-list-tile-sub-title>
@@ -34,7 +34,7 @@
               </v-list-tile-content>
             </v-list-tile>
             <v-divider />
-            <v-subheader>
+            <v-subheader v-if="$store.state.userData.personal.communications.length">
               Kontaktmöglichkeiten
             </v-subheader>
             <v-list-tile
@@ -51,7 +51,32 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et nihil dolorem est. Aut omnis excepturi id repellendus molestias saepe consequatur pariatur in corrupti cupiditate. Minima.</p>
+          <p>
+            An die Adresse&nbsp;
+            <strong>
+              {{ $store.state.userData.personal.address }},
+              {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.location }}
+              ({{ $store.state.userData.personal.country }})
+            </strong>
+            &nbsp;haben wir eine Eingangsbestätigung geschickt.
+          </p>
+
+          <v-card>
+            <v-card-text>
+              <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
+              <p>
+                Ich willige ein, dass ich künfitg
+                <span class="mx-1" style="cursor: pointer;" @click="kewe_electronic = !kewe_electronic"><v-icon>{{ kewe_electronic ? icons.ui.forms.checkbox_checked : icons.ui.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
+                <span class="mx-1" style="cursor: pointer;" @click="kewe_phone = !kewe_phone"><v-icon>{{ kewe_phone ? icons.ui.forms.checkbox_checked : icons.ui.forms.checkbox_blank }}</v-icon> per Telefon</span>
+                (bitte zutreffendes ankreuzen)
+                über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern unserer Versicherung informiert werde.<br>
+                Sie können mich auch zur Kundenbefragung kontaktieren.
+              </p>
+              <p>
+                Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
+              </p>
+            </v-card-text>
+          </v-card>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -106,6 +131,10 @@
   })
   export default class ChangeSuccess extends Vue {
     private icons = icons;
+
+    private kewe_electronic = false;
+    private kewe_phone = false;
+
     private styling = {
       successHighlight: {
         ...({ height: '75px' }),
