@@ -35,7 +35,17 @@
             :rules="[isValid('address')]"
             :success="!!hasChanges('address') && !errors.address"
             v-model="fields.address"
-          />
+          >
+            <v-tooltip
+              slot="append-outer"
+              left
+            >
+              <v-icon slot="activator" @click="useGeolocation()">
+                {{ icons.findLocation }}
+              </v-icon>
+              Meinen aktuellen Standort verwenden
+            </v-tooltip>
+          </v-text-field>
           <v-layout wrap>
             <v-flex xs12 md4>
               <v-text-field
@@ -172,6 +182,7 @@ import validate from 'validate.js';
 import icons from '@/globals/icons';
 
 import CountryField from '@/components/forms/country-field/CountryField.vue';
+import GeolocationService from '@/globals/services/geolocation';
 import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 
 interface CommunicationItem {
@@ -413,6 +424,21 @@ export default class ChangeContact extends Vue {
       });
       this.$router.push('./success');
     }
+  }
+
+  private useGeolocation() {
+    GeolocationService.position
+      .then((position) => {
+        let address = position.road ? position.road : '';
+        if (address && position.house_number) {
+          address = `${address} ${position.house_number}`;
+        }
+        this.fields.address = address;
+
+        this.fields.zip = position.postcode ? position.postcode : '';
+        this.fields.location = position.city ? position.city : '';
+        this.fields.country = position.country ? position.country : '';
+      })
   }
 
   private created() {

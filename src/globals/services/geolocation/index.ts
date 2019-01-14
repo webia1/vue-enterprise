@@ -3,11 +3,11 @@ import axios from 'axios';
 const GeolocationService = {
   get options() {
     return {
-      // enableHighAccuracy: true,
+      enableHighAccuracy: true,
     };
   },
   get position() {
-    return (window.navigator as { [key:string]: any }).permissions.query({ name: 'geolocation' })
+    return window.navigator.permissions.query({ name: 'geolocation' })
       .then(() => new Promise((resolve, reject) => {
         window.navigator.geolocation.getCurrentPosition(resolve, reject, this.options);
       }))

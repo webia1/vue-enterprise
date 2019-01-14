@@ -66,8 +66,8 @@
               <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
               <p>
                 Ich willige ein, dass ich künfitg
-                <span class="mx-1" style="cursor: pointer;" @click="kewe_electronic = !kewe_electronic"><v-icon>{{ kewe_electronic ? icons.ui.forms.checkbox_checked : icons.ui.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
-                <span class="mx-1" style="cursor: pointer;" @click="kewe_phone = !kewe_phone"><v-icon>{{ kewe_phone ? icons.ui.forms.checkbox_checked : icons.ui.forms.checkbox_blank }}</v-icon> per Telefon</span>
+                <span class="mx-1" style="cursor: pointer;" @click="kewe_electronic = !kewe_electronic"><v-icon>{{ kewe_electronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
+                <span class="mx-1" style="cursor: pointer;" @click="kewe_phone = !kewe_phone"><v-icon>{{ kewe_phone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
                 (bitte zutreffendes ankreuzen)
                 über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern unserer Versicherung informiert werde.<br>
                 Sie können mich auch zur Kundenbefragung kontaktieren.
