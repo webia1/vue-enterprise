@@ -1,11 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import ChangeContact from '@/views/ChangeContact.vue';
-import Dashboard from '@/views/Dashboard.vue';
-import Overview from '@/views/Overview.vue';
-import Login from '@/views/Login.vue';
-import Services from '@/views/Services.vue';
 import ChangeSuccess from '@/views/ChangeSuccess.vue';
+import Dashboard from '@/views/Dashboard.vue';
+import Geolocation from '@/views/Geolocation.vue';
+import Login from '@/views/Login.vue';
+import OCR from '@/views/OCR.vue';
+import Overview from '@/views/Overview.vue';
+import Services from '@/views/Services.vue';
 import Showcase from '@/Showcase.vue';
 
 import store from '@/store';
@@ -38,6 +41,14 @@ export default new Router({
           props: () => ({
             successRedirect: 'services',
           }),
+        },
+        {
+          path: 'ocr',
+          component: OCR,
+        },
+        {
+          path: 'geo',
+          component: Geolocation,
         },
         {
           path: 'login',
