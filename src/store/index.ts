@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import defaults from './defaults';
+import settings from './settings';
 import userData from './userData';
 
 const modules = {
   defaults,
+  settings,
   userData,
 };
 

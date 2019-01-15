@@ -85,6 +85,7 @@
   import validate from 'validate.js';
 
   import Formatter from './formatter';
+  // @ts-ignore
   import countryCodes from './countryCodes.json';
 
   @Component({
@@ -93,10 +94,10 @@
     },
   })
   export default class PhoneNumberField extends Vue {
-    @Prop({ default: false, type: Boolean }) modeChangeable;
+    @Prop({ default: false, type: Boolean }) private modeChangeable;
 
     private mode: 'modern' | 'classic' = 'modern';
-    private countryCodes = countryCodes
+    private countryCodes = countryCodes;
     private countryCode = '';
     private prefix = '';
     private phoneNumber = '';
@@ -120,11 +121,11 @@
           xs11: this.modeChangeable,
           xs12: !this.modeChangeable,
         },
-      }
+      };
     }
 
     private get countryCodeField() {
-      if (!this.$refs.countryCodeField) return null;
+      if (!this.$refs.countryCodeField) { return null; }
 
       return (this.$refs.countryCodeField as any).$el;
     }
@@ -161,7 +162,7 @@
         }
 
         return true;
-      }
+      };
     }
 
     private emitValue() {
@@ -187,10 +188,6 @@
 
     private openCountryCodeSelection() {
       this.showCountryCodeSelection = true;
-    }
-
-    private created() {
-      console.dir(this);
     }
   }
 </script>

@@ -21,7 +21,7 @@
           </v-card>
         </v-flex>
         <v-flex xs12 md6>
-          <v-card class="pa-3 fill-height" color="secondary" disabled>
+          <v-card class="pa-3 fill-height" color="primary" to="/change/contact">
             <v-card-title>
               <h3 class="white--text">Änderung Abrufkonto</h3>
             </v-card-title>

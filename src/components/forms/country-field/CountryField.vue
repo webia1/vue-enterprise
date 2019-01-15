@@ -11,28 +11,29 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
+// @ts-ignore
 import countries from './countries.json';
 
 @Component({})
 export default class CountryField extends Vue {
-  @Prop({ default: true }) extendable;
-  @Prop({ default: 'Deutschland' }) value;
+  @Prop({ default: true }) private extendable;
+  @Prop({ default: 'Deutschland' }) private value;
   private countries = countries;
 
   private sortSelection() {
     this.countries.sort((a, b) => {
-      if (a < b) return -1;
-      if (a > b) return 1;
+      if (a < b) { return -1; }
+      if (a > b) { return 1; }
 
       return 0;
     });
   }
 
-  created() {
+  private created() {
     this.sortSelection();
   }
 
-  updated() {
+  private updated() {
     if (this.countries.indexOf(this.value) === -1 && this.extendable) {
       this.countries.push(this.value);
       this.sortSelection();

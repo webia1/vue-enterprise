@@ -52,6 +52,6 @@ export default {
     },
     contactChanged: (ctx) => {
       ctx.commit('useConfirmationEmail');
-    }
+    },
   },
 };

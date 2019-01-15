@@ -23,7 +23,7 @@ export default class OCR extends Vue {
       lang: 'deu',
     })
       .then((result) => {
-        this.result = result.html
+        this.result = result.html;
       });
   }
 }

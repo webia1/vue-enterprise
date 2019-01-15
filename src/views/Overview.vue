@@ -113,7 +113,7 @@
           </v-text-field>
           <p>
             Bei der Verarbeitung von personenbezogenen Daten beachten wir die Vorschriften der EU-Datenschutz-Grundverordnung.
-            Ausführliche Informationen finden Sie im <a :href="dataSecurityLink">Datenschutzbereich unserer Website</a>.
+            Ausführliche Informationen finden Sie im <a :href="env.dataSecurityLink">Datenschutzbereich unserer Website</a>.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -142,7 +142,7 @@
               </p>
             </v-card-text>
             <v-card-actions>
-              <v-btn dark color="secondary" to="/login">
+              <v-btn dark color="secondary">
                 <v-icon>{{ icons.cta }}</v-icon>Login
               </v-btn>
             </v-card-actions>
@@ -176,6 +176,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import validate from 'validate.js';
 
+import env from '@/globals/environment';
 import icons from '@/globals/icons';
 import userData from '@/globals/userData';
 
@@ -189,7 +190,7 @@ import CountryField from '@/components/forms/country-field/CountryField.vue';
 export default class Overview extends Vue {
   @Prop () private successRedirect!: string|object;
   private icons = icons;
-  private dataSecurityLink = process.env.VUE_APP_DATA_SECURITY_LINK;
+  private env = env;
 
   private firstName: string = '';
   private lastName: string = '';

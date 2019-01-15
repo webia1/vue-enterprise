@@ -54,9 +54,7 @@
           <p>
             An die Adresse&nbsp;
             <strong>
-              {{ $store.state.userData.personal.address }},
-              {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.location }}
-              ({{ $store.state.userData.personal.country }})
+              {{ $store.state.userData.confirmationEmail }}
             </strong>
             &nbsp;haben wir eine Eingangsbestätigung geschickt.
           </p>
@@ -65,9 +63,9 @@
             <v-card-text>
               <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
               <p>
-                Ich willige ein, dass ich künfitg
-                <span class="mx-1" style="cursor: pointer;" @click="kewe_electronic = !kewe_electronic"><v-icon>{{ kewe_electronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
-                <span class="mx-1" style="cursor: pointer;" @click="kewe_phone = !kewe_phone"><v-icon>{{ kewe_phone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
+                Ich willige ein, dass ich künftig
+                <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
+                <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
                 (bitte zutreffendes ankreuzen)
                 über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern unserer Versicherung informiert werde.<br>
                 Sie können mich auch zur Kundenbefragung kontaktieren.
@@ -132,8 +130,8 @@
   export default class ChangeSuccess extends Vue {
     private icons = icons;
 
-    private kewe_electronic = false;
-    private kewe_phone = false;
+    private keweElectronic = false;
+    private kewePhone = false;
 
     private styling = {
       successHighlight: {

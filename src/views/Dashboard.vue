@@ -1,71 +1,30 @@
 <template>
   <div>
-    <v-navigation-drawer fixed clipped app v-model="drawer" disable-resize-watcher>
-      <v-toolbar flat class="transparent">
-        <v-list class="pa-0">
-          <v-list-tile avatar>
-            <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/women/23.jpg">
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Nina Traumkundin</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar>
-      <v-list dense>
-        <template v-for="(item, i) in sideBoardItems">
-          <v-layout row v-if="item.heading" align-center :key="i">
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
-            </v-flex>
-            <v-flex xs6 class="text-xs-right">
-              <v-btn small flat>edit</v-btn>
-            </v-flex>
-          </v-layout>
-          <v-divider dark v-else-if="item.divider" class="my-3" :key="i"></v-divider>
-          <v-list-tile :key="i" v-else>
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title class="grey--text">
-                {{ item.text }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
     <v-toolbar height="48" color="dashcol" light app fixed clipped-left scroll-off-screen>
-      <v-toolbar-side-icon @click.native="drawer = !drawer"/>
-      <v-btn icon to="/login">
-        <v-icon>lock</v-icon>
-      </v-btn>
-      <v-toolbar-items>
-        <v-btn to="/" flat>Dashboard</v-btn>
-      </v-toolbar-items>
+      <v-toolbar-title>
+        <router-link
+          class="mr-4 primary--text text--darken-3 font-weight-bold"
+          style="cursor: pointer"
+          tag="span"
+          to ="/"
+        >
+          {{ env.title }}
+        </router-link>
+      </v-toolbar-title>
       <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn to="/services" flat>Meine Services</v-btn>
+        <v-btn to="/services" flat>
+          <v-icon class="pr-2">
+            dashboard
+          </v-icon>
+          Meine Services
+        </v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn to="/showcase" flat>Showcase</v-btn>
+      <v-toolbar-items v-if="env.NODE_ENV !== 'production'">
+        <v-btn icon to="/dev">
+          <v-icon>developer_board</v-icon>
+        </v-btn>
       </v-toolbar-items>
-      <!-- <v-btn icon>
-        <v-icon>search</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>apps</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>refresh</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>more_vert</v-icon>
-      </v-btn> -->
     </v-toolbar>
     <v-content>
       <v-container grid-list-lg>
@@ -78,10 +37,14 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
 
+  import env from '@/globals/environment';
+
   @Component
   export default class Dashboard extends Vue {
-    public drawer: boolean = false;
-    public sideBoardItems = [
+    private env = env;
+
+    private drawer: boolean = false;
+    private sideBoardItems = [
       { icon: 'settings', text: 'Einstellungen' },
       { icon: 'help', text: 'Hilfe' },
       { icon: 'keyboard', text: 'Keyboard shortcuts' },

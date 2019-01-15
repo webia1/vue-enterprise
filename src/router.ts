@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import ChangeContact from '@/views/ChangeContact.vue';
 import ChangeSuccess from '@/views/ChangeSuccess.vue';
 import Dashboard from '@/views/Dashboard.vue';
-import Geolocation from '@/views/Geolocation.vue';
+import DeveloperDashboard from '@/views/DeveloperDashboard.vue';
 import Login from '@/views/Login.vue';
 import OCR from '@/views/OCR.vue';
 import Overview from '@/views/Overview.vue';
@@ -43,12 +43,12 @@ export default new Router({
           }),
         },
         {
-          path: 'ocr',
-          component: OCR,
+          path: 'dev',
+          component: DeveloperDashboard,
         },
         {
-          path: 'geo',
-          component: Geolocation,
+          path: 'ocr',
+          component: OCR,
         },
         {
           path: 'login',

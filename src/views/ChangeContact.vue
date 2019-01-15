@@ -438,7 +438,7 @@ export default class ChangeContact extends Vue {
         this.fields.zip = position.postcode ? position.postcode : '';
         this.fields.location = position.city ? position.city : '';
         this.fields.country = position.country ? position.country : '';
-      })
+      });
   }
 
   private created() {
