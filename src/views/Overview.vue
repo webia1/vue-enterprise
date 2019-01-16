@@ -45,8 +45,29 @@
                 :rules="[isValid('insuranceNumber')]"
                 :success="!errors.insuranceNumber"
                 v-model="insuranceNumber"
-              />
-              <p>Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.</p>
+              >
+                <v-menu
+                  slot="append-outer"
+                  left
+                  top
+                  :max-width="$vuetify.breakpoint.mdAndUp ? '250px' : null"
+                  :open-on-click="false"
+                  open-on-hover
+                >
+                  <v-icon slot="activator">
+                    info_outline
+                  </v-icon>
+                  <v-card dark color="secondary">
+                    <v-card-text>
+                      <div>
+                        Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567).<br>
+                        Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-menu>
+              </v-text-field>
+              <!-- <p>Die Versicherungsnummer (VNR) beginnt meist mit den Buchstaben SV, LV, KV oder DA gefolgt von 1 bis 9 Ziffern (z.B. KV123456789, LV12345, SV1234567). Leerzeichen und weitere nachfolgende Zeichen bitte nicht eingeben.</p> -->
               <p>
                 <strong>Sie haben Ihre Versicherungsnummer nicht zur Hand?</strong>
                 <br>
