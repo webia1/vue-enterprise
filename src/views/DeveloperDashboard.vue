@@ -36,17 +36,7 @@
                   :disabled="addressfields.isFetching"
                   :loading="addressfields.isFetching"
                   v-model="addressfields.city"
-                >
-                  <v-progress-linear
-                    v-if="addressfields.isFetching"
-                    slot="progress"
-                    indeterminate
-                    height="1"
-                  />
-                </v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <countryField :preset="addressfields.country" v-model="addressfields.country" />
+                />
               </v-flex>
             </v-layout>
           </v-card-text>
@@ -179,7 +169,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import countryField from '@/components/forms/country-field/CountryField.vue';
-import AddressService from '@/globals/services/address';
+import { AddressService } from '@/globals/services/address';
 import GeolocationService from '@/globals/services/geolocation';
 
 import icons from '@/globals/icons';
@@ -198,8 +188,6 @@ export default class DeveloperDashboard extends Vue {
   private position = {};
   private addressfields = {
     city: '',
-    country: '',
-    road: '',
     zip: '',
     isFetching: false,
   };
@@ -217,18 +205,14 @@ export default class DeveloperDashboard extends Vue {
     this.addressfields.city = '';
     this.addressfields.isFetching = true;
 
-    (Promise.race([
-      AddressService.findLocationByZipcode(this.addressfields.zip),
-      new Promise((resolve, reject) => {
-        setTimeout(() => reject('API timeout'), 1000);
-      }),
-    ]) as any)
+    AddressService.findLocationByZipcode(this.addressfields.zip)
       .then((results: any[]) => {
         if (results.length === 1) {
           const [entry] = results;
           this.addressfields.city = entry.city;
         }
       })
+      // tslint:disable-next-line
       .catch(console.error)
       .then(() => {
         this.addressfields.isFetching = false;

@@ -274,5 +274,6 @@
   { "zipcode": "14193", "city": "Berlin", "country": "Deutschland" },
   { "zipcode": "14195", "city": "Berlin", "country": "Deutschland" },
   { "zipcode": "14197", "city": "Berlin", "country": "Deutschland" },
-  { "zipcode": "14199", "city": "Berlin", "country": "Deutschland" }
+  { "zipcode": "14199", "city": "Berlin", "country": "Deutschland" },
+  { "zipcode": "22297", "city": "Hamburg", "country": "Deutschland" }
 ]

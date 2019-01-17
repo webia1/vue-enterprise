@@ -20,7 +20,7 @@
         </v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
-      <v-toolbar-items v-if="env.NODE_ENV !== 'production'">
+      <v-toolbar-items v-if="!env.isProd">
         <v-btn icon to="/dev">
           <v-icon>developer_board</v-icon>
         </v-btn>
