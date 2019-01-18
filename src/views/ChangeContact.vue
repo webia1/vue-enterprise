@@ -7,12 +7,15 @@
         </v-card-title>
         <v-card-text>
           <h3 class="red--text text--darken-3 mb-0">Persönliche Angaben</h3>
-          <v-layout wrap>
+          <h4 class="mb-3">Hallo {{ fields.firstName }} {{ fields.lastName }},</h4>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero obcaecati laboriosam doloribus aliquid!</p>
+
+          <!-- <v-layout wrap>
             <v-flex>
               <v-text-field
                 box
                 disabled
-                label="Vorname"
+                label="Yorks dritter Vorname"
                 v-model="fields.firstName"
               />
             </v-flex>
@@ -20,11 +23,11 @@
               <v-text-field
                 box
                 disabled
-                label="Nachname"
+                label="Schroerens alternativer Nachname"
                 v-model="fields.lastName"
               />
             </v-flex>
-          </v-layout>
+          </v-layout> -->
 
           <h3 class="red--text text--darken-3 mb-0">Anschrift</h3>
           <p>Tragen Sie hier Ihre neue Anschrift ein</p>
@@ -51,20 +54,23 @@
               <v-text-field
                 box
                 :append-icon="iconState('zip')"
+                :error-messages="errors.zip"
                 label="PLZ"
-                :rules="[isValid('zip')]"
                 :success="!!hasChanges('zip') && !errors.zip"
                 v-model="fields.zip"
+                @blur="autoCity()"
               />
             </v-flex>
             <v-flex xs12 md8>
               <v-text-field
                 box
-                :append-icon="iconState('location')"
+                :append-icon="iconState('city')"
+                :disabled="zipRequest"
+                :error-messages="errors.city"
                 label="Ort"
-                :rules="[isValid('location')]"
-                :success="!!hasChanges('location') && !errors.location"
-                v-model="fields.location"
+                :loading="zipRequest"
+                :success="!!hasChanges('city') && !errors.city"
+                v-model="fields.city"
               />
             </v-flex>
             <v-flex xs12>
@@ -182,6 +188,7 @@ import validate from 'validate.js';
 import icons from '@/globals/icons';
 
 import CountryField from '@/components/forms/country-field/CountryField.vue';
+import { AddressService, AddressServiceErrors } from '@/globals/services/address';
 import GeolocationService from '@/globals/services/geolocation';
 import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
 
@@ -203,8 +210,9 @@ interface CommunicationItem {
 })
 export default class ChangeContact extends Vue {
   private fields: { [key: string]: any } = {};
+  private zipRequest = false;
   private newChannel = null;
-  private errors = {};
+  private errors: any = {};
 
   private communicationOptions: any = [
     {
@@ -265,7 +273,9 @@ export default class ChangeContact extends Vue {
       email: true,
     },
     phone: {
-      format: /^\+?(\d|\s){3,6}\/?(\d|\s)+/,
+      format: {
+        pattern: /^\+?(\d|\s){3,6}\/?(\d|\s)+/,
+      },
     },
     name: {
       presence: { allowEmpty: false },
@@ -274,13 +284,21 @@ export default class ChangeContact extends Vue {
       },
     },
     address: {
-      format: /([a-zäöü]+.*\d+.*)?/i,
+      format: {
+        pattern: /([a-zäöü]+.*\d+.*)?/i,
+      },
     },
     zip: {
-      format: /(\d{4,5})?/,
+      format: {
+        pattern: /(\d{4,5})?/,
+        message: 'Ungültige PLZ!',
+      },
     },
-    location: {
-      format: /([a-zäöü]{3,})?/i,
+    city: {
+      format: {
+        pattern: /([a-zäöü]{3,})?/i,
+        message: 'Bitte geben Sie eine gültige Stadt ein!',
+      },
     },
   };
 
@@ -331,10 +349,13 @@ export default class ChangeContact extends Vue {
         zip: {
           ...this.validationRules.zip,
         },
-        location: {
-          ...this.validationRules.location,
+        city: {
+          ...this.validationRules.city,
         },
         ...this.communicationItems.validationRules,
+      },
+      {
+
       },
     );
     this.errors = errors || {};
@@ -375,6 +396,29 @@ export default class ChangeContact extends Vue {
       publicness: publicness || 'private',
       value: '',
     });
+  }
+
+  private autoCity() {
+    if (this.fields.zip !== '' && !this.errors.zip) {
+      this.fields.city = '';
+      this.zipRequest = true;
+
+      AddressService.findLocationByZipcode(this.fields.zip)
+        .then((results: any[]) => {
+          if (results.length === 1) {
+            const [entry] = results;
+            this.fields.city = entry.city;
+          }
+        })
+        .catch(({ code }) => {
+          if (code === AddressServiceErrors.NoEntryFound) {
+            this.errors.zip = ['Postleitzahl konnte nicht gefunden werden!'];
+          }
+        })
+        .then(() => {
+          this.zipRequest = false;
+        });
+    }
   }
 
   private removeCommunicationItem(index: number) {
@@ -436,7 +480,7 @@ export default class ChangeContact extends Vue {
         this.fields.address = address;
 
         this.fields.zip = position.postcode ? position.postcode : '';
-        this.fields.location = position.city ? position.city : '';
+        this.fields.city = position.city ? position.city : '';
         this.fields.country = position.country ? position.country : '';
       });
   }
@@ -459,7 +503,7 @@ export default class ChangeContact extends Vue {
       // Show only fields which was filled in identify process
       address: '',
       zip: '',
-      location: '',
+      city: '',
       communications: !this.$store.state.userData.confirmationEmailUsed ? [{
         channel: 'email',
         publicness: 'private',
