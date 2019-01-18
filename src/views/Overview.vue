@@ -12,28 +12,29 @@
           <v-text-field
             box
             :append-icon="firstName !== '' ? (!errors.firstName ? icons.fieldStates.success : icons.fieldStates.error) : null"
+            :error-messages="errors.firstName"
             label="Vorname *"
-            :rules="[isValid('firstName')]"
-            :success="!errors.firstName"
+            :success="firstName !== '' && !errors.firstName"
             v-model="firstName"
+            @blur="test($event)"
           />
           <v-text-field
             box
             :append-icon="lastName !== '' ? (!errors.lastName ? icons.fieldStates.success : icons.fieldStates.error) : null"
+            :error-messages="errors.lastName"
             label="Nachname *"
-            :rules="[isValid('lastName')]"
-            :success="!errors.lastName"
+            :success="lastName !== '' && !errors.lastName"
             v-model="lastName"
           />
           <v-text-field
             box
-            :append-icon="birthday !== '' ? (!errors.birthday ? icons.fieldStates.success : icons.fieldStates.error) : null"
             return-masked-value
+            :append-icon="birthday !== '' ? (!errors.birthday ? icons.fieldStates.success : icons.fieldStates.error) : null"
+            :error-messages="errors.birthday"
             hint="dd.mm.yyyy"
             label="Geburtstag *"
             mask="##.##.####"
-            :rules="[isValid('birthday')]"
-            :success="!errors.birthday"
+            :success="birthday !== '' && !errors.birthday"
             v-model="birthday"
           />
           <template v-if="withInsuranceNumber">
@@ -41,9 +42,9 @@
               <v-text-field
                 box
                 :append-icon="insuranceNumber !== '' ? (!errors.insuranceNumber ? icons.fieldStates.success : icons.fieldStates.error) : null"
+                :error-messages="errors.insuranceNumber"
                 label="Versicherungsnummer *"
-                :rules="[isValid('insuranceNumber')]"
-                :success="!errors.insuranceNumber"
+                :success="insuranceNumber !== '' && !errors.insuranceNumber"
                 v-model="insuranceNumber"
               >
                 <v-menu
@@ -81,9 +82,9 @@
             <v-text-field
               box
               :append-icon="address !== '' ? (!errors.address ? icons.fieldStates.success : icons.fieldStates.error) : null"
+              :error-messages="errors.address"
               label="Straße / Hausnummer *"
-              :rules="[isValid('address')]"
-              :success="!errors.address"
+              :success="address !== '' && !errors.address"
               v-model="address"
             />
             <v-layout wrap>
@@ -91,20 +92,23 @@
                 <v-text-field
                   box
                   :append-icon="zip !== '' ? (!errors.zip ? icons.fieldStates.success : icons.fieldStates.error) : null"
+                  :error-messages="errors.zip"
                   label="PLZ *"
-                  :rules="[isValid('zip')]"
-                  :success="!errors.zip"
+                  :success="zip !== '' && !errors.zip"
                   v-model="zip"
+                  @blur="autoCity()"
                 />
               </v-flex>
               <v-flex xs12 md8>
                 <v-text-field
                   box
-                  :append-icon="location !== '' ? (!errors.location ? icons.fieldStates.success : icons.fieldStates.error) : null"
+                  :append-icon="city !== '' ? (!errors.city ? icons.fieldStates.success : icons.fieldStates.error) : null"
+                  :disabled="zipRequest"
+                  :error-messages="errors.city"
                   label="Ort *"
-                  :rules="[isValid('location')]"
-                  :success="!errors.location"
-                  v-model="location"
+                  :loading="zipRequest"
+                  :success="city !== '' && !errors.city"
+                  v-model="city"
                 />
               </v-flex>
             </v-layout>
@@ -125,10 +129,10 @@
           <v-text-field
             box
             :append-icon="confirmationEmail !== '' ? (!errors.confirmationEmail ? icons.fieldStates.success : icons.fieldStates.error) : null"
+            :error-messages="errors.confirmationEmail"
             hint="Bitte tragen Sie hier Ihre E-Mail-Adresse ein, damit wir Ihnen eine Eingangsbestätigung schicken können."
             label="E-Mail zur Bestätigung *"
-            :rules="[isValid('confirmationEmail')]"
-            :success="!errors.confirmationEmail"
+            :success="confirmationEmail !== '' && !errors.confirmationEmail"
             v-model="confirmationEmail"
           >
           </v-text-field>
@@ -141,8 +145,6 @@
           <v-btn
             large
             color="primary"
-            :dark="formIsValid"
-            :disabled="!formIsValid"
             @click="identify()"
           >
             <v-icon large>{{ icons.cta }}</v-icon>Jetzt identifizieren
@@ -202,6 +204,7 @@ import icons from '@/globals/icons';
 import userData from '@/globals/userData';
 
 import CountryField from '@/components/forms/country-field/CountryField.vue';
+import { AddressService, AddressServiceErrors } from '@/globals/services/address';
 
 @Component({
   components: {
@@ -220,9 +223,10 @@ export default class Overview extends Vue {
   private withInsuranceNumber = true;
   private address: string = '';
   private zip: string = '';
-  private location: string = '';
+  private city: string = '';
   private country: string = '';
-  private errors = {};
+  private errors: any = {};
+  private zipRequest = false;
 
   private confirmationEmail = '';
 
@@ -234,7 +238,7 @@ export default class Overview extends Vue {
       insuranceNumber: this.insuranceNumber,
       address: this.address,
       zip: this.zip,
-      location: this.location,
+      city: this.city,
       confirmationEmail: this.confirmationEmail,
     }, {
       firstName: {
@@ -266,7 +270,7 @@ export default class Overview extends Vue {
           },
         } : {}),
       },
-      location: {
+      city: {
         ...this.validationConstraints.withoutInsuranceNumber,
       },
       confirmationEmail: {
@@ -299,25 +303,58 @@ export default class Overview extends Vue {
     };
   }
 
+  private autoCity() {
+    if (this.zip !== '' && !this.errors.zip) {
+      this.city = '';
+      this.zipRequest = true;
+
+      AddressService.findLocationByZipcode(this.zip)
+        .then((results: any[]) => {
+          if (results.length === 1) {
+            const [entry] = results;
+            this.city = entry.city;
+          }
+        })
+        .catch(({ code }) => {
+          if (code === AddressServiceErrors.NoEntryFound) {
+            this.errors.zip = ['Postleitzahl konnte nicht gefunden werden!'];
+          }
+        })
+        .then(() => {
+          this.zipRequest = false;
+        });
+    }
+  }
+
   private changeMode() {
     this.withInsuranceNumber = !this.withInsuranceNumber;
     this.insuranceNumber = '';
     this.address = '';
     this.zip = '';
-    this.location = '';
+    this.city = '';
+    setTimeout(() => {
+      if (this.withInsuranceNumber) {
+        this.errors.insuranceNumber = [];
+      } else {
+        this.errors = {
+          ...this.errors,
+          address: [],
+          zip: [],
+          city: [],
+        };
+      }
+    }, 0);
   }
 
-  private isValid(fieldName: string) {
-    return () => {
-      if (this.errors) {
-        return this.errors[fieldName] ? this.errors[fieldName][0] : true;
-      }
-      return true;
-    };
+  private hasChanges(fieldName: string) {
+    return (
+      this[fieldName] !== ''
+      && this[fieldName] !== this.$store.state.userData.personal[fieldName]
+    );
   }
 
   private identify() {
-    if (this.formIsValid && !(this.errors as any).termsAccepted) {
+    if (this.formIsValid && !this.errors.termsAccepted) {
       if (!this.$store.state.userData.initialized) {
         this.$store.dispatch('userData/initializeUserData', {
           ...userData,
@@ -327,6 +364,10 @@ export default class Overview extends Vue {
       }
       this.$router.push(this.successRedirect);
     }
+  }
+
+  private test(event) {
+    console.dir(event);
   }
 }
 </script>
