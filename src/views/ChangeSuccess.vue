@@ -15,7 +15,7 @@
           <h2 class="red--text text--darken-3">Vielen Dank {{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</h2>
         </v-card-title>
         <v-card-text>
-          <h3>Folgende Daten haben wir geändert. Bitte beachten Sie, dass es etwas dauern kann, bis Ihr Änderungswunsch in allen unseren Systemen sichtbar ist.</h3>
+          <h3>Folgende Daten haben wir geändert. Es kann etwas dauern, bis Ihr Änderungswunsch in allen unseren Systemen sichtbar ist.</h3>
           <v-list>
             <!-- <v-list-tile>
               <v-list-tile-content>
@@ -28,7 +28,7 @@
                 <v-list-tile-sub-title>Adresse</v-list-tile-sub-title>
                 <v-list-tile-title>
                   {{ $store.state.userData.personal.address }},
-                  {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.location }}
+                  {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.city }}
                   ({{ $store.state.userData.personal.country }})
                 </v-list-tile-title>
               </v-list-tile-content>
@@ -43,7 +43,7 @@
             >
               <v-list-tile-content>
                 <v-list-tile-sub-title>
-                  {{ item.channel }} ({{ item.publicness }})
+                  {{ getLabelForCommunication(item) }}
                 </v-list-tile-sub-title>
                 <v-list-tile-title>
                   {{ item.value }}
@@ -58,23 +58,6 @@
             </strong>
             &nbsp;haben wir eine Eingangsbestätigung geschickt.
           </p>
-
-          <v-card>
-            <v-card-text>
-              <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
-              <p>
-                Ich willige ein, dass ich künftig
-                <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
-                <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
-                (bitte zutreffendes ankreuzen)
-                über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern unserer Versicherung informiert werde.<br>
-                Sie können mich auch zur Kundenbefragung kontaktieren.
-              </p>
-              <p>
-                Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
-              </p>
-            </v-card-text>
-          </v-card>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -119,8 +102,10 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
 
-  import QuickServices from '@/components/QuickServices.vue';
+  import CommunicationItem from '@/globals/definitions/communication-item';
   import icons from '@/globals/icons';
+  import communicationLabels from '@/globals/communication-labels';
+  import QuickServices from '@/components/QuickServices.vue';
 
   @Component({
     components: {
@@ -130,8 +115,7 @@
   export default class ChangeSuccess extends Vue {
     private icons = icons;
 
-    private keweElectronic = false;
-    private kewePhone = false;
+    private labels = communicationLabels;
 
     private styling = {
       successHighlight: {
@@ -139,6 +123,17 @@
         'background-color': `${this.$vuetify.theme.success} !important`,
       },
     };
+
+    private getLabelForCommunication(item: CommunicationItem, limit?: number) {
+      const channelLabel = this.labels.communications.channel[item.channel];
+      const publicnessLabel =
+        item.channel !== 'fax' ? `(${this.labels.communications.publicness[item.publicness]})` : '';
+      const label = `${channelLabel} ${publicnessLabel}`;
+      if (limit && label.length > limit) {
+        return `${label.substr(0, limit)}...`;
+      }
+      return label;
+    }
 
     private mounted() {
       this.$store.dispatch('userData/contactChanged');

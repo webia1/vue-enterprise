@@ -8,7 +8,7 @@
         <v-card-text>
           <h3 class="red--text text--darken-3 mb-0">Persönliche Angaben</h3>
           <h4 class="mb-3">Hallo {{ fields.firstName }} {{ fields.lastName }},</h4>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero obcaecati laboriosam doloribus aliquid!</p>
+          <p>tragen Sie hier Ihre neuen Daten ein</p>
 
           <!-- <v-layout wrap>
             <v-flex>
@@ -39,15 +39,23 @@
             :success="!!hasChanges('address') && !errors.address"
             v-model="fields.address"
           >
-            <v-tooltip
+            <v-menu
               slot="append-outer"
               left
+              :nudge-top="15"
+              :nudge-left="30"
+              :open-on-click="false"
+              open-on-hover
             >
               <v-icon slot="activator" @click="useGeolocation()">
                 {{ icons.findLocation }}
               </v-icon>
-              Meinen aktuellen Standort verwenden
-            </v-tooltip>
+              <v-card dark color="secondary">
+                <v-card-text>
+                  Meinen aktuellen Standort verwenden
+                </v-card-text>
+              </v-card>
+            </v-menu>
           </v-text-field>
           <v-layout wrap>
             <v-flex xs12 md4>
@@ -135,7 +143,7 @@
                   <v-overflow-btn
                     readonly
                     class="mt-0 pt-0"
-                    label="Kontaktart"
+                    label="Auswahl"
                     slot="activator"
                   />
                   <v-list>
@@ -163,6 +171,24 @@
               </v-flex>
             </v-layout>
           </v-flex>
+          <v-flex>
+            <!-- <v-card>
+              <v-card-text> -->
+                <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
+                <p>
+                  Ich willige ein, dass ich künftig
+                  <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
+                  <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
+                  (bitte zutreffendes ankreuzen)
+                  über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern informiert werde.<br>
+                  Sie können mich auch zur Kundenbefragung kontaktieren.
+                </p>
+                <p>
+                  Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
+                </p>
+              <!-- </v-card-text>
+            </v-card> -->
+          </v-flex>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -187,17 +213,12 @@ import validate from 'validate.js';
 
 import icons from '@/globals/icons';
 
-import CountryField from '@/components/forms/country-field/CountryField.vue';
+import CommunicationItem from '@/globals/definitions/communication-item';
+import communicationLabels from '@/globals/communication-labels';
 import { AddressService, AddressServiceErrors } from '@/globals/services/address';
 import GeolocationService from '@/globals/services/geolocation';
+import CountryField from '@/components/forms/country-field/CountryField.vue';
 import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberField.vue';
-
-interface CommunicationItem {
-  [key: string]: any;
-  channel: string;
-  publicness: string;
-  value?: any;
-}
 
 @Component({
   components: {
@@ -213,6 +234,9 @@ export default class ChangeContact extends Vue {
   private zipRequest = false;
   private newChannel = null;
   private errors: any = {};
+
+  private keweElectronic = false;
+  private kewePhone = false;
 
   private communicationOptions: any = [
     {
@@ -253,20 +277,7 @@ export default class ChangeContact extends Vue {
     },
   };
 
-  private labels = {
-    communications: {
-      channel: {
-        mobile: 'Mobil',
-        phone: 'Telefon',
-        email: 'E-Mail',
-        fax: 'Telefax',
-      },
-      publicness: {
-        business: 'geschäftlich',
-        private: 'privat',
-      },
-    },
-  };
+  private labels = communicationLabels;
 
   private validationRules = {
     mail: {
