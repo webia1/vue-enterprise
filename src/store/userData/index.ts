@@ -29,6 +29,9 @@ export default {
         ...data,
       };
     },
+    setDateFrom: (ctx, dateFrom) => {
+      ctx.dateFrom = dateFrom;
+    },
     storeConfirmationEmail: (ctx, email) => {
       ctx.confirmationEmail = email;
     },
@@ -48,7 +51,8 @@ export default {
       ctx.commit('initialized');
     },
     updateUser: (ctx: any, data: any) => {
-      ctx.commit('setPersonalData', data);
+      ctx.commit('setPersonalData', data.personal);
+      ctx.commit('setDateFrom', data.dateFrom);
     },
     contactChanged: (ctx) => {
       ctx.commit('useConfirmationEmail');

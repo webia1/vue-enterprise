@@ -172,6 +172,45 @@
             </v-layout>
           </v-flex>
           <v-flex>
+            <h3 class="red--text text--darken-3 mb-0">Gültig ab</h3>
+            <v-layout>
+              <v-flex xs12 md3>
+                <v-radio-group mandatory v-model="useCurrentDate">
+                  <v-radio
+                    label="ab sofort"
+                    :value="true"
+                    change="dateFrom = new Date().toLocaleDateString();"
+                  >
+                  </v-radio>
+                </v-radio-group>
+              </v-flex>
+              <v-flex xs12 md6>
+                <v-menu
+                  right
+                  :nudge-bottom="60"
+                  :close-on-content-click="false"
+                >
+                  <v-text-field
+                    slot="activator"
+                    box
+                    readonly
+                    :disabled="useCurrentDate"
+                    label="Datum"
+                    v-model="formattedDate"
+                    @click.native="useCurrentDate = false"
+                  >
+                  </v-text-field>
+                  <v-date-picker
+                    no-title
+                    scrollable
+                    v-model="dateFrom"
+                  >
+                  </v-date-picker>
+                </v-menu>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <v-flex>
             <!-- <v-card>
               <v-card-text> -->
                 <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
@@ -228,6 +267,14 @@ import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberF
   filters: {
     ellipsis: (text: string, limit: number) => limit ? `${text.substr(0, limit)}...` : text,
   },
+  watch: {
+    useCurrentDate(val) {
+      if (val) {
+        // @ts-ignore
+        this.dateFrom = new Date().toISOString().split('T')[0];
+      }
+    }
+  },
 })
 export default class ChangeContact extends Vue {
   private fields: { [key: string]: any } = {};
@@ -235,8 +282,14 @@ export default class ChangeContact extends Vue {
   private newChannel = null;
   private errors: any = {};
 
+  private useCurrentDate = true;
+  private dateFrom = new Date().toISOString().split('T')[0];
   private keweElectronic = false;
   private kewePhone = false;
+
+  private get formattedDate() {
+    return new Date(this.dateFrom).toLocaleDateString();
+  }
 
   private communicationOptions: any = [
     {
@@ -474,8 +527,11 @@ export default class ChangeContact extends Vue {
   private submit() {
     if (this.formIsValid) {
       this.$store.dispatch('userData/updateUser', {
-        ...this.fields,
-        communications: [...this.communicationItems.items],
+        personal: {
+          ...this.fields,
+          communications: [...this.communicationItems.items],
+        },
+        dateFrom: this.dateFrom,
       });
       this.$router.push('./success');
     }

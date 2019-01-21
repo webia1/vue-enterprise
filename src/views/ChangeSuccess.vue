@@ -51,6 +51,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list>
+          <p>Änderungen sind gültig ab <strong>{{ new Date($store.state.userData.dateFrom).toLocaleDateString() }}.</strong></p>
           <p>
             An die Adresse&nbsp;
             <strong>
