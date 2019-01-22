@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="my-2 font-weight-bold">Weitere Schnell-Services für Sie zur Auswahl</h3>
+    <h3 class="my-2">Weitere Schnell-Services für Sie zur Auswahl</h3>
     <v-layout wrap>
       <v-flex xs12 md4>
         <v-card class="pa-3 fill-height">

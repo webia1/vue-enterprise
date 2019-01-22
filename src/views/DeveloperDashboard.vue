@@ -1,20 +1,17 @@
 <template>
   <div>
-    <v-card>
-      <v-card-title>
+    <div class="mb-3">
+      <h3 class="primary--text text--darken-3">
         Actions
-      </v-card-title>
-      <v-card-text>
-        <v-btn
-          color="primary"
-          @click="login()"
-        >
-          Sofort-Login
-        </v-btn>
-        <v-btn to="/showcase">Show Component Showcase</v-btn>
-      </v-card-text>
-    </v-card>
-    <v-divider class="my-3" />
+      </h3>
+      <v-btn
+        color="primary"
+        @click="login()"
+      >
+        Sofort-Login
+      </v-btn>
+      <v-btn to="/showcase">Show Component Showcase</v-btn>
+    </div>
     <v-expansion-panel expand>
       <v-expansion-panel-content>
         <div slot="header">Address</div>
