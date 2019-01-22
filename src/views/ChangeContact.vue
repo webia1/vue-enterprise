@@ -3,7 +3,7 @@
     <v-flex xs12>
       <v-card class="pa-3">
         <v-card-title>
-          <h2 class="red--text text--darken-3 mb-0">Änderung Adresse und Kommunikationsdaten</h2>
+          <h2 class="red--text text--darken-3 mb-0">Änderung Adresse und Kommunikations&shy;daten</h2>
         </v-card-title>
         <v-card-text>
           <h3 class="red--text text--darken-3 mb-0">Persönliche Angaben</h3>
@@ -173,7 +173,7 @@
           </v-flex>
           <v-flex>
             <h3 class="red--text text--darken-3 mb-0">Gültig ab</h3>
-            <v-layout>
+            <v-layout wrap>
               <v-flex xs12 md3>
                 <v-radio-group mandatory v-model="useCurrentDate">
                   <v-radio
