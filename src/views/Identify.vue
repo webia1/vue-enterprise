@@ -1,14 +1,12 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12 md8 lg9>
-      <v-card class="pa-3">
-        <v-card-title>
-          <h2 class="red--text text--darken-3">Bitte identifizieren Sie sich</h2>
-        </v-card-title>
-        <v-card-text>
+  <v-layout>
+    <v-flex>
+      <v-content>
+        <h2 class="red--text text--darken-3">Bitte identifizieren Sie sich</h2>
+        <p>
           Der Schutz Ihrer Daten steht bei uns an erster Stelle. Damit wir Ihren Wunsch entgegen nehmen und bearbeiten können, benötigen wir ein paar Daten von Ihnen, um Sie richtig zu identifizieren.
-        </v-card-text>
-        <v-card-text  @keyup.enter="identify()">
+        </p>
+        <div @keyup.enter="identify()">
           <v-text-field
             box
             :append-icon="firstName !== '' ? (!errors.firstName ? icons.fieldStates.success : icons.fieldStates.error) : null"
@@ -138,57 +136,85 @@
             Bei der Verarbeitung von personenbezogenen Daten beachten wir die Vorschriften der EU-Datenschutz-Grundverordnung.
             Ausführliche Informationen finden Sie im <a :href="env.dataSecurityLink">Datenschutzbereich unserer Website</a>.
           </p>
-        </v-card-text>
+        </div>
         <v-card-actions>
           <v-btn
-            large
+            outline
+            round
             color="primary"
             @click="identify()"
           >
-            <v-icon large>{{ icons.cta }}</v-icon>Jetzt identifizieren
+            Jetzt identifizieren
           </v-btn>
         </v-card-actions>
-      </v-card>
-    </v-flex>
-    <v-flex xs12 md4 lg3>
-      <v-layout wrap>
-        <v-flex>
-          <v-card class="pa-3">
-            <v-card-title>
-              <h3 class="red--text text--darken-3">Bereits registriert?</h3>
-            </v-card-title>
-            <v-card-text>
-              <p>Sind Sie bereits in unserem Serviceportal registriert? Im Kundenbereich
-                <strong>"Meine Versicherungen"</strong> verwalten Sie Ihre Versicherungen, Ihre Nachrichten und Ihr Profil - einfach und bequem.
-              </p>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn dark color="secondary">
-                <v-icon>{{ icons.cta }}</v-icon>Login
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-        <v-flex>
-          <v-card class="pa-3">
-            <v-card-title>
-              <h3 class="red--text text--darken-3">Unsere Hotline</h3>
-            </v-card-title>
-            <v-card-text>
-              <p>Haben Sie Fragen oder brauchen Sie Unterstützung, dann rufen Sie uns gerne an.</p>
-              <p class="eye-catcher">
-                <strong>0800 3746-000</strong>
-              </p>
-              <p>(24 h, 7 Tage die Woche, gebührenfrei aus Deutschland)</p>
-              <p>Aus dem Ausland:
-                <br>
-                <strong>+49 211 477-7100</strong>
-              </p>
-            </v-card-text>
-            <v-img src="https://via.placeholder.com/600x400"/>
-          </v-card>
-        </v-flex>
-      </v-layout>
+      </v-content>
+      <v-divider class="mt-5" />
+      <v-content>
+        <v-layout wrap>
+          <v-flex xs12 sm6 offset-sm3 class="text-xs-center">
+            <h4 class="text--disabled">Servicewelt</h4>
+            <h3 class="black--text font-weight-bold">
+              Praktische Services, die Ihnen schnelle Hilfe bieten
+            </h3>
+          </v-flex>
+          <v-flex xs12 sm6>
+            <v-card>
+              <v-card-title>
+                <h3 class="red--text text--darken-3">Bereits registriert?</h3>
+              </v-card-title>
+              <v-card-text>
+                <p>Sind Sie bereits in unserem Serviceportal registriert? Im Kundenbereich
+                  <strong>"Meine Versicherungen"</strong> verwalten Sie Ihre Versicherungen, Ihre Nachrichten und Ihr Profil - einfach und bequem.
+                </p>
+              </v-card-text>
+              <v-card-actions>
+                <v-layout>
+                  <v-flex xs6 class="text-xs-center">
+                    <v-btn
+                      dark
+                      outline
+                      round
+                      color="secondary"
+                    >
+                      Zum Login
+                    </v-btn>
+                  </v-flex>
+                  <v-flex xs6 class="text-xs-center">
+                    <v-btn
+                      dark
+                      outline
+                      round
+                      color="secondary"
+                    >
+                      Jetzt registrieren
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </v-card-actions>
+              <v-img contain :src="`https://lorempixel.com/600/400/business?random=${Math.floor(Math.random() * 0x1000)}`" />
+            </v-card>
+          </v-flex>
+          <v-flex xs 12 sm6>
+            <v-card>
+              <v-card-title>
+                <h3 class="red--text text--darken-3">Unsere Hotline</h3>
+              </v-card-title>
+              <v-card-text>
+                <p>Haben Sie Fragen oder brauchen Sie Unterstützung, dann rufen Sie uns gerne an.</p>
+                <p class="eye-catcher">
+                  <strong>0800 3746-000</strong>
+                </p>
+                <p>(24 h, 7 Tage die Woche, gebührenfrei aus Deutschland)</p>
+                <p>Aus dem Ausland:
+                  <br>
+                  <strong>+49 211 477-7100</strong>
+                </p>
+              </v-card-text>
+              <v-img :src="`https://lorempixel.com/600/400/business?random=${Math.floor(Math.random() * 0x1000)}`" />
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-content>
     </v-flex>
   </v-layout>
 </template>

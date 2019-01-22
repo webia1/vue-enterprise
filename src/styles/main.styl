@@ -1,3 +1,13 @@
+// @import "~vuetify/src/stylus/main.styl";
+$primary = #ED0039;
+$secondary = #6a625a;
+$accent = #6A625A;
+$error = #FF0000;
+$warning = #FFEB3b;
+$info = #E1E0DE;
+$success = #78B60B;
+$dashcol = #FFFFFF;
+
 @font-face {
     font-family: FS Me;
     font-weight: 500;
@@ -61,14 +71,23 @@ body {
   font-family: "FS Me", "Helvetica Neue", Arial, sans-serif;
 }
 
+.application .v-toolbar[main-toolbar] {
+  background-color #fff
+  border-bottom 1px solid $secondary
+}
+
 p {
   margin: 1em 0;
   font-size: 1em;
   line-height: 1.5em;
 }
 
+a {
+  color darken($primary, 50%)
+}
+
 h1, h2, h3, h4, h5 {
-  color: #6a625a;
+  color: $secondary;
   font-weight: 400;
 }
 
@@ -91,14 +110,12 @@ h2 {
   }
 }
 
-
-
-.layout a {
-  color: #892723;
+h3 {
+  font-size 1.66667em
 }
 
-.layout a:hover {
-  color: #ba172d;
+h4 {
+  font-size 1.5em
 }
 
 .v-btn {
@@ -106,18 +123,26 @@ h2 {
   margin-bottom: 10px;
   margin-left: 0 !important;
   margin-right: 12px;
-}
+  text-transform none
 
-.v-btn--large {
-  height: 50px;
-  padding: 0 15px 0 15px;
-  font-size: 1.22222em;
-  box-shadow: 0 0 12px rgba(0, 0, 0, .5);
-}
+  &--large {
+    height: 50px;
+    padding: 0 15px 0 15px;
+    font-size: 1.22222em;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .5);
+  }
 
-.v-btn:not(.v-btn--icon):not(.v-btn--flat):hover {
-  background-color: #892723 !important;
-  border-color: #892723 !important;
+  &:not(.v-btn--icon):not(.v-btn--flat):hover {
+    background-color: #892723 !important;
+    border-color: #892723 !important;
+  }
+
+  // &.primary {
+  //   background-color #fff !important
+  //   border-radius 50%
+  //   border 1px solid $primary
+  //   color $primary
+  // }
 }
 
 .info-box {
@@ -126,7 +151,7 @@ h2 {
 }
 
 .theme--light.application {
-  background-color: rgb(240, 239, 238);
+  background-color: #fff;
   color: #6a625a;
   font-family: "FS Me", "Helvetica Neue", Arial, sans-serif;
 }
@@ -140,5 +165,19 @@ h2 {
   background-color: #FAFAFA;
 }
 
-.v-card[infoBox] {
+.services {
+  &__item {
+    position relative
+    padding-right 50px
+
+    &__icon {
+      position absolute
+      right 5px
+      top 0
+      bottom 0
+      margin auto
+      height 36px
+      width 36px
+    }
+  }
 }

@@ -5,9 +5,9 @@ import ChangeContact from '@/views/ChangeContact.vue';
 import ChangeSuccess from '@/views/ChangeSuccess.vue';
 import Dashboard from '@/views/Dashboard.vue';
 import DeveloperDashboard from '@/views/DeveloperDashboard.vue';
+import Identify from '@/views/Identify.vue';
 import Login from '@/views/Login.vue';
 import OCR from '@/views/OCR.vue';
-import Overview from '@/views/Overview.vue';
 import Services from '@/views/Services.vue';
 import Showcase from '@/Showcase.vue';
 
@@ -37,7 +37,11 @@ export default new Router({
       children: [
         {
           path: '',
-          component: Overview,
+          redirect: '/identify',
+        },
+        {
+          path: '/identify',
+          component: Identify,
           props: () => ({
             successRedirect: 'services',
           }),
@@ -70,7 +74,7 @@ export default new Router({
         {
           path: 'change/bank',
           redirect: '/services',
-          beforeEnter: IdentifyGuard('/'),
+          // beforeEnter: IdentifyGuard('/'),
         },
         {
           path: 'change/success',

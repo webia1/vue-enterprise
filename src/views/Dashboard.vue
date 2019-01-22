@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <v-toolbar height="48" color="dashcol" light app fixed clipped-left scroll-off-screen>
+  <v-container grid-list-lg>
+    <v-toolbar
+      app
+      flat
+      height="72"
+      class="pa-0"
+      main-toolbar
+    >
       <v-toolbar-title>
         <router-link
           class="mr-4 primary--text text--darken-3 font-weight-bold"
@@ -11,9 +17,20 @@
           {{ env.title }}
         </router-link>
       </v-toolbar-title>
+        <v-toolbar-items>
+          <v-btn flat>
+            Produkte
+          </v-btn>
+          <v-btn flat>
+            Verstehen
+          </v-btn>
+          <v-btn flat to="/identify">
+            Kundebereich
+          </v-btn>
+        </v-toolbar-items>
       <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn to="/services" flat>
-          <v-icon class="pr-2">
+        <v-btn flat to="/services">
+          <v-icon small class="pr-2">
             dashboard
           </v-icon>
           Meine Services
@@ -21,17 +38,15 @@
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="!env.isProd">
-        <v-btn icon to="/dev">
-          <v-icon>developer_board</v-icon>
+        <v-btn icon small to="/dev">
+          <v-icon small color="teal">code</v-icon>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
-      <v-container grid-list-lg>
-        <router-view></router-view>
-      </v-container>
+      <router-view></router-view>
     </v-content>
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
