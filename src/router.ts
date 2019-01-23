@@ -36,10 +36,6 @@ export default new Router({
       component: Dashboard,
       children: [
         {
-          path: '',
-          redirect: '/identify',
-        },
-        {
           path: '/identify',
           component: Identify,
           props: () => ({
@@ -80,6 +76,10 @@ export default new Router({
           path: 'change/success',
           component: ChangeSuccess,
           beforeEnter: IdentifyGuard('/'),
+        },
+        {
+          path: '',
+          redirect: '/identify',
         },
       ],
     },

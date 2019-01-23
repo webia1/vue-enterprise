@@ -1,101 +1,106 @@
 <template>
   <v-layout wrap>
     <v-flex xs12>
-      <v-card dark color="success mb-3">
-        <v-card-text>
-          <v-layout wrap justify-center>
-            <v-flex xs1>
-              <v-icon x-large>check</v-icon>
+      <v-content>
+        <h2>
+          Vielen Dank {{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }},
+        </h2>
+        <h3>
+          Ihre neuen Daten wurde erfolgreich übermittelt
+          <v-btn icon depressed :ripple="false" color="success">
+            <v-icon large>
+              check
+            </v-icon>
+          </v-btn>
+        </h3>
+
+        <v-divider class="my-5" />
+
+        <h3>
+          Adresse
+        </h3>
+        <p>
+          {{ $store.state.userData.personal.road }},
+          {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.city }}
+          ({{ $store.state.userData.personal.country }})
+        </p>
+
+        <v-divider class="my-5" />
+
+        <template v-if="$store.state.userData.personal.communications.length">
+          <h3>Kommunikationsdaten</h3>
+          <dl class="mt-4">
+            <template
+              v-for="(item, i) in $store.state.userData.personal.communications"
+            >
+              <dt :key="`communication_channel_${i}`">{{ getLabelForCommunication(item) }}</dt>
+              <dd :key="`communication_value_${i}`">{{ item.value }}</dd>
+            </template>
+          </dl>
+        </template>
+
+        <v-divider class="my-5" />
+
+        <h3>Änderungen gültig ab</h3>
+        <p>
+          {{ new Date($store.state.userData.dateFrom).toLocaleDateString() }}
+        </p>
+
+        <v-divider class="my-5" />
+
+        <h3>Bestätigungs-E-Mail</h3>
+        <p>
+          An die Adresse&nbsp;
+          <strong>
+            {{ $store.state.userData.confirmationEmail }}
+          </strong>
+          &nbsp;haben wir eine Eingangsbestätigung geschickt.
+        </p>
+
+        <v-divider class="my-5" />
+
+        <v-content>
+          <v-layout wrap justify-center class="services">
+            <v-flex xs8 md4 class="text-xs-center">
+              <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4>
+            </v-flex>
+            <v-flex>
+              <v-layout wrap justify-center>
+                <v-flex xs8 md3>
+                  <v-card flat class="fill-height services__item" to="/change/contact">
+                    <v-card-title>
+                      <h5>
+                        Änderung Adresse und Kommunikationsdaten
+                      </h5>
+                    </v-card-title>
+                    <v-icon
+                      large
+                      class="services__item__icon"
+                    >
+                      chevron_right
+                    </v-icon>
+                  </v-card>
+                </v-flex>
+                <v-flex xs8 md3>
+                  <v-card flat class="fill-height services__item" to="/change/contact">
+                    <v-card-title>
+                      <h5>
+                        Änderung Beitragskonto
+                      </h5>
+                    </v-card-title>
+                    <v-icon
+                      large
+                      class="services__item__icon"
+                    >
+                      chevron_right
+                    </v-icon>
+                  </v-card>
+                </v-flex>
+              </v-layout>
             </v-flex>
           </v-layout>
-        </v-card-text>
-      </v-card>
-      <v-card class="pa-3">
-        <v-card-title>
-          <h2 class="red--text text--darken-3">Vielen Dank {{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</h2>
-        </v-card-title>
-        <v-card-text>
-          <h3>Folgende Daten haben wir geändert. Es kann etwas dauern, bis Ihr Änderungswunsch in allen unseren Systemen sichtbar ist.</h3>
-          <v-list>
-            <!-- <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-sub-title>Name</v-list-tile-sub-title>
-                <v-list-tile-title>{{ $store.state.userData.personal.firstName }} {{ $store.state.userData.personal.lastName }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile> -->
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-sub-title>Adresse</v-list-tile-sub-title>
-                <v-list-tile-title>
-                  {{ $store.state.userData.personal.address }},
-                  {{ $store.state.userData.personal.zip }} {{ $store.state.userData.personal.city }}
-                  ({{ $store.state.userData.personal.country }})
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-divider />
-            <v-subheader v-if="$store.state.userData.personal.communications.length">
-              Kontaktmöglichkeiten
-            </v-subheader>
-            <v-list-tile
-              v-for="(item, i) in $store.state.userData.personal.communications"
-              :key="i"
-            >
-              <v-list-tile-content>
-                <v-list-tile-sub-title>
-                  {{ getLabelForCommunication(item) }}
-                </v-list-tile-sub-title>
-                <v-list-tile-title>
-                  {{ item.value }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-          <p>Änderungen sind gültig ab <strong>{{ new Date($store.state.userData.dateFrom).toLocaleDateString() }}.</strong></p>
-          <p>
-            An die Adresse&nbsp;
-            <strong>
-              {{ $store.state.userData.confirmationEmail }}
-            </strong>
-            &nbsp;haben wir eine Eingangsbestätigung geschickt.
-          </p>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            dark
-            large
-            color="primary"
-            to="/services"
-          >
-            <v-icon large>{{ icons.cta }}</v-icon>
-            Zurück zur Service Auswahl
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-
-      <div class="mt-5"></div>
-      <h3 class="my-2 font-weight-bold">Versicherungen digital verwalten</h3>
-      <v-card class="pa-3">
-        <v-card-text>
-          <h3>Das ERGO Kundenportal</h3>
-          <h3 class="red--text text--darken-3">"Meine Versicherungen"</h3>
-        </v-card-text>
-        <v-card-text>
-          <p>Im Kundenbereich "Meine Versicherungen" verwalten Sie Ihre Versicherungen, Ihre Nachrichten und Ihr Profil - einfach und bequem. Registrieren Sie sich jetzt in wenigen Schritten.</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            dark
-            color="grey"
-          >
-            <v-icon>{{ icons.cta }}</v-icon>
-            Jetzt registrieren
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-
-      <div class="mt-5"></div>
-      <QuickServices />
+        </v-content>
+      </v-content>
     </v-flex>
   </v-layout>
 </template>
