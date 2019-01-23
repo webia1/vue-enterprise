@@ -2,7 +2,7 @@ export default {
   personal: {
     firstName: 'Nina',
     lastName: 'Traumkundin',
-    address: 'Wunderschönallee 13',
+    road: 'Wunderschönallee 13',
     zip: '40477',
     city: 'Düsseldorf',
     country: 'Deutschland',

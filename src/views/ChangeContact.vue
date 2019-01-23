@@ -1,44 +1,50 @@
 <template>
-  <v-layout wrap @keyup.enter="submit()">
-    <v-flex xs12>
-      <v-card class="pa-3">
-        <v-card-title>
-          <h2 class="red--text text--darken-3 mb-0">Änderung Adresse und Kommunikations&shy;daten</h2>
-        </v-card-title>
-        <v-card-text>
-          <h3 class="red--text text--darken-3 mb-0">Persönliche Angaben</h3>
-          <h4 class="mb-3">Hallo {{ fields.firstName }} {{ fields.lastName }},</h4>
-          <p>tragen Sie hier Ihre neuen Daten ein</p>
+  <v-layout wrap>
+    <v-flex xs8>
+      <v-content @keyup.enter="submit()">
+        <h2>Änderung Adresse und Kommunikations&shy;daten</h2>
+        <p>tragen Sie hier Ihre neuen Daten ein oder pflegen Sie bereits bestehende Angaben. Natürlich können Sie auch zusätzliche Kommunikationsdaten zu Ihrem Profil ergänzen.</p>
 
-          <!-- <v-layout wrap>
-            <v-flex>
-              <v-text-field
-                box
-                disabled
-                label="Yorks dritter Vorname"
-                v-model="fields.firstName"
-              />
-            </v-flex>
-            <v-flex>
-              <v-text-field
-                box
-                disabled
-                label="Schroerens alternativer Nachname"
-                v-model="fields.lastName"
-              />
-            </v-flex>
-          </v-layout> -->
+        <h4>Zu Ihrer Person</h4>
+        <h3>{{ fields.firstName }} {{ fields.lastName }},</h3>
+        <p>können Sie folgende Informationen anpassen oder aktualisieren:</p>
 
-          <h3 class="red--text text--darken-3 mb-0">Anschrift</h3>
-          <p>Tragen Sie hier Ihre neue Anschrift ein</p>
-          <v-text-field
-            box
-            :append-icon="iconState('address')"
-            label="Straße / HNr."
-            :rules="[isValid('address')]"
-            :success="!!hasChanges('address') && !errors.address"
-            v-model="fields.address"
-          >
+        <h3>Anschrift</h3>
+        <v-layout wrap>
+          <v-flex xs7 sm2>
+            <v-text-field
+              box
+              :append-icon="iconState('zip')"
+              :error-messages="errors.zip"
+              label="PLZ"
+              :success="!!hasChanges('zip') && !errors.zip"
+              v-model="fields.zip"
+              @blur="autoCity()"
+            />
+          </v-flex>
+          <v-flex xs7 sm5>
+            <v-text-field
+              box
+              :append-icon="iconState('city')"
+              :disabled="zipRequest"
+              :error-messages="errors.city"
+              label="Ort"
+              :loading="zipRequest"
+              :success="!!hasChanges('city') && !errors.city"
+              v-model="fields.city"
+            />
+          </v-flex>
+          <v-flex xs7>
+            <v-text-field
+              box
+              :append-icon="iconState('road')"
+              label="Straße, Hausnummer"
+              :rules="[isValid('road')]"
+              :success="!!hasChanges('road') && !errors.road"
+              v-model="fields.road"
+            />
+          </v-flex>
+          <v-flex xs1>
             <v-menu
               slot="append-outer"
               left
@@ -47,7 +53,7 @@
               :open-on-click="false"
               open-on-hover
             >
-              <v-icon slot="activator" @click="useGeolocation()">
+              <v-icon slot="activator" class="my-3" @click="useGeolocation()">
                 {{ icons.findLocation }}
               </v-icon>
               <v-card dark color="secondary">
@@ -56,192 +62,163 @@
                 </v-card-text>
               </v-card>
             </v-menu>
-          </v-text-field>
+          </v-flex>
+        </v-layout>
+
+        <h3>Kommunikationdaten</h3>
+        <div v-for="(item, i) in fields.communications" :key="`${i}`">
           <v-layout wrap>
-            <v-flex xs12 md4>
-              <v-text-field
-                box
-                :append-icon="iconState('zip')"
-                :error-messages="errors.zip"
-                label="PLZ"
-                :success="!!hasChanges('zip') && !errors.zip"
-                v-model="fields.zip"
-                @blur="autoCity()"
+            <v-flex xs7 sm2>
+              <v-menu
+                full-width
+              >
+                <v-overflow-btn
+                  readonly
+                  class="mt-0 pt-0"
+                  :label="getLabelForCommunication(item, 15)"
+                  slot="activator"
+                />
+                <v-list>
+                  <v-list-tile
+                    v-for="(option, i) in communicationOptions"
+                    :key="i"
+                    @click="changeCommunication({ item, settings: option.value })"
+                  >
+                    {{ option.text }}
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
+            </v-flex>
+            <v-flex xs7 sm5>
+              <v-layout v-if="item.channel === 'email'">
+                <v-flex>
+                  <v-text-field
+                    box
+                    :append-icon="errors[`communication_${i}`] ? icons.fieldStates.error : null"
+                    label="E-Mail-Adresse"
+                    :rules="[isValid(`communication_${i}`)]"
+                    :success="!errors[`communication_${i}`]"
+                    v-model="item.value"
+                  />
+                </v-flex>
+              </v-layout>
+              <PhoneNumberField
+                v-else
+                v-model="item.value"
               />
             </v-flex>
-            <v-flex xs12 md8>
-              <v-text-field
-                box
-                :append-icon="iconState('city')"
-                :disabled="zipRequest"
-                :error-messages="errors.city"
-                label="Ort"
-                :loading="zipRequest"
-                :success="!!hasChanges('city') && !errors.city"
-                v-model="fields.city"
-              />
-            </v-flex>
-            <v-flex xs12>
-              <CountryField :preset="fields.country" v-model="fields.country" />
+            <v-flex xs1>
+              <v-icon class="my-3" @click="removeCommunicationItem(i)">delete</v-icon>
             </v-flex>
           </v-layout>
-
-          <h3 class="red--text text--darken-3 mb-0">Kontaktmöglichkeiten</h3>
-          <p>Tragen Sie hier Ihre neuen Kommunikationsdaten ein.</p>
-          <v-flex v-for="(item, i) in fields.communications" :key="`${i}`" xs12>
-            <v-layout>
-              <v-flex xs4>
-                <v-menu
-                  full-width
-                >
-                  <v-overflow-btn
-                    readonly
-                    class="mt-0 pt-0"
-                    :label="getLabelForCommunication(item, 15)"
-                    slot="activator"
-                  />
-                  <v-list>
-                    <v-list-tile
-                      v-for="(option, i) in communicationOptions"
-                      :key="i"
-                      @click="changeCommunication({ item, settings: option.value })"
-                    >
-                      {{ option.text }}
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-              </v-flex>
-              <v-flex xs7>
-                <v-layout v-if="item.channel === 'email'">
-                  <v-flex>
-                    <v-text-field
-                      box
-                      :append-icon="errors[`communication_${i}`] ? icons.fieldStates.error : null"
-                      label="E-Mail-Adresse"
-                      :rules="[isValid(`communication_${i}`)]"
-                      :success="!errors[`communication_${i}`]"
-                      v-model="item.value"
-                    />
-                  </v-flex>
-                </v-layout>
-                <PhoneNumberField
-                  v-else
-                  v-model="item.value"
+        </div>
+        <div>
+          <v-layout>
+            <v-flex xs7 sm2>
+              <v-menu
+                full-width
+              >
+                <v-overflow-btn
+                  readonly
+                  class="mt-0 pt-0"
+                  label="Auswahl"
+                  slot="activator"
                 />
-              </v-flex>
-              <v-flex xs1>
-                <v-icon class="my-3" color="secondary" @click="removeCommunicationItem(i)">remove_circle_outline</v-icon>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          <v-flex>
-            <v-layout>
-              <v-flex xs4>
-                <v-menu
-                  full-width
-                >
-                  <v-overflow-btn
-                    readonly
-                    class="mt-0 pt-0"
-                    label="Auswahl"
-                    slot="activator"
-                  />
-                  <v-list>
-                    <v-list-tile
-                      v-for="(option, i) in communicationOptions"
-                      :key="i"
-                      @click="addCommunicationItem(option.value)"
-                    >
-                      {{ option.text }}
-                    </v-list-tile>
-                  </v-list>
-                </v-menu>
-              </v-flex>
-              <v-flex xs7>
-                <v-layout>
-                  <v-flex xs12>
-                    <v-text-field
-                      box
-                      disabled
-                      class="communication-placeholder"
-                      label="Telefonnummer / E-Mail"
-                    />
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-          <v-flex>
-            <h3 class="red--text text--darken-3 mb-0">Gültig ab</h3>
-            <v-layout wrap>
-              <v-flex xs12 md3>
-                <v-radio-group mandatory v-model="useCurrentDate">
-                  <v-radio
-                    label="ab sofort"
-                    :value="true"
-                    change="dateFrom = new Date().toLocaleDateString();"
+                <v-list>
+                  <v-list-tile
+                    v-for="(option, i) in communicationOptions"
+                    :key="i"
+                    @click="addCommunicationItem(option.value)"
                   >
-                  </v-radio>
-                </v-radio-group>
-              </v-flex>
-              <v-flex xs12 md6>
-                <v-menu
-                  right
-                  :nudge-bottom="60"
-                  :close-on-content-click="false"
-                >
-                  <v-text-field
-                    slot="activator"
-                    box
-                    readonly
-                    :disabled="useCurrentDate"
-                    label="Datum"
-                    v-model="formattedDate"
-                    @click.native="useCurrentDate = false"
-                  >
-                  </v-text-field>
-                  <v-date-picker
-                    no-title
-                    scrollable
-                    v-model="dateFrom"
-                  >
-                  </v-date-picker>
-                </v-menu>
-              </v-flex>
-            </v-layout>
+                    {{ option.text }}
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
+            </v-flex>
+            <v-flex xs7 sm5>
+              <v-text-field
+                box
+                disabled
+                class="communication-placeholder"
+                label="Telefonnummer / E-Mail"
+              />
+            </v-flex>
+          </v-layout>
+        </div>
+
+        <h3>Bestimmen Sie den Zeitpunkt der Gültigkeit ihrer Änderungen</h3>
+        <v-layout wrap>
+          <v-flex xs8 sm2>
+            <v-radio-group mandatory v-model="useCurrentDate">
+              <v-radio
+                label="Gültig ab sofort"
+                :value="true"
+                change="dateFrom = new Date().toLocaleDateString();"
+              >
+              </v-radio>
+            </v-radio-group>
           </v-flex>
-          <v-flex>
-            <!-- <v-card>
-              <v-card-text> -->
-                <h3 class="red--text text--darken-3 mb-0">Einwilligungserklärung</h3>
-                <p>
-                  Ich willige ein, dass ich künftig
-                  <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
-                  <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
-                  (bitte zutreffendes ankreuzen)
-                  über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern informiert werde.<br>
-                  Sie können mich auch zur Kundenbefragung kontaktieren.
-                </p>
-                <p>
-                  Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
-                </p>
-              <!-- </v-card-text>
-            </v-card> -->
+          <v-flex xs8 sm5>
+            <v-text-field
+              slot="activator"
+              box
+              readonly
+              :disabled="useCurrentDate"
+              label="Datum"
+              ref="datePickerActivator"
+              v-model="formattedDate"
+              @click.native="useCurrentDate = false; openDatepicker = true;"
+            >
+            </v-text-field>
+            <v-menu
+              v-if="$refs.datePickerActivator"
+              right
+              :attach="$refs.datePickerActivator.$el"
+              :nudge-bottom="60"
+              :close-on-content-click="false"
+              v-model="openDatepicker"
+            >
+              <v-date-picker
+                no-title
+                scrollable
+                v-model="dateFrom"
+              >
+              </v-date-picker>
+            </v-menu>
           </v-flex>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            large
-            color="primary"
-            :dark="formIsValid"
-            :disabled="!formIsValid"
-            @click="submit()"
-          >
-            <v-icon large>{{ icons.cta }}</v-icon>
-            Speichern
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+        </v-layout>
+
+        <v-card>
+          <v-card-text>
+            <h3>Einwilligungserklärung</h3>
+            <p>
+              Ich willige ein, dass ich künftig
+              <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
+              <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
+              (bitte zutreffendes ankreuzen)
+              über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern informiert werde.<br>
+              Sie können mich auch zur Kundenbefragung kontaktieren.
+            </p>
+            <p>
+              Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
+            </p>
+          </v-card-text>
+        </v-card>
+
+        <v-divider class="my-5" />
+
+        <v-btn
+          large
+          outline
+          round
+          color="primary"
+          :dark="formIsValid"
+          :disabled="!formIsValid"
+          @click="submit()"
+        >
+          Speichern
+        </v-btn>
+    </v-content>
     </v-flex>
   </v-layout>
 </template>
@@ -282,6 +259,7 @@ export default class ChangeContact extends Vue {
   private newChannel = null;
   private errors: any = {};
 
+  private openDatepicker = false;
   private useCurrentDate = true;
   private dateFrom = new Date().toISOString().split('T')[0];
   private keweElectronic = false;
@@ -347,7 +325,7 @@ export default class ChangeContact extends Vue {
         minimum: 3,
       },
     },
-    address: {
+    road: {
       format: {
         pattern: /([a-zäöü]+.*\d+.*)?/i,
       },
@@ -407,8 +385,8 @@ export default class ChangeContact extends Vue {
         lastName: {
           ...this.validationRules.name,
         },
-        address: {
-          ...this.validationRules.address,
+        road: {
+          ...this.validationRules.road,
         },
         zip: {
           ...this.validationRules.zip,
@@ -540,11 +518,11 @@ export default class ChangeContact extends Vue {
   private useGeolocation() {
     GeolocationService.position
       .then((position) => {
-        let address = position.road ? position.road : '';
-        if (address && position.house_number) {
-          address = `${address} ${position.house_number}`;
+        let road = position.road ? position.road : '';
+        if (road && position.house_number) {
+          road = `${road} ${position.house_number}`;
         }
-        this.fields.address = address;
+        this.fields.road = road;
 
         this.fields.zip = position.postcode ? position.postcode : '';
         this.fields.city = position.city ? position.city : '';
@@ -568,7 +546,7 @@ export default class ChangeContact extends Vue {
       // ),
 
       // Show only fields which was filled in identify process
-      address: '',
+      road: '',
       zip: '',
       city: '',
       communications: !this.$store.state.userData.confirmationEmailUsed ? [{

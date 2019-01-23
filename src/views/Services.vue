@@ -9,41 +9,43 @@
       <v-divider class="mt-5" />
 
       <v-content>
-        <v-layout wrap class="services">
-          <v-flex xs12 md6 offset-md3 class="text-xs-center">
+        <v-layout wrap justify-center class="services">
+          <v-flex xs8 md4 class="text-xs-center">
             <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4>
           </v-flex>
-          <v-flex xs12 md6>
-            <v-card class="fill-height services__item" color="primary" to="/change/contact">
-              <v-card-title>
-                <h5 class="white--text">
-                  Änderung Adresse und Kommunikationsdaten
-                </h5>
-              </v-card-title>
-              <v-icon
-                large
-                color="white"
-                class="services__item__icon"
-              >
-                chevron_right
-              </v-icon>
-            </v-card>
-          </v-flex>
-          <v-flex xs12 md6>
-            <v-card class="fill-height services__item" to="/change/contact">
-              <v-card-title>
-                <h5 class="primary--text">
-                  Änderung Beitragskonto
-                </h5>
-              </v-card-title>
-              <v-icon
-                large
-                class="services__item__icon"
-                color="primary"
-              >
-                chevron_right
-              </v-icon>
-            </v-card>
+          <v-flex>
+            <v-layout wrap justify-center>
+              <v-flex xs8 md3>
+                <v-card flat class="fill-height services__item" to="/change/contact">
+                  <v-card-title>
+                    <h5>
+                      Änderung Adresse und Kommunikationsdaten
+                    </h5>
+                  </v-card-title>
+                  <v-icon
+                    large
+                    class="services__item__icon"
+                  >
+                    chevron_right
+                  </v-icon>
+                </v-card>
+              </v-flex>
+              <v-flex xs8 md3>
+                <v-card flat class="fill-height services__item" to="/change/contact">
+                  <v-card-title>
+                    <h5>
+                      Änderung Beitragskonto
+                    </h5>
+                  </v-card-title>
+                  <v-icon
+                    large
+                    class="services__item__icon"
+                  >
+                    chevron_right
+                  </v-icon>
+                </v-card>
+              </v-flex>
+            </v-layout>
           </v-flex>
         </v-layout>
       </v-content>
