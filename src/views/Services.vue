@@ -10,12 +10,12 @@
 
       <v-content>
         <v-layout wrap justify-center class="services">
-          <v-flex xs8 md4 class="text-xs-center">
+          <v-flex xs8 sm4 class="text-xs-center">
             <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4>
           </v-flex>
-          <v-flex>
+          <v-flex xs8>
             <v-layout wrap justify-center>
-              <v-flex xs8 md3>
+              <v-flex xs8 sm3>
                 <v-card flat class="fill-height services__item" to="/change/contact">
                   <v-card-title>
                     <h5>
@@ -30,7 +30,7 @@
                   </v-icon>
                 </v-card>
               </v-flex>
-              <v-flex xs8 md3>
+              <v-flex xs8 sm3>
                 <v-card flat class="fill-height services__item" to="/change/contact">
                   <v-card-title>
                     <h5>
