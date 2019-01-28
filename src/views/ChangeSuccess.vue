@@ -62,26 +62,22 @@
         <v-content>
           <v-layout wrap justify-center class="services">
             <v-flex xs8 md4 class="text-xs-center">
-              <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4>
+              <h3 class="mb-8">Ende der Teststrecke</h3>
+              <h2 class="mb-8">Bitte kehren Sie zurück zur Kundenbfragung.</h2>
+              <!-- <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4> -->
             </v-flex>
-            <v-flex>
+            <v-flex xs8>
               <v-layout wrap justify-center>
                 <v-flex xs8 md3>
-                  <v-card flat class="fill-height services__item" to="/change/contact">
+                  <!-- <v-card flat class="fill-height services__item" to="/change/contact">
                     <v-card-title>
                       <h5>
-                        Änderung Adresse und Kommunikationsdaten
+                        Änderung Adresse und Kommunikationsdaten »
                       </h5>
                     </v-card-title>
-                    <v-icon
-                      large
-                      class="services__item__icon"
-                    >
-                      chevron_right
-                    </v-icon>
-                  </v-card>
+                  </v-card> -->
                 </v-flex>
-                <v-flex xs8 md3>
+                <!-- <v-flex xs8 md3>
                   <v-card flat class="fill-height services__item" to="/change/contact">
                     <v-card-title>
                       <h5>
@@ -95,7 +91,7 @@
                       chevron_right
                     </v-icon>
                   </v-card>
-                </v-flex>
+                </v-flex> -->
               </v-layout>
             </v-flex>
           </v-layout>

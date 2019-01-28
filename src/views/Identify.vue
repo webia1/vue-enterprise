@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
       <v-content>
-        <h2 class="red--text text--darken-3">Bitte identifizieren Sie sich</h2>
+        <h2>Bitte identifizieren Sie sich</h2>
         <p>
           Der Schutz Ihrer Daten steht bei uns an erster Stelle. Damit wir Ihren Wunsch entgegen nehmen und bearbeiten können, benötigen wir ein paar Daten von Ihnen, um Sie richtig zu identifizieren.
         </p>
@@ -178,14 +178,14 @@
           </v-btn>
         </v-card-actions>
       </v-content>
-      <v-divider class="mt-5" />
+      <!-- <v-divider class="mt-5" />
       <v-content>
         <v-layout wrap justify-center>
           <v-flex xs8 sm4 class="text-xs-center">
             <h4 class="text--disabled">Servicewelt</h4>
-            <h3 class="black--text font-weight-bold">
+            <h2 class="black--text font-weight-bold">
               Praktische Services, die Ihnen schnelle Hilfe bieten
-            </h3>
+            </h2>
           </v-flex>
           <v-flex>
             <v-layout wrap justify-center>
@@ -252,7 +252,7 @@
             </v-layout>
           </v-flex>
         </v-layout>
-      </v-content>
+      </v-content> -->
     </v-flex>
   </v-layout>
 </template>

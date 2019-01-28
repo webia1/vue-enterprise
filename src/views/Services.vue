@@ -19,18 +19,18 @@
                 <v-card flat class="fill-height services__item" to="/change/contact">
                   <v-card-title>
                     <h5>
-                      Änderung Adresse und Kommunikationsdaten
+                      Änderung Adresse und Kommunikationsdaten »
                     </h5>
                   </v-card-title>
-                  <v-icon
+                  <!-- <v-icon
                     large
                     class="services__item__icon"
                   >
                     chevron_right
-                  </v-icon>
+                  </v-icon> -->
                 </v-card>
               </v-flex>
-              <v-flex xs8 sm3>
+              <!-- <v-flex xs8 sm3>
                 <v-card flat class="fill-height services__item" to="/change/contact">
                   <v-card-title>
                     <h5>
@@ -44,7 +44,7 @@
                     chevron_right
                   </v-icon>
                 </v-card>
-              </v-flex>
+              </v-flex> -->
             </v-layout>
           </v-flex>
         </v-layout>

@@ -3,7 +3,7 @@
     <v-flex @keyup.enter="login()">
       <v-card>
         <v-card-title>
-          <h2 class="red--text text--darken-3 mb-0">Kundenbereich "Meine Versicherungen"</h2>
+          <h2>Kundenbereich "Meine Versicherungen"</h2>
         </v-card-title>
         <v-card-text>
           <p>

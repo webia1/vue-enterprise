@@ -190,17 +190,12 @@
 
         <v-card>
           <v-card-text>
-            <h3>Einwilligungserklärung</h3>
+            <h3>Freiwillige Einwilligungserklärung</h3>
             <p>
               Ich willige ein, dass ich künftig
               <span class="mx-1" style="cursor: pointer;" @click="keweElectronic = !keweElectronic"><v-icon>{{ keweElectronic ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per elektronischer Post</span>
               <span class="mx-1" style="cursor: pointer;" @click="kewePhone = !kewePhone"><v-icon>{{ kewePhone ? icons.forms.checkbox_checked : icons.forms.checkbox_blank }}</v-icon> per Telefon</span>
-              (bitte zutreffendes ankreuzen)
-              über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern informiert werde.<br>
-              Sie können mich auch zur Kundenbefragung kontaktieren.
-            </p>
-            <p>
-              Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
+              (bitte zutreffendes ankreuzen) über Versicherungs- und Finanzprodukte von Unternehmen und Vermittlern informiert werde. Sie können mich auch zur Kundenbefragung kontaktieren. Meine Daten dürfen hierfür verarbeitet werden. Diese Einwilligung gilt unabhängig davon, ob ein Vertrag besteht. Ich kann sie jederzeit formlos für die Zukunft widerrufen.
             </p>
           </v-card-text>
         </v-card>
@@ -250,7 +245,7 @@ import PhoneNumberField from '@/components/forms/phone-number-field/PhoneNumberF
         // @ts-ignore
         this.dateFrom = new Date().toISOString().split('T')[0];
       }
-    }
+    },
   },
 })
 export default class ChangeContact extends Vue {
