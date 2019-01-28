@@ -1,0 +1,50 @@
+@font-face {
+  font-family: FS Me;
+  font-weight: 500;
+  src: url(fonts/FSMeWeb-Regular.woff) format("woff");
+}
+
+/* @font-face {
+    font-family: FS Me;
+    font-weight: 300;
+    src: url(fonts/FSMeWeb-Light.woff) format("woff")
+}
+
+@font-face {
+    font-family: FS Me;
+    font-weight: 300;
+    font-style: italic;
+    src: url(fonts/FSMeWeb-LightItalic.woff) format("woff")
+}
+
+@font-face {
+    font-family: FS Me;
+    font-weight: 500;
+    font-style: italic;
+    src: url(fonts/FSMeWeb-Italic.woff) format("woff")
+} */
+
+@font-face {
+  font-family: FS Me;
+  font-weight: 700;
+  src: url(fonts/FSMeWeb-Bold.woff) format("woff");
+}
+
+@font-face {
+  font-family: FS Me;
+  font-weight: 700;
+  font-style: italic;
+  src: url(fonts/FSMeWeb-BoldItalic.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Fedra Serif";
+  font-weight: 400;
+  src: url(fonts/Fedra_Serif_Medium.ttf);
+}
+
+@font-face {
+  font-family: "Fedra Serif";
+  font-weight: 500;
+  src: url(fonts/Fedra_Serif_Bold.ttf);
+}

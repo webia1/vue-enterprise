@@ -63,7 +63,7 @@
           <v-layout wrap justify-center class="services">
             <v-flex xs8 md4 class="text-xs-center">
               <h3 class="mb-8">Ende der Teststrecke</h3>
-              <h2 class="mb-8">Bitte kehren Sie zurück zur Kundenbfragung.</h2>
+              <h2 class="mb-8">Bitte kehren Sie zurück zur Kundenbefragung.</h2>
               <!-- <h4 class="mb-4">Folgende Services stehen Ihnen aktuell zur Verfügung</h4> -->
             </v-flex>
             <v-flex xs8>
