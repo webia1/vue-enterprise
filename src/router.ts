@@ -24,7 +24,7 @@ const IdentifyGuard = (redirect: string | object) =>
   };
 
 export default new Router({
-  mode: 'history',
+  mode: 'VUE_APP_IS_EMBEDDED' in process.env ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes: [
     {
