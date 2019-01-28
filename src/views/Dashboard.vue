@@ -28,22 +28,14 @@
           Kundebereich
         </v-btn>
       </v-toolbar-items>
-      <!-- <v-toolbar-items v-if="$store.state.userData.initialized">
-        <v-btn flat to="/services">
-          <v-icon small class="pr-2">
-            dashboard
-          </v-icon>
-          Meine Services
-        </v-btn>
-      </v-toolbar-items> -->
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="!env.isProd">
-        <!-- <v-btn icon small to="/dev">
+        <v-btn icon small to="/dev">
           <v-icon small color="teal">code</v-icon>
         </v-btn>
         <v-btn icon>
           {{ $vuetify.breakpoint.name }}
-        </v-btn> -->
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>

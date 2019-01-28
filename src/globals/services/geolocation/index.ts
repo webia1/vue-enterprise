@@ -12,14 +12,14 @@ const GeolocationService = {
   },
   get position() {
     // @ts-ignore
-    return window.navigator.permissions.query({ name: 'geolocation' })
-      .then(() => new Promise((resolve, reject) => {
-        let api: any = window.navigator.geolocation;
-        if (_.includes((store.state as any).settings.enabledMocks, 'geo')) {
-          api = GeolocationMockAPI;
-        }
-        api.getCurrentPosition(resolve, reject, this.options);
-      }))
+    return new Promise((resolve, reject) => {
+      let api: any = window.navigator.geolocation;
+      if (_.includes((store.state as any).settings.enabledMocks, 'geo')) {
+        api = GeolocationMockAPI;
+      }
+      api.getCurrentPosition(resolve, reject, this.options);
+    })
+      // @ts-ignore
       .then(({ coords: { latitude, longitude } }) => ({ latitude, longitude }))
       .catch((error) => { throw { error }; })
       .then(({ latitude, longitude }) =>
