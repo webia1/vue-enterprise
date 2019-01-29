@@ -25,7 +25,7 @@
           Verstehen
         </v-btn> -->
         <v-btn flat to="/services">
-          Kundebereich
+          Kundenbereich
         </v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>

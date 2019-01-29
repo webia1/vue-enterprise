@@ -1,13 +1,7 @@
 // import env from '@/globals/environment';
 
 const state = {
-  enabledMocks: [
-    'address',
-  ],
+  enabledMocks: [],
 };
-
-if (process.env.NODE_ENV === 'jat') {
-  state.enabledMocks = [...state.enabledMocks, 'geo', 'geofull'];
-}
 
 export default state;
