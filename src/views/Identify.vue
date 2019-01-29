@@ -17,7 +17,7 @@
                 box
                 persistent-hint
                 :append-icon="firstName !== '' ? (!errors.firstName ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.firstName"
+                :error-messages="hasChanges('firstName') ? errors.firstName : []"
                 hint="Erforderlich"
                 label="Vorname"
                 :success="firstName !== '' && !errors.firstName"
@@ -29,7 +29,7 @@
                 box
                 persistent-hint
                 :append-icon="lastName !== '' ? (!errors.lastName ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.lastName"
+                :error-messages="hasChanges('lastName') ? errors.lastName : []"
                 hint="Erforderlich"
                 label="Nachname"
                 :success="lastName !== '' && !errors.lastName"
@@ -42,7 +42,7 @@
                 persistent-hint
                 return-masked-value
                 :append-icon="birthday !== '' ? (!errors.birthday ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.birthday"
+                :error-messages="hasChanges('birthday') ? errors.birthday : []"
                 hint="Erforderlich"
                 label="Geburtstag"
                 mask="##.##.####"
@@ -56,7 +56,7 @@
                 box
                 persistent-hint
                 :append-icon="confirmationEmail !== '' ? (!errors.confirmationEmail ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.confirmationEmail"
+                :error-messages="hasChanges('confirmationEmail') ? errors.confirmationEmail : []"
                 hint="Erforderlich"
                 label="E-Mail zur Bestätigung"
                 :success="confirmationEmail !== '' && !errors.confirmationEmail"
@@ -99,7 +99,7 @@
                 box
                 persistent-hint
                 :append-icon="insuranceNumber !== '' ? (!errors.insuranceNumber ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.insuranceNumber"
+                :error-messages="hasChanges('insuranceNumber') ? errors.insuranceNumber : []"
                 hint="Erforderlich"
                 label="Versicherungsnummer"
                 :success="insuranceNumber !== '' && !errors.insuranceNumber"
@@ -122,7 +122,7 @@
                 box
                 persistent-hint
                 :append-icon="road !== '' ? (!errors.road ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                :error-messages="errors.road"
+                :error-messages="hasChanges('road') ? errors.road : []"
                 hint="Erforderlich"
                 label="Straße, Hausnummer"
                 :success="road !== '' && !errors.road"
@@ -134,7 +134,7 @@
                   box
                   persistent-hint
                   :append-icon="zip !== '' ? (!errors.zip ? icons.fieldStates.success : icons.fieldStates.error) : null"
-                  :error-messages="errors.zip"
+                  :error-messages="hasChanges('zip') ? errors.zip : []"
                   hint="Erforderlich"
                   label="PLZ"
                   :success="zip !== '' && !errors.zip"
@@ -148,7 +148,7 @@
                   persistent-hint
                   :append-icon="city !== '' ? (!errors.city ? icons.fieldStates.success : icons.fieldStates.error) : null"
                   :disabled="zipRequest"
-                  :error-messages="errors.city"
+                  :error-messages="hasChanges('city') ? errors.city : []"
                   hint="Erforderlich"
                   label="Ort"
                   :loading="zipRequest"
@@ -172,87 +172,13 @@
             outline
             round
             color="primary"
+            :disabled="!formIsValid"
             @click="identify()"
           >
             Jetzt identifizieren
           </v-btn>
         </v-card-actions>
       </v-content>
-      <!-- <v-divider class="mt-5" />
-      <v-content>
-        <v-layout wrap justify-center>
-          <v-flex xs8 sm4 class="text-xs-center">
-            <h4 class="text--disabled">Servicewelt</h4>
-            <h2 class="black--text font-weight-bold">
-              Praktische Services, die Ihnen schnelle Hilfe bieten
-            </h2>
-          </v-flex>
-          <v-flex>
-            <v-layout wrap justify-center>
-              <v-flex xs8 md3>
-                <v-card class="fill-height">
-                  <v-card-title>
-                    <h3 class="red--text text--darken-3">Bereits registriert?</h3>
-                  </v-card-title>
-                  <v-card-text>
-                    <p>Sind Sie bereits in unserem Serviceportal registriert? Im Kundenbereich
-                      <strong>"Meine Versicherungen"</strong> verwalten Sie Ihre Versicherungen, Ihre Nachrichten und Ihr Profil - einfach und bequem.
-                    </p>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn
-                      dark
-                      outline
-                      round
-                      class="mr-4"
-                      color="secondary"
-                    >
-                      Zum Login
-                    </v-btn>
-                    <v-btn
-                      dark
-                      outline
-                      round
-                      class="mr-4"
-                      color="secondary"
-                    >
-                      Jetzt registrieren
-                    </v-btn>
-                  </v-card-actions>
-                  <v-img
-                    contain
-                    :src="`https://lorempixel.com/1200/800/business?random=${Math.floor(Math.random() * 0x1000)}`"
-                    :lazy-src="`https://via.placeholder.com/300x200`"
-                  />
-                </v-card>
-              </v-flex>
-              <v-flex xs8 md3>
-                <v-card>
-                  <v-card-title>
-                    <h3 class="red--text text--darken-3">Unsere Hotline</h3>
-                  </v-card-title>
-                  <v-card-text>
-                    <p>Haben Sie Fragen oder brauchen Sie Unterstützung, dann rufen Sie uns gerne an.</p>
-                    <p class="eye-catcher">
-                      <strong>0800 3746-000</strong>
-                    </p>
-                    <p>(24 h, 7 Tage die Woche, gebührenfrei aus Deutschland)</p>
-                    <p>Aus dem Ausland:
-                      <br>
-                      <strong>+49 211 477-7100</strong>
-                    </p>
-                  </v-card-text>
-                  <v-img
-                    contain
-                    :src="`https://lorempixel.com/1200/800/business?random=${Math.floor(Math.random() * 0x1000)}`"
-                    :lazy-src="`https://via.placeholder.com/300x200`"
-                  />
-                </v-card>
-              </v-flex>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-content> -->
     </v-flex>
   </v-layout>
 </template>

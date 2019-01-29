@@ -15,7 +15,7 @@
             <v-text-field
               box
               :append-icon="iconState('zip')"
-              :error-messages="errors.zip"
+              :error-messages="hasChanges('zip') ? errors.zip : []"
               label="PLZ"
               :success="!!hasChanges('zip') && !errors.zip"
               v-model="fields.zip"
@@ -27,7 +27,7 @@
               box
               :append-icon="iconState('city')"
               :disabled="zipRequest"
-              :error-messages="errors.city"
+              :error-messages="hasChanges('city') ? errors.city : []"
               label="Ort"
               :loading="zipRequest"
               :success="!!hasChanges('city') && !errors.city"
@@ -332,8 +332,8 @@ export default class ChangeContact extends Vue {
       },
     },
     city: {
-      format: {
-        pattern: /([a-zäöü]{3,})?/i,
+      presence: {
+        allowEmpty: false,
         message: 'Bitte geben Sie eine gültige Stadt ein!',
       },
     },
